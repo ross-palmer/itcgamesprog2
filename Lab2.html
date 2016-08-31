@@ -409,7 +409,7 @@ Extract the downloaded file and copy the folder named 'yaml-cpp' into your proje
 <p>2) Copy the files <code>level1.yaml</code> and <code>Background.jpg</code> into your solution folder.</p>
 <p>3) In your solution folder, create a folder called <code>lib</code> and copy the file <code>libyaml-cppmdd.lib</code> into that folder. This file contains pre-compiled functions from the YAML library that the linker requires.</p>
 <p>4) Inside visual studio, right click your solution name and choose properties. In the Property Pages dialog box, choose <code>Linker-&gt;General</code> and add the entry <code>.\lib</code> under <code>Additional Library Directories</code> as indicated below:</p>
-<p>![](<a href="http://ross-palmer.github.io/itcgamesprog2/LinkerYAMLSettings.jpg">here</a></p>
+<p><img src="http://ross-palmer.github.io/itcgamesprog2/LinkerYAMLSettings.jpg" /></p>
 <p>This tells the linker to search in the current directory (designated as a .) for a folder called <code>lib</code>. How does the linker know what lib file to search for? We need to tell it which is the next step.</p>
 <p>5) Open main.cpp and before the first <code>#include</code> statement, add the line:</p>
 <pre><code>#pragma comment(lib,&quot;libyaml-cppmdd&quot;) 
