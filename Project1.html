@@ -305,7 +305,7 @@ img {
 <p>Implement projectile firing. It should be possible to fire a projectile at a rate of 1 per second. The projectile should not pass through a wall. A speed value of about 1000 works well, don't forget to use the delta time (<code>dt</code>) when translating the projectile (hint: see how we use delta time for moving the Tank in <code>Tank::update()</code>). The artwork for a shell is available in the sprite sheet. <strong>[15]</strong></p>
 </li>
 <li>
-<p>Add a countdown timer of 30 seconds after which the game should stop. Show the value of the timer on a HUD (if using a floating point variable, don't show decimal places on the HUD). <strong>[10]</strong></p>
+<p>Add a countdown timer of 60 seconds after which the game should stop. Show the value of the timer on a HUD (if using a floating point variable, don't show decimal places on the HUD). <strong>[10]</strong></p>
 </li>
 <li>
 <p>Draw the player's tank in one corner of the screen, where the corner is picked randomly. Add pop-up targets - you decide on the duration they stay on screen. The target properties should be defined in the yaml file i.e. duration, position, rotation etc. The targets should not always appear in the same position and should not appear overlapping a wall. For example, in the yaml file you could define a targets position as:</p>
@@ -320,8 +320,7 @@ img {
 <p>Targets should also disappear when hit by a projectile from the tank and the player's score should be updated on the HUD. If the player strikes a target, the next target should appear immediately and the previous target's remaining time should be added to the new target as a reward. It should be possible (but challenging) to clear all targets in a game. <strong>[15]</strong></p>
 </li>
 <li>
-<p>The game should keep track of the player's best peformance and show the player their previous best score and current score at game over.
-<strong>[10]</strong></p>
+<p>At game over, report the player's score (number of targets hit) and accuracy. For example, if 20 shots were fired, but only 10 targets hit, the accuracy is 50%. The game should also keep track of the player's best peformances, i.e.  show the player their previous best score/accuracy and current score/accuracy  at game over. <strong>[10]</strong></p>
 </li>
 <li>
 <p>Extras: <strong>[20]</strong></p>
