@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lab6</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h2>Lab 6: Introduction to EntityX - an Entity Component System - Part 1</h2>
+<p><strong>To be completed by:</strong> Week 16 (Fri 20/1)</p>
+<p>Learning Outcomes:</p>
+<ul>
+<li>Explain in broad terms the operation of Entity Component Systems.</li>
+<li>Outline the purpose of the six main classes in the EntityX API.</li>
+<li>In the ECS Tank demo, explain the role of EntityX events in the project.</li>
+<li>Explain the flow of control through the project up to the point where Entites (and their components) are created.</li>
+</ul>
+<hr />
+<p><strong>6.1 Introduction</strong></p>
+<p>Start by reading this brief introduction to Entity Component Systems (ECS) <a href="https://blackboard.itcarlow.ie/bbcswebdav/xid-637536_1">here</a>. At the outset, you should note that developing a project using an ECS approach <strong>is not</strong> object-oriented programming. The architecture is not about objects, it is about data (components) and sub-routines that operate on that data (systems). That said, OOP concepts such as classes and inheritance still apply, but the focus is on data-oriented programming as opposed to object-oriented programming.</p>
+<p>An ECS consists of three things as the acronomyn suggest. We start with <em>Entities</em>, where each Entity is simply a collection of <em>Components</em>. Components in turn are mostly <strong>data only</strong> structures with no logic. For example, <code>Position</code> could be a component which describes a world position, while <strong>Health</strong> could be another component describing the health of some game entity in numeric terms. So where does the logic go? The answer is into <em>Systems</em>. Systems encapsulate logic and use as many component types as necessary via Entities. </p>
+<p>In a pure implementation, the systems are decoupled from each other. Each system knows only about itself and the data it operates on. It knows and cares nothing at all about the other systems and how they may have affected by or used the data before or after this system gets to work with it.</p>
+<p><a href="https://github.com/alecthomas/entityx">EntityX</a> is a C++ implementation of an Entity Component System (ECS). There are different ECS's available for C++, for example <a href="http://tilemapkit.com/2015/10/entity-component-systems-compared-benchmarked-entityx-anax-artemis/">this</a> site compares several solutions including EntityX, Anax and Artemis-Cpp. It is noted that EntityX is accessible to beginners as it has a relatively simple API and has a built-in event system which we will discuss later.</p>
+<p><strong>6.2 A minimal example</strong></p>
+<p>We will get straight into a minimal example which we can clone from <a href="https://github.com/ross-palmer/ECS_Example">here</a>. Please note there is a considerable amount of setup code required for an ECS style project. However, the effort is rewarded as ultimately we end up with many smaller and simpler systems rather than a few large complex ones that might result from a traditional OOP approach. We also get the benefits of simpler code and looser coupling (between classes/systems) which simplifies code maintenance and extensibility.  </p>
+<p>The output from this project is simply the background from the previous demo with our tank rendered on top. There is no input handling mechanism (yet). Let's start with the entry point, main.cpp. EntityX is a library which we have to include in our project, note the inclusion of the <code>#pragma</code> directive above main:</p>
+<pre><code>#pragma comment(lib,&quot;entityx-d.lib&quot;)  // Tell the linker about the EntityX library (for debug builds)
+</code></pre>
+
+<p>Of course this lib file must be placed into our project's <code>lib</code> folder, where you will also find the file <code>entityx.lib</code> for release builds.
+Also note inside our solution, you will find an <code>entityx</code> folder inside the <code>include</code> folder - this contains all the required EntityX header files. </p>
+<p>The six principal EntityX classes we should know about are:</p>
+<ol>
+<li>
+<p><code>entityx::Component</code>:  In EntityX data associated with an entity is called a <code>entityx::Component</code>. So, anything that is a component must be derived from this type.</p>
+</li>
+<li>
+<p><code>entityx::Entity</code>: Objects of this type are assigned components. An Entity is really just an identifier (i.e. a number) for a collection of components.</p>
+</li>
+<li>
+<p><code>entityx::EntityManager:</code> This Manager object ties all of the systems together for convenience. A common use of the EventManager is to look up Entities that have particular components. For example, a <code>RenderSystem</code> might loop through all Entities that have a <code>Display</code> component and render them. </p>
+</li>
+<li>
+<p><code>entityx::EventManager</code>: This allows systems to interact without being tightly coupled. For example, we can use the EventManager to allow systems communicate using events. </p>
+</li>
+<li>
+<p><code>entityx::Event</code>: Events are objects emitted by systems, typically when some condition is met. <em>Listeners</em> subscribe to an event type and will receive a <em>callback</em> (i.e. notification) for each event object emitted.</p>
+</li>
+<li>
+<p><code>entityx::SystemManager</code>: This is an object used to manage our game systems. We need to register our game systems with this manager and we use it to update our game systems.</p>
+</li>
+</ol>
+<p><strong>6.3 The tank demo as an ECS project: Events and Systems</strong></p>
+<p>Let's now look at the actual code in the ECS version of the tank demo. Keep in mind that some of the classes in the project do not fit into the Entity, Component or System category. Some classes are utility classes (e.g. Math utilities or even level loading) and some are simply top level container classes such as <code>Game</code>. Starting in main.cpp, the code inside <code>main</code> is straightforward:</p>
+<pre><code>Game game;
+game.init();
+game.run();
+</code></pre>
+
+<p>So the same as before...we have to look inside the the <code>Game</code> class to see evidence of our new structure. The <code>Game</code> object has a <code>GameManager</code> object as a property. <code>GameManager</code> is a new class whose primary responsibility is to manage our games states. It is also a receiver for events - the class declaration is written as:</p>
+<pre><code>class GameManager : public entityx::Receiver&lt;GameManager&gt;
+</code></pre>
+
+<p>which means GameManager will be a receiver for specific events (more on this shortly). Inside <code>Game::init()</code>, we create the SFML render window amongst other tasks, but also make a call to:</p>
+<pre><code>m_gameManager.init();
+</code></pre>
+
+<p>This method is defined GameManager.cpp as:</p>
+<pre><code>void GameManager::init()
+{
+    // Note: Events are structs defined in header file Events.h
+    m_eventManager.subscribe&lt;EvStartGame&gt;(*this);
+}
+</code></pre>
+
+<p>This means the GameManager is subscribing to an Event called <code>EvStartGame</code> - notice how it does this via the <code>entityx::EventManager</code> object. When that event is fired elsewhere in our project, the <code>GameManager::receive()</code> member function is called, i.e.</p>
+<pre><code>// This function is called when an EvStartGame event is generated
+void GameManager::receive(const EvStartGame&amp; startGame) 
+</code></pre>
+
+<p>We will see what this function does later. One last thing to note is where the event <code>EvStartGame</code> is defined. All events will be defined in the header file Events.h. They are generally simple data structures, but all events must be derived from the base type <code>entityx::Event</code>. Here's the definition for <code>EvStartGame</code>:</p>
+<pre><code>/// &lt;summary&gt;
+/// The start game event.
+/// &lt;/summary&gt;
+struct EvStartGame : public entityx::Event&lt;EvStartGame&gt;
+{
+    EvStartGame() {}
+};
+</code></pre>
+
+<p>Returning to <code>Game::init()</code>, we initialise our EntityX systems by calling another function in the Game class called <code>Game::createSystems()</code> which is defined as follows:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Helper function to create the various game systems.
+/// &lt;/summary&gt;
+void Game::createSystems()
+{
+    auto spTexture = std::make_shared&lt;sf::Texture&gt;();
+    spTexture-&gt;loadFromFile(resourcePath() + &quot;images/SpriteSheet.png&quot;);
+    spTexture-&gt;setSmooth(true);
+
+    m_systemManager.add&lt;LevelSystem&gt;(m_entityManager, m_eventManager);
+    m_systemManager.add&lt;RenderSystem&gt;(m_window, spTexture); 
+    m_systemManager.add&lt;MovementSystem&gt;();  
+    m_systemManager.configure();
+}
+</code></pre>
+
+<p>This first loads the sprite sheet and assigns the image resource to a shared pointer called <code>spTexture</code>. Note the call to function <code>resourcePath()</code> - this is simply a global function defined in ResourcePath.cpp that returns the string <code>&quot;./resources/&quot;</code>
+This means our program will look for SpriteSheet.png in the directory structure <code>./resources/images</code>. If we change the path (directory) where our resources are stored in the filesystem, we just need to change this function in ResourcePath.cpp.
+The next few lines:</p>
+<pre><code>m_systemManager.add&lt;LevelSystem&gt;(m_entityManager, m_eventManager);
+m_systemManager.add&lt;RenderSystem&gt;(m_window, spTexture); 
+m_systemManager.add&lt;MovementSystem&gt;();  
+m_systemManager.configure();
+</code></pre>
+
+<p>create each of our systems (as defined in LevelSystem.h/.cpp, RenderSystem.h/.cpp and MovementSystem.h/.cpp) and register them with the entityX system manager. The last line calls the <code>configure()</code> function on the system manager - this is necessary to setup event handlers for each of our system classes and should always be called after adding your systems.
+We will return to how systems work in the next lab.</p>
+<p>Next up in the Game class is the game loop <code>Game::run()</code> and our event loop <code>Game::processInput()</code>. These are the same as before, except <code>processInput()</code> does not yet process any key events.
+The final methods in Game are <code>Game::update()</code> and <code>Game::render()</code> - these deal with our system classes, so we will also defer discussion of these functions to the next lab.</p>
+<p>Let's return now to the <code>GameManager::receive()</code> function - this is a <em>callback</em> function that is invoked when the <code>EvStartGame</code> event is emitted at the end of our <code>Game::init()</code> function. Normally, we would emit this type of event (EvStartGame) from a menu screen when 'Start' is pressed, but we leave it inside <code>Game::init()</code> for now as we have no menu. </p>
+<p>Here's the function definition for <code>GameManager::receive()</code>:</p>
+<pre><code>void GameManager::receive(const EvStartGame&amp; startGame)
+{
+    m_gameState = GameState::Playing;
+
+    m_entityManager.reset();
+
+    // Load the game level data.
+    LevelData level;
+
+    if (!LevelLoader::load(m_currentLevel, level))
+    {
+        return;
+    }
+
+    // Tell the LevelSystem to create the game Entities
+    m_eventManager.emit&lt;EvInit&gt;(m_currentLevel, level);
+}
+</code></pre>
+
+<p>Think of this function as one that could be called every time the game is started or even reset. The game state is switched to <code>GameState::Playing</code>, the EntityX manager is reset (which destroys all entities) and the level data is loaded. </p>
+<p><strong>Exercises:</strong> The purpose of the questions below is to help your understanding of how Entities and Components are created in this project. Open Notepad and save the file as Lab6Answers.txt. Write your answer to each question below into this file.</p>
+<p><strong>1.1</strong> What system subscribes to the <code>EvInit</code> event?</p>
+<p><strong>1.2</strong> What information is stored in the Event object <code>EvInit</code>? (Hint: you will need to find the definition of this struct).</p>
+<p><strong>1.3</strong> The first line in <code>LevelSystem::receive()</code> is:</p>
+<p><code>BackgroundCreator(e.m_level.m_background.m_fileName).create(m_entityManager.create());</code></p>
+<p>note this part:</p>
+<p><code>BackgroundCreator(e.m_level.m_background.m_fileName)</code></p>
+<p>This creates an anonymous object of type <code>BackgroundCreator</code>, passing the specified argument. What does this argument represent. What happens to it inside the <code>BackgroundCreator</code> constructor function?</p>
+<p><strong>1.4</strong> Continuining with:</p>
+<p><code>BackgroundCreator(e.m_level.m_background.m_fileName).create(m_entityManager.create());</code></p>
+<p>what does <code>m_entityManager.create()</code> do?</p>
+<p>what does the <code>BackgroundCreator::create()</code> method do?</p>
+<p><strong>1.5</strong> What two component types are assigned to a Background Entity? (We will see how these components are processed by systems in the next lab).</p>
+<p><strong>1.6</strong> The next two lines in <code>LevelSystem::receive()</code> are:</p>
+<pre><code>entityx::Entity tankBaseEntity = m_entityManager.create();
+TankBaseCreator(e.m_level.m_tank.m_position, false).create(tankBaseEntity);
+</code></pre>
+
+<p>Note that the above is equivalent to:</p>
+<p><code>TankBaseCreator(e.m_level.m_tank.m_position, false).create(m_entityManager.create());</code></p>
+<p>What do the arguments to the <code>TankBaseCreator</code> constructor represent? What components are associated with a TankBase Entity?</p>
+<p><strong>1.7</strong> The last line in <code>LevelSystem::receive()</code> is:</p>
+<p><code>TurretCreator(e.m_level.m_tank, tankBaseEntity, false).create(m_entityManager.create());</code></p>
+<p>Notice the use of the variable <code>tankBaseEntity</code> from 1.6 above. Where is this variable stored in TurretCreator? </p>
+<p><strong>1.8</strong> Further to question 1.7, notice this line in <code>TurretCreator::create()</code>:</p>
+<p><code>entity.assign&lt;Parent&gt;(m_parentEntity);</code>	</p>
+<p>Why do you think the Turret Entity would have a Parent component that stores a reference to the TankBase entity? (Hint: what do you think should happen if the sprite representing the tank base is moved in the game world?)</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
