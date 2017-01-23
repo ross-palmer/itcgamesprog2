@@ -445,8 +445,8 @@ struct EvKeyboard : public entityx::Event&lt;EvKeyboard&gt;
 
 <p>You will need to <code>#include &lt;SFML/Window/Keyboard.hpp&gt;</code> at the top of Events.h because <code>sf::Keyboard::Key</code> is defined in that header file.</p>
 <p>In EntityCreator.cpp, assign the <code>PlayerControl</code> component to both the tank base and the turret. <strong>Note</strong> - this component should only be assigned if the tank base/turret are not controlled by the AI.</p>
-<p>Finally, copy the files PlayerControlSystem.h/.cpp to the relevant <code>system</code> folders in <code>include</code> and <code>src</code>. Then add these files to your project. Make the required changes to Game.cpp so that keyboard input can now control the tank. 
-Hint: look at how the other systems are created and updated.</p>
+<p>Make the required changes to Game.cpp so that keyboard input can now control the tank.</p>
+<p>Hint: look at how the other systems are created and updated.</p>
 <p><strong>Exercise 2:</strong> The purpose of the questions below is to help your understanding of how Systems work in this project. Open Notepad and save the file as Lab7Answers.txt. Write your answer to each question below into this file.</p>
 <p><strong>2.1</strong> What does the first for loop do in MovementSystem.cpp?</p>
 <p><strong>2.2</strong> What does the second for loop do in MovementSystem.cpp?</p>
