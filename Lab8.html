@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Lab8</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+/* Author: Nicolas Hery - http://nicolashery.com */
+/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+/* Source: https://github.com/nicolahery/markdownpad-github */
+
+/* RESET
+=============================================================================*/
+
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+/* BODY
+=============================================================================*/
+
+body {
+  font-family: Helvetica, arial, freesans, clean, sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+  padding: 20px;
+  max-width: 960px;
+  margin: 0 auto;
+}
+
+body>*:first-child {
+  margin-top: 0 !important;
+}
+
+body>*:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* BLOCKS
+=============================================================================*/
+
+p, blockquote, ul, ol, dl, table, pre {
+  margin: 15px 0;
+}
+
+/* HEADERS
+=============================================================================*/
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 20px 0 10px;
+  padding: 0;
+  font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+  font-size: inherit;
+}
+
+h1 {
+  font-size: 28px;
+  color: #000;
+}
+
+h2 {
+  font-size: 24px;
+  border-bottom: 1px solid #ccc;
+  color: #000;
+}
+
+h3 {
+  font-size: 18px;
+}
+
+h4 {
+  font-size: 16px;
+}
+
+h5 {
+  font-size: 14px;
+}
+
+h6 {
+  color: #777;
+  font-size: 14px;
+}
+
+body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+  margin-top: 0;
+  padding-top: 0;
+}
+
+h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
+  margin-top: 10px;
+}
+
+/* LINKS
+=============================================================================*/
+
+a {
+  color: #4183C4;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* LISTS
+=============================================================================*/
+
+ul, ol {
+  padding-left: 30px;
+}
+
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
+ol li ul:first-of-type {
+  margin-top: 0px;
+}
+
+ul ul, ul ol, ol ol, ol ul {
+  margin-bottom: 0;
+}
+
+dl {
+  padding: 0;
+}
+
+dl dt {
+  font-size: 14px;
+  font-weight: bold;
+  font-style: italic;
+  padding: 0;
+  margin: 15px 0 5px;
+}
+
+dl dt:first-child {
+  padding: 0;
+}
+
+dl dt>:first-child {
+  margin-top: 0px;
+}
+
+dl dt>:last-child {
+  margin-bottom: 0px;
+}
+
+dl dd {
+  margin: 0 0 15px;
+  padding: 0 15px;
+}
+
+dl dd>:first-child {
+  margin-top: 0px;
+}
+
+dl dd>:last-child {
+  margin-bottom: 0px;
+}
+
+/* CODE
+=============================================================================*/
+
+pre, code, tt {
+  font-size: 12px;
+  font-family: Consolas, "Liberation Mono", Courier, monospace;
+}
+
+code, tt {
+  margin: 0 0px;
+  padding: 0px 0px;
+  white-space: nowrap;
+  border: 1px solid #eaeaea;
+  background-color: #f8f8f8;
+  border-radius: 3px;
+}
+
+pre>code {
+  margin: 0;
+  padding: 0;
+  white-space: pre;
+  border: none;
+  background: transparent;
+}
+
+pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  font-size: 13px;
+  line-height: 19px;
+  overflow: auto;
+  padding: 6px 10px;
+  border-radius: 3px;
+}
+
+pre code, pre tt {
+  background-color: transparent;
+  border: none;
+}
+
+kbd {
+    -moz-border-bottom-colors: none;
+    -moz-border-left-colors: none;
+    -moz-border-right-colors: none;
+    -moz-border-top-colors: none;
+    background-color: #DDDDDD;
+    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+    background-repeat: repeat-x;
+    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+    border-image: none;
+    border-radius: 2px 2px 2px 2px;
+    border-style: solid;
+    border-width: 1px;
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    line-height: 10px;
+    padding: 1px 4px;
+}
+
+/* QUOTES
+=============================================================================*/
+
+blockquote {
+  border-left: 4px solid #DDD;
+  padding: 0 15px;
+  color: #777;
+}
+
+blockquote>:first-child {
+  margin-top: 0px;
+}
+
+blockquote>:last-child {
+  margin-bottom: 0px;
+}
+
+/* HORIZONTAL RULES
+=============================================================================*/
+
+hr {
+  clear: both;
+  margin: 15px 0;
+  height: 0px;
+  overflow: hidden;
+  border: none;
+  background: transparent;
+  border-bottom: 4px solid #ddd;
+  padding: 0;
+}
+
+/* TABLES
+=============================================================================*/
+
+table th {
+  font-weight: bold;
+}
+
+table th, table td {
+  border: 1px solid #ccc;
+  padding: 6px 13px;
+}
+
+table tr {
+  border-top: 1px solid #ccc;
+  background-color: #fff;
+}
+
+table tr:nth-child(2n) {
+  background-color: #f8f8f8;
+}
+
+/* IMAGES
+=============================================================================*/
+
+img {
+  max-width: 100%
+}
+</style>
+</head>
+<body>
+<h2>Lab 8: Introduction to EntityX - an Entity Component System - Part 3</h2>
+<p><strong>To be completed by:</strong> Week 19 (Fri 10/2)</p>
+<p>Learning Outcomes:</p>
+<ul>
+<li>Explain the operation of a steering algorithm with collision avoidance </li>
+<li>Provide a partial implementation of this algorithm in an ECS type project </li>
+</ul>
+<hr />
+<p><strong>8.1 Introduction</strong></p>
+<p>In this lab, we will add an AI tank that will use a basic steering algorithm to track the player and steer around obstacles. Note that collision handling is not implemented here, i.e.
+the player controlled tank will currently drive through walls. First you must read <a href="https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777">this article</a> which explains how a steering algorithm with collision avoidance works. You should be able to follow the logic of this article with just a basic understanding of vector maths - the code examples are illustrated in pseudocode similar to C#/C++.</p>
+<p>Now that you have read the article, download the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCsm6LFxODRYVVAqNG">here</a>.  </p>
+<p>Copy AIControlSystem.h to your <code>include\systems</code> folder and AIControlSystem.cpp to your <code>src\systems</code> folder.</p>
+<p>Copy the small Maths library BTMath.h to your <code>include\utils</code> folder and BTMath.cpp to your <code>src\utils</code> folder.</p>
+<p>Copy Wall.h, AI.h to your <code>include\components</code> folder and Wall.cpp, AI.cpp to your <code>src\components</code> folder.</p>
+<p>Copy Wall.h, AI.h to your <code>include\components</code> folder and Wall.cpp, AI.cpp to your <code>src\components</code> folder.</p>
+<p>Finally, make an <code>AI</code> folder inside both your <code>include</code> and <code>src</code> directories. Then copy TankAI.h to <code>include\AI</code> and TankAI.cpp 
+to <code>src\AI</code>.</p>
+<p>Don't forget to add all these files to your project.</p>
+<p><strong>8.2 Identifying the AI tank</strong></p>
+<p>The AI tank will be assigned an id once it's entity is created (later). An event
+will be generated called <code>EvReportPlayerId</code> and the AIControlSystem will listen for this event.
+The event object will carry the id to be assigned to the AI tank. Open Events.h and add the following
+event definition:</p>
+<pre><code>/// &lt;summary&gt;
+/// An event used to determine the playerId.
+/// &lt;/summary&gt;
+struct EvReportPlayerId : public entityx::Event&lt;EvReportPlayerId&gt;
+{
+    EvReportPlayerId(entityx::Entity::Id playerId)
+        : m_playerId(playerId)
+    {
+    }
+
+    entityx::Entity::Id m_playerId;
+};
+</code></pre>
+
+<p><strong>8.3 Creating the AI and Wall entities</strong></p>
+<p>The next step is to create an entity for the AI, and also for the walls that will populate the level (each wall is treated as a separate entity).</p>
+<p>Open LevelSystem.cpp, and inside the <code>LevelSystem::receive(const EvInit&amp; e)</code> method add the following:</p>
+<pre><code>   // Create the AI tank opponent
+   entityx::Entity aiTankBaseEntity = m_entityManager.create();
+
+   // Emit the event so the AIControlSystem will get it's id - note how we can get an id from the entity.
+   m_eventManager.emit&lt;EvReportPlayerId&gt;(aiTankBaseEntity.id());
+
+   // Create the AI tank base
+   TankBaseCreator(e.m_level.m_aiTank.m_position, true).create(aiTankBaseEntity);
+
+   // Create the AI turret
+   TurretCreator(e.m_level.m_aiTank, aiTankBaseEntity, true).create(m_entityManager.create());
+
+   // Create the Walls
+   for (ObstacleData const &amp;obstacle : e.m_level.m_obstacles)
+   {
+       WallCreator(obstacle.m_type, obstacle.m_position, obstacle.m_rotation).create(m_entityManager.create());
+   }
+</code></pre>
+
+<p><strong>8.4 Implementing the WallCreator class</strong></p>
+<p>The WallCreator does not yet exist, so we need to add it to the EntityCreator. Open EntityCreator.h, start by including the following header files:</p>
+<pre><code>#include &quot;components/Wall.h&quot; 
+#include &quot;components/AI.h&quot;
+#include &quot;ai/TankAI.h&quot;
+</code></pre>
+
+<p>Add the declaration for the WallCreator class:</p>
+<pre><code>class WallCreator : public ICreatable
+{
+public:
+
+    WallCreator(std::string type,
+        sf::Vector2f position,
+        double rotation);
+
+    void create(entityx::Entity&amp; entity);
+
+private:
+    std::string m_type;
+    sf::Vector2f m_position;
+    double m_rotation;
+};
+</code></pre>
+
+<p>Next, in EntityCreator.cpp, add the definition of the various WallCreator member functions:</p>
+<pre><code>WallCreator::WallCreator(std::string type,
+    sf::Vector2f position,
+    double rotation)
+
+: m_type(type)
+, m_position(position)
+, m_rotation(rotation)
+{
+}
+
+void WallCreator::create(entityx::Entity&amp; entity)
+{
+    auto volume = Volume();
+    volume.m_box = CollisionBox(33, 23); 
+
+    entity.assign&lt;Volume&gt;(volume);
+    entity.assign&lt;Display&gt;(sf::IntRect(2, 129, 33, 23)); 
+    entity.assign&lt;Position&gt;(m_position, m_rotation);    
+    entity.assign&lt;Wall&gt;();
+}
+</code></pre>
+
+<p><strong>8.5 Modifying the TankBaseCreator and TurretCreator classes</strong></p>
+<p>Next, we need to modify the <code>TankBaseCreator</code> class, inside the <code>TankBaseCreator::create()</code> method, note the if statement to check
+if we are creating an AI tank. Add the following two lines:</p>
+<pre><code>if (m_isAi)
+{
+    // Add these...
+    entity.assign&lt;Display&gt;(sf::IntRect(103, 43, 79, 43)); 
+    entity.assign&lt;Ai&gt;(TankAi::AiType::AI_ID_SEEK_SHOOT_AT_PLAYER, entity.id());
+}
+</code></pre>
+
+<p>Similarly, in <code>TurretCreator::create()</code> add the following:</p>
+<pre><code>if (m_isAi)
+{
+    // Add these...
+    entity.assign&lt;Display&gt;(sf::IntRect(122, 1, 83, 31));
+    entity.assign&lt;Ai&gt;(TankAi::AiType::AI_ID_SEEK_SHOOT_AT_PLAYER, entity.id());
+}
+</code></pre>
+
+<p>Now build and run the project. You should see an AI tank drawn in the bottom left corner, but it doesn't move yet.</p>
+<p><strong>Exercise 1:</strong> In Game.cpp, add the <code>AIControlSystem</code> to the project. This will be similar to how you added and updated the <code>PlayerControlSystem</code> in lab 7.
+Build and run the project. What does the AI tank do? Why?</p>
+<p><strong>Exercise 2:</strong> The actual AI steering code for the AI tank is defined in the TankAI class (TankAI.h/.cpp). The <code>AIControlSystem</code> creates an instance of <code>TankAI</code> and updates it. 
+Complete the implementation of the <code>TankAI::seek()</code> function by following the logic described from the article. 
+Build and run the project when have completed this task. What does the AI tank do?</p>
+<p><strong>Exercise 3:</strong> Open AIControlSystem.cpp and look at the <code>AiControlSystem::receive(const entityx::ComponentAddedEvent&lt;Wall&gt;&amp; e)</code> method. 
+This method is called in response to a <em>component added event</em>, in other words you can write code to do something whenever
+a component of a particular type is added to an entity (this is a feature of EntityX). Recall that components are added to an Entity via the entities <code>assign()</code> method. 
+In this case, we are doing something whenever a Wall component is added. More specifically, we create a <code>sf::CircleShape</code> that is 1.5 times the width of the wall and 
+centre that circle over the wall. The circle is then added to a <code>std::vector</code> called <code>m_obstacles</code>. The circles are used as the obstacles
+that the steering algorithm will steer around (as described in the article).</p>
+<p>Again, using the article as a guide, complete the implementation of the <code>TankAI::findMostThreatening()</code> member function.</p>
+
+</body>
+</html>
+<!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
