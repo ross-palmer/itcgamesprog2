@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>index</title>
+<title>Mini Project 2</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,38 +291,41 @@ img {
 </style>
 </head>
 <body>
-<h2>Programming Year 2 SFML Labs 2016/17</h2>
-<p>This page outlines the practicals you will undertake this year. Practicals count for 20% of your overall mark as follows:</p>
+<h2>Mini Project 2: Adding path following behaviour to the ECS Tank demo</h2>
+<p><strong>Instructions:</strong> </p>
 <ul>
-<li>Eight lab exercises (8 x 1.5% = 12%)</li>
-<li>Two lab projects (2 x 4% = 8%)</li>
+<li>Projects must be pushed to github by 5pm Wednesday 1st March. </li>
+<li>You will be required to demonstrate your project in the lab on the following Friday.</li>
+<li>Plagiarism is a very serious offence and will be treated accordingly.</li>
 </ul>
-<p>You will receive a participation mark for each practical and the results will be put on the grade centre on blackboard each week. You may need to put in some small additional time outside of the scheduled lab hours to complete the lab projects. Please note:</p>
-<ul>
-<li>
-<p><strong>You must be present in the lab to get a participation mark</strong>, unless you have a legitimate reason for your absence (e.g. medical certificate).</p>
-</li>
-<li>
-<p>The practicals should be completed by the deadline indicated for that lab. You may present work up to <strong>one week</strong> past the deadline, but beyond that it will be graded with a penalty. </p>
-</li>
-<li>
-<p><strong>It is your responsibility</strong> to check your practical results regularly on blackboard and to notify me immediately if you have a query.</p>
-</li>
-</ul>
-<p>The source code and assets that you will need to complete these labs will kept under source code control on github. Read <a href="http://ross-palmer.github.io/itcgamesprog2/github_basics.html">here</a> first before continuing below.</p>
+<p>Following on from the work you have completed in lab 8, extend the ECS tank demo to add the following functionality:</p>
 <ol>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab1.html">SFML Basic Concepts</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab2.html">Level Loading: using YAML to represent game data</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab3.html">Moving and rotating a tracked vehicle</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab4.html">Introducing the KeyHandler class</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab5.html">Detecting Collisions</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Project1.html">Lab Project 1</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab6.html">Introduction to EntityX - an Entity Component System - Part 1</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab7.html">Introduction to EntityX - an Entity Component System - Part 2</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab8.html">Introduction to EntityX - an Entity Component System - Part 3</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Project2.html">Lab Project 2</a></li>
+<li>
+<p>Define an imaginary track that the AI tank must follow around the map. </p>
+<p>1.1 Start by reading this article on <a href="https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-path-following--gamedev-8769">Path Following</a>.</p>
+<p>1.2 Define 20 nodes in the yaml file which should be sufficient to form some kind of racetrack pattern around the map. Leave the obstacles in place as the tank should steer around these while trying to move to the next node. You will need to parse the data from these nodes inside the LevelLoader. <strong>[20]</strong></p>
+<p>1.3 You will need to define a <code>NodeCreator</code> class in EntityCreator.cpp to create each entity to represent a Node. Hint: Look at how the <code>WallCreator</code> class works. <code>NodeCreator</code> is then used inside the <code>LevelSystem</code> (again, see how <code>WallCreator</code> is used in LevelSystem.cpp). <strong>[10]</strong> </p>
+<p>1.4 Inside the <code>TankAI</code> class, modify the AI tank behaviour so it now follows the defined path. Consider adding another state to the <code>TankAI</code> such as <code>AiBehaviour::PATH_FOLLOWING</code> <strong>[40]</strong> </p>
+</li>
+<li>
+<p>Add a simple HUD to show the next waypoint number the tank is heading for and also the time taken for the tank to complete one circuit. Hint: The next waypoint number should be a property of TankAI. Reset the timer when it has finished one complete lap. The HUD should be implemented as an EntityX system (i.e. HUDSystem). Hint: Have a look at the definitions of other systems first before attempting to write this one. A HUD is not a game object, so there is no need to create a HUD Enitity nor HUD components. <strong>[30]</strong></p>
+</li>
 </ol>
-
+<p>Each section will be marked accordingly:</p>
+<table>
+	<tr>
+        <td><b>0-1</b></td>
+        <td><b>Not done/nothing of value or significant problems</b></td>
+    </tr>
+    <tr>
+        <td><b>2-3</b></td>
+        <td><b>Partial implementation, something of merit, mostly uncommented</b></td>
+    </tr>
+    <tr>
+        <td><b>4-5</b></td>
+        <td><b>Working to specification, fully commented. May have minor problems</b></td>
+    </tr>
+</table>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
