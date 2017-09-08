@@ -291,168 +291,107 @@ img {
 </style>
 </head>
 <body>
-<h2>Lab 7: Introduction to EntityX - an Entity Component System - Part 2</h2>
-<p><strong>To be completed by:</strong> Week 17 (Fri 27/1)</p>
+<h2>Lab 7: AI with steering and player seek behaviours</h2>
+<p><strong>To be completed by:</strong> Week 17 (Fri 26/1)</p>
 <p>Learning Outcomes:</p>
 <ul>
-<li>Explain how systems are created and updated from a game loop</li>
-<li>Demonstrate iterator style traversal of components and show how entities and components
-  are processed in such a loop.</li>
-<li>Explain the purpose and operation of the RenderSystem and MovementSystem in the tank demo.</li>
-<li>Add a complete new system to the tank demo.</li>
+<li>Explain the operation of a steering algorithm with collision avoidance.</li>
+<li>Implement seek and collision avoidance behaviour for an AI tank opponent.</li>
 </ul>
 <hr />
 <p><strong>7.1 Introduction</strong></p>
-<p>In the previous lab, we looked at the LevelSystem and saw how it had responsibility for creating the Entities and Components we need for the tank demo. However, this system is a bit of an oddity in the sense that it performs no function inside our game loop, i.e. the <code>LevelSystem::update()</code> method is empty. Most systems contribute some functionality to the main game loop, and will look at examples of such systems shortly. </p>
-<p>Systems process entities and their components, and this can be achieved with what is referred to
-as iterator-style traversal of components. For example, if we want to process all entities that have a Position, we could write a loop like this:</p>
-<pre><code>Position::Handle position;
+<p>In this lab, we will add an AI tank that will use a basic steering algorithm to track the player and steer around obstacles. First you must read <a href="https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777">this article</a> which explains how a steering algorithm with collision avoidance works. You should be able to follow the logic of this article with just a basic understanding of vector maths - the code examples are illustrated in pseudocode similar to C#/C++.</p>
+<p>Now that you have read the article, download the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs3EQsD_LThwQCWGh">here</a>. </p>
+<p>Copy the small Maths library MathUtility.h to your <code>include</code> folder and MathUtility.cpp to your <code>src</code> folder. Note: you have an existing <code>MathUtility</code> class, overwrite it with the new one (which puts the Maths functions into a namespace called <code>MathUtility</code> instead of a class).</p>
+<p>Copy TankAI.h to <code>include</code> and TankAI.cpp to <code>src</code>.</p>
+<p>Don't forget to add all these files to your project.</p>
+<p><strong>7.2 Refactoring the existing code base</strong></p>
+<p>Next, we need to refactor or change our existing code base to accomodate the new functionality of an AI opponent. Firstly, the AI tank will need to know the world coordinates of the player tank, so add a <code>getPosition()</code> member function to class Tank:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Reads the player tank position.
+/// &lt;returns&gt;The tank base position.&lt;/returns&gt;
+/// &lt;/summary&gt;
+sf::Vector2f getPosition() const;
+</code></pre>
 
-for (Entity entity : entities.entities_with_components(position)) {
-  // Do things with entity and position
+<p>and in Tank.cpp:</p>
+<pre><code>////////////////////////////////////////////////////////////
+sf::Vector2f Tank::getPosition() const
+{
+    return m_tankBase.getPosition();
 }
 </code></pre>
 
-<p>This loop will iterate through the all the available entities that have a <code>Position</code> component. This is achieved by calling the <code>entities_with_components()</code> method on the <code>EntityManager</code> object, i.e. <code>entities.entities_with_components(position)</code></p>
-<p>The variable <code>entity</code> can be accessed inside the loop and the variable <code>position</code> is instantiated with the value of the <code>Position</code> component that belongs to that entity. </p>
-<p>Now, lets consider a concrete example of two other systems from our demo.</p>
-<p><strong>7.2 The RenderSystem</strong></p>
-<p>The RenderSystem is primarily responsible for rendering or drawing everything we see in the world. This includes the background, any obstacles in the level, the tank and turret etc.
-The <code>RenderSystem</code> class has two sprites as member variables - one for the background (<code>m_bgSprite</code>) and one for the sprite sheet (<code>m_sprite</code>). Let's consider the first loop defined inside the <code>RenderSystem::update()</code> method (note that this <code>update()</code> method is called from our main game loop inside <code>Game::update()</code>)</p>
-<pre><code>void RenderSystem::update(EntityManager &amp;entities,
-                          EventManager &amp;events,
-                          double dt)
+<p>Next, we have defined some properties of the AI tank in the YAML file - look at the <code>ai_tank</code> section below:</p>
+<pre><code>background:
+   file: ./resources/images/Background.jpg # Sample comment
+tank:
+   position: {x: 800, y: 100}
+   max_projectiles: 10
+   reload_time: 1000  
+ai_tank:
+   position: {x: 400, y: 700}
+   max_projectiles: 10
+   reload_time: 1000 
+</code></pre>
+
+<p>What is of immediate interest is it's starting position in the world. In LevelLoader.h we need to modify the <code>LevelData</code> struct to add an instance of the AI tank data:</p>
+<pre><code>struct LevelData
 {
-   m_window.clear(sf::Color::Black);
-
-   Background::Handle background;
-   Position::Handle position;
-   for (Entity entity : entities.entities_with_components(background, position))
-   {
-      m_bgSprite.setTextureRect(sf::IntRect(0, position-&gt;m_position.y, ScreenSize::width(), ScreenSize::height()));
-      m_window.draw(m_bgSprite);
-   }   
-   ...
-</code></pre>
-
-<p>The background is cleared to black. Then two local variables are defined - these will be used to store the data in the <code>Background</code> and <code>Position</code> components respectively. The loop will clearly process all entities that have a <code>Background</code> and a <code>Position</code> component. There is only one entity that have these two components, so our loop will execute once. If you have a look at the component defined in Background.h/Background.cpp, you will see it has no data. The <code>Background</code> component is purely used to distinguish an Entity having a <code>Position</code> component as a background entity (not a foreground entity such as the tank).</p>
-<p>The body of the loop defines an <code>sf::IntRect</code> to fill the screen. Notice the the reference to the position component to get the y-value (<code>position-&gt;m_position.y</code>). The background sprite is then drawn.</p>
-<p>The remainder of <code>RenderSystem::update()</code> method is as follows:</p>
-<pre><code>   Display::Handle display;
-   for (Entity entity : entities.entities_with_components(position, display))
-   {
-       if (!isOutsideScreen(position-&gt;m_position, display-&gt;m_coord.width, display-&gt;m_coord.height))
-       {
-           m_sprite.setOrigin(display-&gt;m_coord.width / 2.0, display-&gt;m_coord.height / 2.0);
-           if (entity.has_component&lt;Turret&gt;())
-           { 
-               m_sprite.setOrigin(display-&gt;m_coord.width / 3.0, display-&gt;m_coord.height / 2.0);              
-           }                    
-           m_sprite.setPosition(position-&gt;m_position;);
-           m_sprite.setRotation(position-&gt;m_rotation);       
-           m_sprite.setTextureRect(display-&gt;m_coord);
-           m_sprite.setColor(display-&gt;m_color);      
-           m_window.draw(m_sprite);        
-       }
-       else
-       {
-           entity.destroy();
-       }
-   }
-</code></pre>
-
-<p>This will process all entities that have a <code>Position</code> and a <code>Display</code> component. The <code>if</code> statement calls a helper function called <code>isOutSideScreen()</code> that checks if this entity is off-screen. If it not off-screen, the origin, position, rotation and texture rectangle of the sprite are set and it is rendered. If the sprite is completely off-screen, the corresponding entity is destroyed, although this should not happen in this demo.</p>
-<p><strong>7.3 The MovementSystem</strong></p>
-<p>The purpose of the MovementSystem is to compute the new positions of any relevant entities such as the tank/turret. Let's consider the first loop in <code>MovementSystem::update()</code> </p>
-<pre><code>   Motion::Handle motion;
-   Position::Handle position;
-
-   for (entityx::Entity entity : entities.entities_with_components(motion, position))
-   {             
-
-        sf::Vector2f newPos(position-&gt;m_position.x + std::cos(DEG_TO_RAD  * position-&gt;m_rotation) * motion-&gt;m_speed * (dt / 1000),
-               position-&gt;m_position.y + std::sin(DEG_TO_RAD  * position-&gt;m_rotation) * motion-&gt;m_speed * (dt / 1000));
-
-        if (!isOnScreen(newPos, entity))         
-        {                       
-            motion-&gt;m_speed = 0;
-            continue;
-        }
-        position-&gt;m_position.x = newPos.x;
-        position-&gt;m_position.y = newPos.y;      
-   }
-</code></pre>
-
-<p>This is quite straightforward - any entities that have a Motion and Position component have a new position calculated into a temporary variable called <code>newPos</code>. The <code>if</code> statement checks via a helper method <code>isOnScreen()</code> whether any entity has moved just outside the bounds of the display. If so, the speed attribute of their motion component is set to 0 and the <code>continue</code> statement will skip the remaining statements in the loop so their new position is not set. The last two lines update the position component to the value of our temporary variable <code>newPos</code>.
-Don't forget the RenderSystem will use the updated values that are set here when drawing the sprites on screen.</p>
-<p>The reminder of <code>MovementSystem::update()</code> is as follows:</p>
-<pre><code>   Parent::Handle parent;
-   for (entityx::Entity entity : entities.entities_with_components(position, parent))
-   {
-       // Retrieve the Position component from the parent entity
-       // Note the variable parent is a component, it has a member variable called m_parentEntity which is a 
-       //  reference to the tank entity (i.e. m_parentEntity).
-       Position::Handle parentPosition = parent-&gt;m_parentEntity.component&lt;Position&gt;();
-       position-&gt;m_position.x = parentPosition-&gt;m_position.x;
-       position-&gt;m_position.y = parentPosition-&gt;m_position.y;      
-   }
-</code></pre>
-
-<p>This loop simply processes any entities that have both a <code>Position</code> and a <code>Parent</code> component, i.e. the entity representing the Turret. The purpose of the loop is to ensure the Turret's position is set to that of it's parent entity (the tank base).
-Clearly, the tank does not move because we don't have a system to process any key input. This is the focus of the following exercise.</p>
-<p><strong>Exercise 1:</strong> Download the required source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCsm3MGXeUQzcYvWb8">here</a>.  </p>
-<p>Copy KeyHandler.h and KeyHandler.cpp to your <code>include</code> and <code>src</code> folders respectively.</p>
-<p>Copy PlayerControlSystem.h to your <code>include\systems</code> folder and PlayerControlSystem.cpp to your <code>src\systems</code> folder.</p>
-<p>Copy PlayerControl.h to your <code>include\components</code> folder and PlayerControl.cpp to your <code>src\components</code> folder.</p>
-<p>Don't forget to add all these files to your project.</p>
-<p>In Game.h, create a new member variable:</p>
-<pre><code>KeyHandler m_keyHandler;    // N.B. be sure to #include &quot;KeyHandler.h&quot;
-</code></pre>
-
-<p>In Game.cpp, add the following lines to <code>switch</code> statement inside member function <code>Game::processInput()</code></p>
-<pre><code>    case sf::Event::KeyPressed: 
-        m_eventManager.emit&lt;EvKeyboard&gt;(event.key.code, true);
-        m_keyHandler.updateKey(event.key.code, true);   
-        break;
-    case sf::Event::KeyReleased:
-        m_eventManager.emit&lt;EvKeyboard&gt;(event.key.code, false);
-        m_keyHandler.updateKey(event.key.code, false);              
-        break;
-</code></pre>
-
-<p>The event <code>EvKeyboard</code> is not yet defined, so open Events.h and add it as follows:</p>
-<pre><code>/// &lt;summary&gt;
-/// A keyboard event.
-/// &lt;/summary&gt;
-struct EvKeyboard : public entityx::Event&lt;EvKeyboard&gt;
-{
-    /// &lt;summary&gt;
-    /// Constructs this event with the key and key pressed status parameters.
-    /// &lt;/summary&gt;
-    /// &lt;param name=&quot;key&quot;&gt;the SFML key associated with this event&lt;/param&gt;
-    /// &lt;param name=&quot;score&quot;&gt;if true, key is down&lt;/param&gt;
-    /// &lt;/summary&gt;
-    EvKeyboard(sf::Keyboard::Key key, bool isDown)
-        : m_key(key)
-        , m_isDown(isDown)
-    {
-    }
-
-    sf::Keyboard::Key m_key;
-    bool m_isDown;
+   BackgroundData m_background;
+   TankData m_tank;
+   TankData m_aiTank; // ADD THIS
+   std::vector&lt;ObstacleData&gt; m_obstacles;
 };
 </code></pre>
 
-<p>You will need to <code>#include &lt;SFML/Window/Keyboard.hpp&gt;</code> at the top of Events.h because <code>sf::Keyboard::Key</code> is defined in that header file.</p>
-<p>In EntityCreator.cpp, assign the <code>PlayerControl</code> component to both the tank base and the turret. <strong>Note</strong> - this component should only be assigned if the tank base/turret are not controlled by the AI.</p>
-<p>Make the required changes to Game.cpp so that keyboard input can now control the tank.</p>
-<p>Hint: look at how the other systems are created and updated.</p>
-<p><strong>Exercise 2:</strong> The purpose of the questions below is to help your understanding of how Systems work in this project. Open Notepad and save the file as Lab7Answers.txt. Write your answer to each question below into this file.</p>
-<p><strong>2.1</strong> What does the first for loop do in MovementSystem.cpp?</p>
-<p><strong>2.2</strong> What does the second for loop do in MovementSystem.cpp?</p>
-<p><strong>2.3</strong> Where is MovementSystem::update() called?</p>
-<p><strong>2.4</strong> In RenderSystem.cpp, what purpose does the <code>Background</code> component have? What Entity is assigned the Background component?</p>
-<p><strong>2.5</strong> Open the EntityCreator.cpp. Comment out the line that assigns a <code>Display</code> component to the TankBase. Can you explain what happens?</p>
+<p>Then in LevelLoader.cpp, we add a line to parse the AI tank data from the YAML file. </p>
+<pre><code>////////////////////////////////////////////////////////////
+void operator &gt;&gt; (const YAML::Node&amp; levelNode, LevelData&amp; level)
+{
+   levelNode[&quot;background&quot;] &gt;&gt; level.m_background;
+
+   levelNode[&quot;tank&quot;] &gt;&gt; level.m_tank;
+
+   levelNode[&quot;ai_tank&quot;] &gt;&gt; level.m_aiTank;  // ADD THIS
+</code></pre>
+
+<p>Next, we need to modify the Game class to add an instance of the TankAi class. In Game.h, add the following member variable:</p>
+<pre><code>// An instance representing the AI controlled tank.
+TankAi m_aiTank;
+</code></pre>
+
+<p>In Game.cpp, initialise <code>m_aiTank</code> in the Game constructor:</p>
+<pre><code>Game::Game()
+: m_window(sf::VideoMode(1440, 900, 32), &quot;SFML Playground&quot;, sf::Style::Default)
+, m_tank(m_texture, m_wallSprites, m_keyHandler)
+, m_aiTank(m_texture, m_wallSprites)    // ADD THIS
+</code></pre>
+
+<p>Notice how we pass the container of wall sprites to the AI tank. It requires this information in order to draw the collision circles around each obstacle as outlined in the article you have read. How are the collision circles drawn and stored? If you have a look at the TankAi::init() in TankAi.cpp:</p>
+<pre><code>void TankAi::init()
+{
+    ...
+    for (sf::Sprite const wallSprite : m_wallSprites)
+    {
+        sf::CircleShape circle(wallSprite.getTextureRect().width * 1.5f);
+        circle.setOrigin(circle.getRadius(), circle.getRadius());
+        circle.setPosition(wallSprite.getPosition());
+        m_obstacles.push_back(circle);
+    }
+}
+</code></pre>
+
+<p>This function processes each wall sprite in the container <code>m_wallSprites</code>. For each wall, we create an <code>sf::CircleShape</code> whose radius is 1.5 times the width of the wall sprite. The circle is positioned over the wall and then added to a container called <code>m_obstacles</code>. Note that the circles are never drawn (you can draw them if you wish for debug purposes). </p>
+<p>Next, at the very end of the Game constructor body, you need to call <code>TankAi::init()</code>:</p>
+<pre><code>// Populate the obstacle list and set the AI tank position.
+m_aiTank.init(m_level.m_aiTank.m_position);
+</code></pre>
+
+<p>Finally, add some code to update the AI tank (hint: <code>Game::update()</code>), and also render it (hint: <code>Game::render()</code>).</p>
+<p><strong>Exercise 1:</strong> Build and run the project - You should see an AI tank drawn in the bottom left corner, but it doesn't move yet.</p>
+<p><strong>Exercise 2:</strong> The actual AI steering code for the AI tank is defined in the TankAi class (TankAI.h/.cpp). Complete the implementation of the <code>TankAi::seek()</code> function by following the logic described from the article. Build and run the project when have completed this task. What does the AI tank do?</p>
+<p><strong>Exercise 3:</strong> Again, using the article as a guide, complete the implementation of the <code>TankAi::findMostThreatening()</code> member function. Hint: note the <code>MathUtility</code> namespace provides a <code>MathUtility::lineIntersectsCircle()</code> function that will help you.</p>
 
 </body>
 </html>

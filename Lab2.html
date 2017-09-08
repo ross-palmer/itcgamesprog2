@@ -291,8 +291,8 @@ img {
 </style>
 </head>
 <body>
-<h2>Lab 2: Parsing YAML data and displaying text in SFML</h2>
-<p><strong>To be completed by:</strong> Week 7 (Fri 28/10)</p>
+<h2>Lab 2: Level Loading: using YAML to represent game data</h2>
+<p><strong>To be completed by:</strong> Week 7 (Fri 27/10)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Explain what YAML is and how it can be used to represent game data.</li>
@@ -404,7 +404,7 @@ If you want to learn more about YAML, have a look at these resources:</p>
 </ul>
 <p><strong>2.2 Project setup</strong></p>
 <p>We need a way of decoding or parsing the YAML information and loading it into a C++ class. We are going to use a C++ YAML parser called <a href="https://github.com/jbeder/yaml-cpp">yaml-cpp</a>. </p>
-<p>1) To begin, download all the source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCsjGwudVsCOwyRW80">here</a>.
+<p>1) To begin, download all the source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs2tmJme3RVJGZpOn">here</a>.
 Extract the downloaded file and copy the folder named 'yaml-cpp' into your project directory.</p>
 <p>2) Copy the files <code>level1.yaml</code> and <code>Background.jpg</code> into your solution folder.</p>
 <p>3) In your solution folder, create a folder called <code>lib</code> and copy the file <code>libyaml-cppmdd.lib</code> into that folder. This file contains pre-compiled functions from the YAML library that the linker requires.</p>
@@ -586,8 +586,8 @@ for (unsigned i = 0; i &lt; obstaclesNode.size(); ++i)
 </code></pre>
 
 <p>and we add the obstacle to the rear of the vector <code>level.m_obstacles</code> using the method <code>push_back()</code>.</p>
-<p><strong>Exercise 2:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (m_level). Hint: The tank position from the yaml file is 850,100.</p>
-<p><strong>Exercise 3:</strong>  In the Game.cpp constructor function, load the background as a sprite using the supplied filename. Hint: The filename is <code>Background.jpg</code></p>
+<p><strong>Exercise 2:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100.</p>
+<p><strong>Exercise 3:</strong>  In Game.h, add two member variables <code>m_bgTexture</code> and <code>m_bgSprite</code> for the background texture and sprite respectively. In the Game.cpp constructor function, load the background as a sprite using the supplied filename.  In <code>Game::render()</code>, draw the background sprite first.</p>
 <p><strong>Displaying the obstacle data</strong></p>
 <p>The final thing to do is process our obstacle data and learn the basic usage of <code>std::vector</code>. 
 Open <code>Game.h</code> and add the following member variable:</p>
@@ -616,11 +616,11 @@ for (auto &amp;obstacle : m_level.m_obstacles)
 <p>it would mean that each item in the vector is <em>copied</em> into the variable obstacle on each pass of the loop, which is an unnecessary copy operation in this case. 
 Inside the loop, we position the temporary sprite and apply the correct rotation by using the data from the obstacle object. Finally, we copy the temporary sprite into the vector <code>m_sprites</code>. We need to do this as you will need to draw the sprites inside our <code>render()</code> method. (The obstacles use our tank image, but in our demo which we will build later, they will be walls).</p>
 <hr />
-<p><strong>Side note:</strong> Sometimes there are reasons why is not a good idea to store containers of instances, particularly if those objects are not lightweight. Firstly, all STL containers copy in and copy out. This means any object you wish to store in a container will be copied into that container, and any object you retrieve from the container will be copied out. Worse still, std::vector will copy all of it's elements to a new location in memory if it runs out of capacity. If you delete an element from a vector, any proceeding elements are copied down one place. For these reasons, it is often preferable to store pointers (or preferably smart pointers) to objects in containers like this:</p>
+<p><strong>Side note:</strong> Sometimes there are reasons why is not a good idea to store containers of instances, particularly if those objects are not lightweight. Firstly, all STL containers copy in and copy out. This means any object you wish to store in a container will be copied into that container, and any object you retrieve from the container will be copied out. Worse still, <code>std::vector</code> will copy all of it's elements to a new location in memory if it runs out of capacity. If you delete an element from a vector, any proceeding elements are copied down one place. For these reasons, it is often preferable to store pointers (or preferably smart pointers) to objects in containers like this:</p>
 <pre><code>std::vector&lt;sf::Sprite *&gt; myVector;
 </code></pre>
 
-<p>We will similar examples later when we discuss smart pointers.</p>
+<p>However, this is not necessary in the case of <code>sf::Sprite</code>, as it is considered a lightweight class that is not expensive to copy (Sprites simply keep a pointer to a texture, not a copy of the texture, hence why they are considered lightweight objects). We will see similar examples later when we discuss smart pointers.</p>
 <hr />
 <p><strong>Exercise 4:</strong> Inside the <code>render()</code> member function in Game.cpp, write a range based loop to draw each sprite.</p>
 

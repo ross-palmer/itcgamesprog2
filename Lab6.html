@@ -291,167 +291,186 @@ img {
 </style>
 </head>
 <body>
-<h2>Lab 6: Introduction to EntityX - an Entity Component System - Part 1</h2>
-<p><strong>To be completed by:</strong> Week 16 (Fri 20/1)</p>
+<h2>Lab 6: Projectiles</h2>
+<p><strong>To be completed by:</strong> Week 13 (Fri 24/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
-<li>Explain in broad terms the operation of Entity Component Systems.</li>
-<li>Outline the purpose of the six main classes in the EntityX API.</li>
-<li>In the ECS Tank demo, explain the role of EntityX events in the project.</li>
-<li>Explain the flow of control through the project up to the point where Entites (and their components) are created.</li>
+<li>Explain the principles behind the object pool pattern.</li>
+<li>Implement a simple pool system for projectiles.</li>
+<li>Explain the role of a friend class in C++.</li>
 </ul>
 <hr />
-<p><strong>6.1 Introduction</strong></p>
-<p>Start by reading this brief introduction to Entity Component Systems (ECS) - this is available on Blackboard in <em>Course Documents-&gt;Lecture Slides-&gt;Chapter 3-&gt;Short Introduction to ECS</em>. At the outset, you should note that developing a project using an ECS approach <strong>is not</strong> object-oriented programming. The architecture is not about objects, it is about data (components) and sub-routines that operate on that data (systems). That said, OOP concepts such as classes and inheritance still apply, but the focus is on data-oriented programming as opposed to object-oriented programming.</p>
-<p>An ECS consists of three things as the acronomyn suggest. We start with <em>Entities</em>, where each Entity is simply a collection of <em>Components</em>. Components in turn are mostly <strong>data only</strong> structures with no logic. For example, <code>Position</code> could be a component which describes a world position, while <strong>Health</strong> could be another component describing the health of some game entity in numeric terms. So where does the logic go? The answer is into <em>Systems</em>. Systems encapsulate logic and use as many component types as necessary via Entities. </p>
-<p>In a pure implementation, the systems are decoupled from each other. Each system knows only about itself and the data it operates on. It knows and cares nothing at all about the other systems and how they may have affected by or used the data before or after this system gets to work with it.</p>
-<p><a href="https://github.com/alecthomas/entityx">EntityX</a> is a C++ implementation of an Entity Component System (ECS). There are different ECS's available for C++, for example <a href="http://tilemapkit.com/2015/10/entity-component-systems-compared-benchmarked-entityx-anax-artemis/">this</a> site compares several solutions including EntityX, Anax and Artemis-Cpp. It is noted that EntityX is accessible to beginners as it has a relatively simple API and has a built-in event system which we will discuss later.</p>
-<p><strong>6.2 A minimal example</strong></p>
-<p>We will get straight into a minimal example which we can clone from <a href="https://github.com/ross-palmer/ECS_Example">here</a>. Please note there is a considerable amount of setup code required for an ECS style project. However, the effort is rewarded as ultimately we end up with many smaller and simpler systems rather than a few large complex ones that might result from a traditional OOP approach. We also get the benefits of simpler code and looser coupling (between classes/systems) which simplifies code maintenance and extensibility.  </p>
-<p>The output from this project is simply the background from the previous demo with our tank rendered on top. There is no input handling mechanism (yet). Let's start with the entry point, main.cpp. EntityX is a library which we have to include in our project, note the inclusion of the <code>#pragma</code> directive above main:</p>
-<pre><code>#pragma comment(lib,&quot;entityx-d.lib&quot;)  // Tell the linker about the EntityX library (for debug builds)
+<p>Continue with the sample Visual Studio solution 'SFML_Playground' from lab 5.</p>
+<p><strong>6.1 Implementing a projectile pool</strong></p>
+<p>We are now going to implement projectile firing from our tank. We could simply generate projectiles on demand as the user presses fire. However, rather than
+allocating and destroying these objects on demand, we keep a set of initialised projectiles in a container (such as an array) ready to be used. A client
+of the pool will request a projectile, perform operations on it and it will be 'returned' to the pool when no longer needed. This type of approach is often applied
+in cases where many objects need to be generated quickly, and those objects have a short life span.</p>
+<p>We will use a game design pattern called the <a href="http://gameprogrammingpatterns.com/object-pool.html">Object Pool pattern</a> to implement a pool of projectiles.<br />
+We start with two classes. The first class, <code>Projectile</code>, will store basic information about the projectile such as it's speed and screen position.
+The second class, <code>ProjectilePool</code>, will manage a container (pool) of projectiles, and it is through <code>ProjectilePool</code> that we request access to a <code>Projectile</code>.
+Let's try and visualise how this will work. Say we have a small pool of 7 projectiles. Initially the pool is full and will look like this:</p>
+<p><img src="pool_full.jpg" /></p>
+<p>The pool class maintains an index of the next available projectile, which is set to 0 initially. Now imagine that 6 of the 7 projectiles are on-screen.
+The pool now looks like this:</p>
+<p><img src="pool_almost_empty.jpg" /></p>
+<p>The index of the next available projectile points to the last object in the pool. When this object is requested, the pool will now be empty. What do we do if a further projectile is requested from the pool? There are several possible strategies we could take, but the simplest is to wrap the index so that it starts at 0 again:</p>
+<p><img src="pool_empty.jpg" /></p>
+<p>If a request comes in for another projectile, we must then re-use the projectile at index 0 which is currently on-screen. Note that the position of a projectile
+within the array does not tell us anything about how long it has been on-screen, i.e. if projectiles are used in sequence from index 0 to index 6, you cannot assume the 'oldest' projectile will always be at index 0. Projectiles are returned to the pool when they go off-screen or collide with an obstacles such as a wall or another tank.  </p>
+<p><strong>6.2 Implementing a projectile pool</strong></p>
+<p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs3JAZsW_jah0Q80P">here</a>. Unzip the file and add the files <code>Projectile.h</code>, <code>ProjectilePool.h</code> and their respective .cpp files to your project. Let's consider class ProjectilePool first, let's consider it's private data members first:</p>
+<pre><code>private:
+static const int s_POOL_SIZE = 100;
+
+// A container for the projectiles.
+std::array&lt;Projectile, s_POOL_SIZE&gt; m_projectiles;
+
+// The index of the next available projectile.
+int m_nextAvailable { 0 };
+
+// A flag indicating whether there are any projectiles available (initially they are).
+bool m_poolFull { false };
 </code></pre>
 
-<p>Of course this lib file must be placed into our project's <code>lib</code> folder, where you will also find the file <code>entityx.lib</code> for release builds.
-Also note inside our solution, you will find an <code>entityx</code> folder inside the <code>include</code> folder - this contains all the required EntityX header files. </p>
-<p>The six principal EntityX classes we should know about are:</p>
-<ol>
-<li>
-<p><code>entityx::Component</code>:  In EntityX data associated with an entity is called a <code>entityx::Component</code>. So, anything that is a component must be derived from this type.</p>
-</li>
-<li>
-<p><code>entityx::Entity</code>: Objects of this type are assigned components. An Entity is really just an identifier (i.e. a number) for a collection of components.</p>
-</li>
-<li>
-<p><code>entityx::EntityManager:</code> This Manager object ties all of the systems together for convenience. A common use of the EventManager is to look up Entities that have particular components. For example, a <code>RenderSystem</code> might loop through all Entities that have a <code>Display</code> component and render them. </p>
-</li>
-<li>
-<p><code>entityx::EventManager</code>: This allows systems to interact without being tightly coupled. For example, we can use the EventManager to allow systems communicate using events. </p>
-</li>
-<li>
-<p><code>entityx::Event</code>: Events are objects emitted by systems, typically when some condition is met. <em>Listeners</em> subscribe to an event type and will receive a <em>callback</em> (i.e. notification) for each event object emitted.</p>
-</li>
-<li>
-<p><code>entityx::SystemManager</code>: This is an object used to manage our game systems. We need to register our game systems with this manager and we use it to update our game systems.</p>
-</li>
-</ol>
-<p><strong>6.3 The tank demo as an ECS project: Events and Systems</strong></p>
-<p>Let's now look at the actual code in the ECS version of the tank demo. Keep in mind that some of the classes in the project do not fit into the Entity, Component or System category. Some classes are utility classes (e.g. Math utilities or even level loading) and some are simply top level container classes such as <code>Game</code>. Starting in main.cpp, the code inside <code>main</code> is straightforward:</p>
-<pre><code>Game game;
-game.init();
-game.run();
-</code></pre>
-
-<p>So the same as before...we have to look inside the the <code>Game</code> class to see evidence of our new structure. The <code>Game</code> object has a <code>GameManager</code> object as a property. <code>GameManager</code> is a new class whose primary responsibility is to manage our games states. It is also a receiver for events - the class declaration is written as:</p>
-<pre><code>class GameManager : public entityx::Receiver&lt;GameManager&gt;
-</code></pre>
-
-<p>which means GameManager will be a receiver for specific events (more on this shortly). Inside <code>Game::init()</code>, we create the SFML render window amongst other tasks, but also make a call to:</p>
-<pre><code>m_gameManager.init();
-</code></pre>
-
-<p>This method is defined GameManager.cpp as:</p>
-<pre><code>void GameManager::init()
-{
-    // Note: Events are structs defined in header file Events.h
-    m_eventManager.subscribe&lt;EvStartGame&gt;(*this);
-}
-</code></pre>
-
-<p>This means the GameManager is subscribing to an Event called <code>EvStartGame</code> - notice how it does this via the <code>entityx::EventManager</code> object. When that event is fired elsewhere in our project, the <code>GameManager::receive()</code> member function is called, i.e.</p>
-<pre><code>// This function is called when an EvStartGame event is generated
-void GameManager::receive(const EvStartGame&amp; startGame) 
-</code></pre>
-
-<p>We will see what this function does later. One last thing to note is where the event <code>EvStartGame</code> is defined. All events will be defined in the header file Events.h. They are generally simple data structures, but all events must be derived from the base type <code>entityx::Event</code>. Here's the definition for <code>EvStartGame</code>:</p>
+<p>So the pool size is 100. We use a C++11 style array to hold the projectile instances. <code>std::array</code> is a template class, the first template argument is the class type you wish to store in the array (<code>Projectile</code>), the second is the size of the array (<code>s_POOL_SIZE</code>). 
+The index of the next available projectile is set to 0, and finally we have a flag <code>m_poolFull</code> to keep track of the pool full status.</p>
+<p>In the public interface, there is a standard no-op default constructor defined:</p>
 <pre><code>/// &lt;summary&gt;
-/// The start game event.
+/// @brief No-op default constructor
 /// &lt;/summary&gt;
-struct EvStartGame : public entityx::Event&lt;EvStartGame&gt;
-{
-    EvStartGame() {}
-};
+ProjectilePool() = default;
 </code></pre>
 
-<p>Returning to <code>Game::init()</code>, we initialise our EntityX systems by calling another function in the Game class called <code>Game::createSystems()</code> which is defined as follows:</p>
+<p>Note that when we make an instance of ProjectilePool, the array <code>m_projectiles</code> is automatically populated with 100 Projectile instances.
+Next, we have a member function called <code>create()</code> which client code will use to request access to a projectile (read the comments to see exactly
+what each function does):</p>
 <pre><code>/// &lt;summary&gt;
-/// @brief Helper function to create the various game systems.
+/// @brief Creates a projectile.
+/// Creates a projectile from the pool of available projectiles.
+///  If no projectiles are available, the next in (pool) sequence after
+///  the last used projectile is chosen.
 /// &lt;/summary&gt;
-void Game::createSystems()
-{
-    auto spTexture = std::make_shared&lt;sf::Texture&gt;();
-    spTexture-&gt;loadFromFile(resourcePath() + &quot;images/SpriteSheet.png&quot;);
-    spTexture-&gt;setSmooth(true);
-
-    m_systemManager.add&lt;LevelSystem&gt;(m_entityManager, m_eventManager);
-    m_systemManager.add&lt;RenderSystem&gt;(m_window, spTexture); 
-    m_systemManager.add&lt;MovementSystem&gt;();  
-    m_systemManager.configure();
-}
+/// &lt;param name=&quot;texture&quot;&gt;A reference to the sprite sheet texture&lt;/param&gt;   
+/// &lt;param name=&quot;x&quot;&gt;The x position of the projectile&lt;/param&gt;
+/// &lt;param name=&quot;x&quot;&gt;The y position of the projectile&lt;/param&gt;
+/// &lt;param name=&quot;rotation&quot;&gt;The rotation angle of the projectile in degrees&lt;/param&gt;
+void create(sf::Texture const &amp; texture, double x, double y, double rotation);
 </code></pre>
 
-<p>This first loads the sprite sheet and assigns the image resource to a shared pointer called <code>spTexture</code>. Note the call to function <code>resourcePath()</code> - this is simply a global function defined in ResourcePath.cpp that returns the string <code>&quot;./resources/&quot;</code>
-This means our program will look for SpriteSheet.png in the directory structure <code>./resources/images</code>. If we change the path (directory) where our resources are stored in the filesystem, we just need to change this function in ResourcePath.cpp.
-The next few lines:</p>
-<pre><code>m_systemManager.add&lt;LevelSystem&gt;(m_entityManager, m_eventManager);
-m_systemManager.add&lt;RenderSystem&gt;(m_window, spTexture); 
-m_systemManager.add&lt;MovementSystem&gt;();  
-m_systemManager.configure();
+<p>The main task of the <code>update()</code> member function is to loop through every projectile in the array and invoke their <code>update()</code> function in turn:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Updates all projectiles in the pool.
+/// Sets an index to the next available projectile. Also sets a 
+///  status flag to indicate pool full (all projectiles in use).
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;dt&quot;&gt;The delta time&lt;/param&gt; 
+/// &lt;param name=&quot;rotation&quot;&gt;A reference to the container of wall sprites&lt;/param&gt;
+void update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
 </code></pre>
 
-<p>create each of our systems (as defined in LevelSystem.h/.cpp, RenderSystem.h/.cpp and MovementSystem.h/.cpp) and register them with the entityX system manager. The last line calls the <code>configure()</code> function on the system manager - this is necessary to setup event handlers for each of our system classes and should always be called after adding your systems.
-We will return to how systems work in the next lab.</p>
-<p>Next up in the Game class is the game loop <code>Game::run()</code> and our event loop <code>Game::processInput()</code>. These are the same as before, except <code>processInput()</code> does not yet process any key events.
-The final methods in Game are <code>Game::update()</code> and <code>Game::render()</code> - these deal with our system classes, so we will also defer discussion of these functions to the next lab.</p>
-<p>Let's return now to the <code>GameManager::receive()</code> function - this is a <em>callback</em> function that is invoked when the <code>EvStartGame</code> event is emitted at the end of our <code>Game::init()</code> function. Normally, we would emit this type of event (EvStartGame) from a menu screen when 'Start' is pressed, but we leave it inside <code>Game::init()</code> for now as we have no menu. </p>
-<p>Here's the function definition for <code>GameManager::receive()</code>:</p>
-<pre><code>void GameManager::receive(const EvStartGame&amp; startGame)
+<p>Finally, the <code>render()</code> member function draws all active projectiles. A projectile is considered active if it's speed value is set (i.e. to it's max. 
+possible speed). </p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Draws all active projectiles.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;window&quot;&gt;The SFML render window&lt;/param&gt; 
+void render(sf::RenderWindow &amp; window);
+</code></pre>
+
+<p>Note that in the implementation of the <code>render()</code> function, we have this line:</p>
+<pre><code>window.draw(m_projectiles.at(i).m_projectile);
+</code></pre>
+
+<p><code>m_projectile</code> is a <code>sf::Sprite</code> which is a private property of the <code>Projectile</code> class. So how can this class access the private member variable
+of class <code>Projectile</code>? In C++, we have a special mechanism to enable this behaviour by which one class can 'befriend' another. Which brings us
+nicely to the Projectile class...</p>
+<p>At the beginning of the declaration for class <code>Projectile</code>, we have:</p>
+<pre><code>class Projectile
 {
-    m_gameState = GameState::Playing;
+    // Allows the ProjectilePool direct access to the private members of Projectile.
+    // This is so the ProjectilePool can access the Projectile sprite representation so it
+    // can be rendered.
+    friend class ProjectilePool;
+</code></pre>
 
-    m_entityManager.reset();
+<p>The declaration <code>friend class ProjectilePool</code> enables the <code>ProjectilePool</code> class access the private member variables of class <code>Projectile</code> without
+the need to provide a getter method. This is considered acceptable practice because the <code>Projectile</code> objects are tightly coupled to the <code>ProjectilePool</code>
+class. </p>
+<p>Let's start with a quick look at the private members of Projectile:</p>
+<pre><code>private:
+    bool Projectile::isOnScreen(sf::Vector2f position) const;
 
-    // Load the game level data.
-    LevelData level;
+    // Max. update speed 
+    static constexpr double s_MAX_SPEED { 1000.0 };
 
-    if (!LevelLoader::load(m_currentLevel, level))
-    {
-        return;
+    // Movement speed.
+    double m_speed { s_MAX_SPEED };
+
+    // A sprite for the projectile.
+    sf::Sprite m_projectile;
+
+    // The bounding rectangle for this projectile.
+    sf::IntRect m_projectileRect { 5, 178, 10, 6 }; 
+</code></pre>
+
+<p><code>isOnScreen()</code> is a private helper method that returns true if this projectile is on screen. 
+<code>s_MAX_SPEED</code> is a constant value that we use to define the projectiles maximum speed.
+The current movement speed of a projectile is stored in <code>m_speed</code>. 
+<code>m_projectile</code> is our sprite representation of a projectile, while m_projectileRect defines the bounding rectangle for the projectile - this information is taken from the sprite sheet.</p>
+<p>In the public interface, we have an <code>init()</code> member function that takes the same arguments as <code>ProjectilePool::init()</code>. This is how we initialise a Projectile - remember we don't create them as they exist already in the pool.
+The primary job of the <code>update()</code> member function is to calculate the next screen position for the projectile, and to perform collision checking between the projectile and walls:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Calculates the new position of the projectile.
+/// If this projectile is currently in use (on screen, speed non-zero), it's next screen position
+///  is calculated along a vector that extends directly from the tip of the tank turret.
+/// If the newly calculated position is off-screen, then the projectile speed is reset to 0.
+/// Otherwise (projectile still on-screen), a collision check is performed between the projectile
+///  and every wall. If the projectile collides with a wall, it's speed is reset to 0.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;dt&quot;&gt;The delta time&lt;/param&gt;
+/// &lt;param name=&quot;wallSprites&quot;&gt;A reference to the container of wall sprites&lt;/param&gt;
+/// &lt;returns&gt;True if this projectile is currently not in use (i.e. speed is zero).&lt;/returns&gt;
+bool update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
+</code></pre>
+
+<p><strong>Exercise 1</strong>: Add the <code>ProjectilePool</code> as a data member of class <code>Tank</code> called <code>m_pool</code>. (Note: this is an example of composition - a Tank 'has a' projectile pool).</p>
+<p><strong>Exercise 2</strong>: Add the following member function to class <code>Tank</code>:</p>
+<p>Tank.h</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Generates a request to fire a projectile.
+/// A projectile will be fired from the tip of the turret only if time limit between shots
+///  has expired. Fire requests are not queued.
+/// &lt;/summary&gt;
+void requestFire();
+</code></pre>
+
+<p>Tank.cpp</p>
+<pre><code>////////////////////////////////////////////////////////////
+void Tank::requestFire()
+{
+    m_fireRequested = true;
+    if (m_shootTimer == s_TIME_BETWEEN_SHOTS)
+    {       
+        sf::Vector2f tipOfTurret(m_turret.getPosition().x + 2.0f, m_turret.getPosition().y);
+        tipOfTurret.x += std::cos(MathUtility::DEG_TO_RAD  * m_turret.getRotation()) * ((m_turret.getLocalBounds().top + m_turret.getLocalBounds().height) * 1.7f);
+        tipOfTurret.y += std::sin(MathUtility::DEG_TO_RAD  * m_turret.getRotation()) * ((m_turret.getLocalBounds().top + m_turret.getLocalBounds().height) * 1.7f);
+        m_pool.create(m_texture, tipOfTurret.x, tipOfTurret.y, m_turret.getRotation());
     }
-
-    // Tell the LevelSystem to create the game Entities
-    m_eventManager.emit&lt;EvInit&gt;(m_currentLevel, level);
 }
 </code></pre>
 
-<p>Think of this function as one that could be called every time the game is started or even reset. The game state is switched to <code>GameState::Playing</code>, the EntityX manager is reset (which destroys all entities) and the level data is loaded. </p>
-<p><strong>Exercises:</strong> The purpose of the questions below is to help your understanding of how Entities and Components are created in this project. Open Notepad and save the file as Lab6Answers.txt. Write your answer to each question below into this file.</p>
-<p><strong>1.1</strong> What system subscribes to the <code>EvInit</code> event?</p>
-<p><strong>1.2</strong> What information is stored in the Event object <code>EvInit</code>? (Hint: you will need to find the definition of this struct).</p>
-<p><strong>1.3</strong> The first line in <code>LevelSystem::receive()</code> is:</p>
-<p><code>BackgroundCreator(e.m_level.m_background.m_fileName).create(m_entityManager.create());</code></p>
-<p>note this part:</p>
-<p><code>BackgroundCreator(e.m_level.m_background.m_fileName)</code></p>
-<p>This creates an anonymous object of type <code>BackgroundCreator</code>, passing the specified argument. What does this argument represent. What happens to it inside the <code>BackgroundCreator</code> constructor function?</p>
-<p><strong>1.4</strong> Continuining with:</p>
-<p><code>BackgroundCreator(e.m_level.m_background.m_fileName).create(m_entityManager.create());</code></p>
-<p>what does <code>m_entityManager.create()</code> do?</p>
-<p>what does the <code>BackgroundCreator::create()</code> method do?</p>
-<p><strong>1.5</strong> What two component types are assigned to a Background Entity? (We will see how these components are processed by systems in the next lab).</p>
-<p><strong>1.6</strong> The next two lines in <code>LevelSystem::receive()</code> are:</p>
-<pre><code>entityx::Entity tankBaseEntity = m_entityManager.create();
-TankBaseCreator(e.m_level.m_tank.m_position, false).create(tankBaseEntity);
+<p>This new member function will request a projectile from the pool and position it at the tip of the tank turret. </p>
+<p>Add the constant <code>s_TIME_BETWEEN_SHOTS</code> to class Tank as follows:</p>
+<pre><code>// The delay time between shots in milliseconds.
+static int const s_TIME_BETWEEN_SHOTS { 800 };
 </code></pre>
 
-<p>Note that the above is equivalent to:</p>
-<p><code>TankBaseCreator(e.m_level.m_tank.m_position, false).create(m_entityManager.create());</code></p>
-<p>What do the arguments to the <code>TankBaseCreator</code> constructor represent? What components are associated with a TankBase Entity?</p>
-<p><strong>1.7</strong> The last line in <code>LevelSystem::receive()</code> is:</p>
-<p><code>TurretCreator(e.m_level.m_tank, tankBaseEntity, false).create(m_entityManager.create());</code></p>
-<p>Notice the use of the variable <code>tankBaseEntity</code> from 1.6 above. Where is this variable stored in TurretCreator? </p>
-<p><strong>1.8</strong> Further to question 1.7, notice this line in <code>TurretCreator::create()</code>:</p>
-<p><code>entity.assign&lt;Parent&gt;(m_parentEntity);</code>	</p>
-<p>Why do you think the Turret Entity would have a Parent component that stores a reference to the TankBase entity? (Hint: what do you think should happen if the sprite representing the tank base is moved in the game world?)</p>
+<p>You will also need to add member variables <code>m_fireRequested</code> and <code>m_shootTimer</code>. Don't forget to initialise these variables to sensible values.</p>
+<p>Make sure the project builds ok before proceeding.</p>
+<p><strong>Exercise 3</strong>: Add the following logic to class <code>Tank</code>. If fire is pressed, call the new <code>Tank::requestFire()</code> member function. Build and run project to test. A projectile should appear at the tip of tank turret. (Hint: if you see nothing, remember that projectiles need to be drawn).</p>
+<p>Try rotating the turret and fire again. Does the projectile appear in the correct place?</p>
+<p><strong>Exercise 4</strong>: Now add the following logic to <code>Tank::update()</code>. If a fire request has been generated and the shoot timer has not reached zero, then decrement the shoot timer by the delta time (<code>dt</code>). Otherwise, reset the shoot timer and set the fire requested status to <code>false</code>. Build and run project to test.</p>
 
 </body>
 </html>

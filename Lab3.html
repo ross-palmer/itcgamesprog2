@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 3: Moving and rotating a tracked vehicle</h2>
-<p><strong>To be completed by:</strong> Week 8 (Fri 4/11)</p>
+<p><strong>To be completed by:</strong> Week 8 (Fri 3/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Reorganise a project's directory structure to separate source and header files and update the relevant compiler settings. </li>
@@ -306,7 +306,7 @@ img {
 <p><strong>3.1 Reorganising the project structure.</strong></p>
 <p>We are going to reorganise our project structure to make it more orderly. </p>
 <p>1) Open the project in Visual Studio and remove all the header and source files (right click on each, then Remove but <strong>don't</strong> delete). Starting inside your solution folder, make an <code>include</code> folder and a <code>src</code> folder.</p>
-<p>2) Download the additional files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCsj1LDV_N4ZSrfhhH">here</a>. Copy the files Tank.h and Tank.cpp from this download into your solution folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
+<p>2) Download the additional files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs2wzmkeCIZVjpbUf">here</a>. Copy the files Tank.h and Tank.cpp from this download into your solution folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
 <p>3) Make another folder called <code>resources</code>. Inside resources create two further folders called <code>levels</code> and <code>images</code>. Move your image files (.png, .jpg) into the images folder and move the .yaml level file into the levels folder.</p>
 <p>4) Returning to Visual Studio, note that VS provides filters that allow us manage all the
 source files in our project. By default, VS provides filters called <code>Header files</code> and <code>Source files</code>. Here's an example of the <code>Header files</code> filter:</p>
@@ -322,12 +322,20 @@ choose:</p>
 <p>The semi-colon (;) is used to separate directory paths. The <code>.\include</code> means search under your solution folder for a directory called <code>include</code>, while a <code>.</code> on it's own, means search the current (solution) folder. Why do we need to tell the compiler to search the solution folder? It is because we placed the yaml header files there and the source file that uses it (<code>LevelLoader.h</code>) has been moved from the solution folder into our <code>include</code> folder.</p>
 <p><strong>3.2 Building the reorganised project</strong></p>
 <p>The additional files for this project are Tank.h and Tank.cpp. We have created a Tank class to manage the creation of the Tank sprite (see member function <code>Tank::initSprites()</code>) and rendering of that sprite (see <code>Tank::render()</code>). There is also a new member function called <code>Tank::update()</code> to handle all updates for our Tank object, such as movement.</p>
-<p><strong>Exercise 1:</strong> Add a <code>unique_ptr</code> to our Tank object in Game.h:</p>
-<pre><code>std::unique_ptr&lt;Tank&gt; m_tank;
+<p><strong>Exercise 1:</strong> In Game.h, declare the Tank object:</p>
+<pre><code>// An instance representing the player controlled tank.
+Tank m_tank;
 </code></pre>
 
 <p>Don't forget to <code>#include &quot;Tank.h&quot;</code> at the top of Game.h.</p>
-<p>In the Game constructor function in Game.cpp, remove any code that creates a Tank sprite and any obstacles. Load the sprite sheet you copied earlier as follows:</p>
+<p>In the Game constructor function in Game.cpp, initialise the tank object in the member initialiser list like this:</p>
+<pre><code>////////////////////////////////////////////////////////////
+Game::Game()
+    : m_window(sf::VideoMode(ScreenSize::height(), ScreenSize::width(), 32), &quot;SFML Playground&quot;, sf::Style::Default)
+    , m_tank(m_texture)
+</code></pre>
+
+<p>Note how we pass m_texture by reference to the Tank constructor. In fact, the tank texture is not yet loaded, but we will do this shortly. Next, remove any code that creates a Tank sprite and any obstacles. Load the sprite sheet you copied earlier as follows:</p>
 <pre><code>if (!m_texture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
 {
     std::string s(&quot;Error loading texture&quot;);
@@ -335,11 +343,11 @@ choose:</p>
 }   
 </code></pre>
 
-<p>Then create the tank object as follows:</p>
-<pre><code>m_tank.reset(new Tank(m_texture, m_level.m_tank.m_position));   
+<p>Note how this initialises <code>m_texture</code> (which is being used by our tank object). Now position the tank:</p>
+<pre><code>// Now the level data is loaded, set the tank position.
+m_tank.setPosition(m_level.m_tank.m_position);  
 </code></pre>
 
-<p>where <code>m_texture</code> is the texture we have previously loaded from the sprite sheet.</p>
 <p>Don't forget to open the yaml file and change the path to the background sprite.</p>
 <p>Finally, draw (render) the tank. Where should this be done in Game.cpp?</p>
 <p>Build and execute the project - you should see the tank and turret rendered. Notice how the rest of the sprite sheet is not drawn. We will see how this works in the next section.</p>
@@ -377,46 +385,71 @@ Copy the Thor runtime library file <code>thor-d.dll</code> into your <code>Debug
 </code></pre>
 
 <p>Now we have Thor setup, add the following public member functions to Tank.h</p>
-<pre><code>void increaseSpeed();
+<pre><code>/// &lt;summary&gt;
+/// @brief Increases the speed by 1, max speed is capped at 100.
+/// 
+/// &lt;/summary&gt;
+void increaseSpeed();
+
+/// &lt;summary&gt;
+/// @brief Decreases the speed by 1, min speed is capped at -100.
+/// 
+/// &lt;/summary&gt;
 void decreaseSpeed();
+
+/// &lt;summary&gt;
+/// @brief Increases the rotation by 1 degree, wraps to 0 degrees after 359.
+/// 
+/// &lt;/summary&gt;
 void increaseRotation();
+
+/// &lt;summary&gt;
+/// @brief Decreases the rotation by 1 degree, wraps to 359 degrees after 0.
+/// 
+/// &lt;/summary&gt;
 void decreaseRotation();
 </code></pre>
 
 <p>Add the following member variables for control of the speed and rotation of the tank:</p>
-<pre><code>double m_speed;
-double m_rotation;
+<pre><code>// The tank speed.
+double m_speed{ 0.0 };
+
+// The current rotation as applied to tank base.
+double m_rotation{ 0.0 };
 </code></pre>
 
-<p>Finally add a static constant to be used when converting from degrees to radians:</p>
+<p>Notice that in our MathUtility class, we have declared a static constant to be used when converting from degrees to radians:</p>
 <pre><code>double static const DEG_TO_RAD;
 </code></pre>
 
-<p>In Tank.cpp, define the static constant (at the top of the file)</p>
+<p>This constant is defined in MathUtility.cpp like this: </p>
 <pre><code>double const Tank::DEG_TO_RAD = thor::Pi / 180.0f;
 </code></pre>
 
-<p>Note the use of the <code>thor::Pi</code> constant. Because this constant is in the <code>thor</code> namespace, we need to add the following line to the top of Tank.h:</p>
+<p>Note the use of the <code>thor::Pi</code> constant. Because this constant is in the <code>thor</code> namespace, we need to add the following line to the top of MathUtility.h:</p>
 <pre><code>#include &lt;Thor/Math.hpp&gt;
 </code></pre>
 
-<p>Next, in the constructor function, initialise the speed and rotation variables to 0 in the initialiser list. Add the implementation of the above new member functions as follows:</p>
-<pre><code>void Tank::increaseSpeed()
+<p>Next, add the implementation of the above new Tank member functions as follows:</p>
+<pre><code>////////////////////////////////////////////////////////////
+void Tank::increaseSpeed()
 {
     if (m_speed &lt; 100.0)
     {
-        m_speed += 0.1;
+        m_speed += 1;
     }
 }
 
+////////////////////////////////////////////////////////////
 void Tank::decreaseSpeed()
 {
     if (m_speed &gt; -100.0)
     {
-        m_speed -= 0.1;
+        m_speed -= 1;
     }
 }
 
+////////////////////////////////////////////////////////////
 void Tank::increaseRotation()
 {
     m_rotation += 1;
@@ -426,6 +459,7 @@ void Tank::increaseRotation()
     }
 }
 
+////////////////////////////////////////////////////////////
 void Tank::decreaseRotation()
 {
     m_rotation -= 1;

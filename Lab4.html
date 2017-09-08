@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 4: Introducing the KeyHandler class</h2>
-<p><strong>To be completed by:</strong> Week 10 (Fri 18/11)</p>
+<p><strong>To be completed by:</strong> Week 10 (Fri 17/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Implement a solution to handle simultaneous key input in SFML.</li>
@@ -304,7 +304,7 @@ img {
 <p>Continue with the sample Visual Studio solution 'SFML Playground' from lab 3.</p>
 <p><strong>4.1 Handling simultaneous key presses.</strong></p>
 <p>In this lab, we want to implement a solution to handle simultaneous key presses so that our tank can accelerate/decelerate and rotate at the same time. In doing so, we introduce another type of container from the C++ Standard Template Library (STL) called <code>std::map</code>. 
-Start by downloading the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCsj7O_kIb9QgwdkXJ">here</a> and add them to your project.</p>
+Start by downloading the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs23PoebrFj7G73GO">here</a> and add them to your project.</p>
 <p><strong>The KeyHandler class</strong></p>
 <p>In KeyHandler.h notice the declaration of our map data structure:</p>
 <pre><code>typedef std::map&lt;sf::Keyboard::Key, bool&gt; KeyMap;
@@ -376,15 +376,36 @@ In KeyHandler.cpp, we have the <code>KeyHandler::updateKey()</code> member funct
 </code></pre>
 
 <p>Notice that we now are checking for either a <code>sf::Event::KeyPressed</code> or <code>sf::Event::KeyReleased</code> event as opposed to checking for specific key presses. </p>
-<p><strong>Exercise 2:</strong> Add a new member function to <code>Tank</code> called <code>Tank::handleKeyInput()</code>. This function should use the <code>KeyHandler</code> object to check which of the four control keys have been pressed and move/rotate the tank accordingly. Hint: The <code>Tank</code> class will need to store a reference to the <code>KeyHandler</code> object and you will need to pass the <code>KeyHandler</code> object to the <code>Tank</code>constructor function.</p>
-<p><strong>Exercise 3:</strong> Call the  function from the start of <code>Tank::update()</code>.
-What happens? </p>
-<p><strong>Exercise 4:</strong> Add a line to the beginning of the Game constructor function:</p>
-<pre><code>m_window.setVerticalSyncEnabled(true);
+<p><strong>Exercise 2:</strong> Add a new member function to <code>Tank</code> called <code>Tank::handleKeyInput()</code>. </p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Processes control keys and applies speed/rotation as appropriate.
+/// &lt;/summary&gt;
+void handleKeyInput();
 </code></pre>
 
-<p>Build and run the project. Can you explain the difference in behaviour now?</p>
-<p><strong>Exercise 5:</strong> The turret should be able to rotate independently by moving the Z and X keys. Add this functionality to the project.</p>
+<p>This function should use the <code>KeyHandler</code> object to check which of the four control keys have been pressed and move/rotate the tank accordingly. Hint: The <code>Tank</code> class will need to store a reference to the <code>KeyHandler</code> object and you will need to pass the <code>KeyHandler</code> object to the <code>Tank</code>constructor function:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Constructor that stores drawable state (texture, sprite) for the tank.
+/// Stores references to the texture and KeyHandler. 
+/// Creates sprites for the tank base and turret from the supplied texture.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;texture&quot;&gt;A reference to the sprite sheet texture&lt;/param&gt;
+/// &lt;param name=&quot;keyHandler&quot;&gt;A reference to the KeyHandler object&lt;/param&gt;
+Tank(sf::Texture const &amp; texture, KeyHandler const &amp; keyHandler);
+</code></pre>
+
+<p><strong>Exercise 3:</strong> Call the new function from the start of <code>Tank::update()</code>. What happens? </p>
+<p><strong>Exercise 4:</strong> Comment out the line at the beginning of the Game constructor function:</p>
+<pre><code>m_window.setVerticalSyncEnabled(true); // Comment out this line
+</code></pre>
+
+<p>Build and run the project. Can you explain the difference in behaviour now? Uncomment the line again.</p>
+<p><strong>Exercise 5:</strong> The turret should be able to rotate independently by moving the Z and X keys. Add this functionality to the project with two new member functions:</p>
+<pre><code>void increaseTurretRotation();
+
+void decreaseTurretRotation();
+</code></pre>
+
 
 </body>
 </html>

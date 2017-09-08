@@ -292,12 +292,9 @@ img {
 </head>
 <body>
 <h2>Lab 5: Detecting Collisions</h2>
-<p><strong>To be completed by:</strong> Week 11 (Fri 25/11)</p>
+<p><strong>To be completed by:</strong> Week 11 (Fri 24/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
-<li>Store references to SFML sprites in a <code>std::vector</code> using <code>std::unique_ptr</code>.</li>
-<li>Explain the purpose of the <code>std::move</code> operation.</li>
-<li>Access the managed object referenced by a <code>std::unique_ptr</code>.</li>
 <li>Perform elementary collision detection and response between sprites.</li>
 </ul>
 <hr />
@@ -306,57 +303,96 @@ img {
 <p>We are going to add a couple of sections of walls to add some interest to the level, when finished it will look like this: </p>
 <p><img src="level_with_walls.jpg" /></p>
 <p>It will obviously be necessary to check for collisions between the tank and the walls which is the focus of this lab.</p>
-<p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCskkgc40rg6Sc3TyS">here</a>. Unzip the file and copy the updated .yaml file into your <code>resources\levels</code> folder. The yaml file defines additional walls as obstacles. 
+<p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs24wErcn76NiLQaD">here</a>. Unzip the file and copy the updated .yaml file into your <code>resources\levels</code> folder. The yaml file defines additional walls as obstacles. 
 Add the files <code>CollisionDetector.h</code>, <code>OrientedBoundingBox.h</code> and their respective .cpp files to your project.
 The <code>OrientedBoundingBox</code> class is adapted slightly from the SFML wiki <a href="https://github.com/SFML/SFML/wiki/Source%3A-Simple-Collision-Detection-for-SFML-2">here</a>. It provides an implementation of the <a href="http://gamedevelopment.tutsplus.com/tutorials/collision-detection-using-the-separating-axis-theorem--gamedev-169">Seperating Axis Theorem</a> which you may learn about in Graphics. </p>
 <p><strong>5.2 Generating the walls</strong></p>
 <p>The first step is to get the level data for the Walls from our <code>Level</code> object - remember, the <code>Game</code> class has a member variable <code>m_level</code> which represents our level data. Note we don't need to make any changes to our <code>LevelLoader</code> as it will happily load up the additional walls we have defined in the yaml file. Add a new private member function to Game.h as follows:</p>
-<pre><code>void generateWalls();
+<pre><code>/// &lt;summary&gt;
+/// @brief Creates the wall sprites and loads them into a vector.
+/// Note that sf::Sprite is considered a light weight class, so 
+///  storing copies (instead of pointers to sf::Sprite) in std::vector is acceptable.
+/// &lt;/summary&gt;
+void generateWalls();
 </code></pre>
 
 <p>We will need to create a <code>sf::Sprite</code> for each wall, and because there are multiple walls, we need to store the sprites in a container. Add the following new member variable:</p>
-<pre><code>// A container for the Wall sprites
-std::vector&lt;std::unique_ptr&lt;sf::Sprite&gt;&gt; m_wallSprites;
+<pre><code>// Wall sprites
+std::vector&lt;sf::Sprite&gt; m_wallSprites;
 </code></pre>
 
-<p>This defines a <code>std::vector</code> of type <code>std::unique_ptr</code>, where each <code>unique_ptr</code> will point to an instance of <code>sf::Sprite</code>. The vector of course will hold nothing yet, so we need to write the function <code>generateWalls()</code> next to fill it.
+<p>This defines a <code>std::vector</code> of type <code>sf::Sprite</code>. The vector of course will hold nothing yet, so we need to write the function <code>generateWalls()</code> next to fill it.
 In Game.cpp, define the new member function:</p>
-<pre><code>void Game::generateWalls()
+<pre><code>////////////////////////////////////////////////////////////
+void Game::generateWalls()
 {
     sf::IntRect wallRect(2, 129, 33, 23);
     // Create the Walls 
-    for (ObstacleData const &amp;obstacle : m_level.m_obstacles)
+    for (ObstacleData const &amp; obstacle : m_level.m_obstacles)
     {
-        std::unique_ptr&lt;sf::Sprite&gt; sprite(new sf::Sprite());
-        sprite-&gt;setTexture(m_texture);
-        sprite-&gt;setTextureRect(wallRect);
-        sprite-&gt;setOrigin(wallRect.width / 2.0, wallRect.height / 2.0);
-        sprite-&gt;setPosition(obstacle.m_position);
-        sprite-&gt;setRotation(obstacle.m_rotation);
-        m_wallSprites.push_back(std::move(sprite));
+        sf::Sprite sprite;
+        sprite.setTexture(m_texture);
+        sprite.setTextureRect(wallRect);
+        sprite.setOrigin(wallRect.width / 2.0, wallRect.height / 2.0);
+        sprite.setPosition(obstacle.m_position);
+        sprite.setRotation(obstacle.m_rotation);
+        m_wallSprites.push_back(sprite);
     }
 }
 </code></pre>
 
-<p>What is new here is how the sprites for each wall are added to the vector. We use dynamic memory allocation to create a sprite inside the loop:</p>
-<p><code>std::unique_ptr&lt;sf::Sprite&gt; sprite(new sf::Sprite());</code></p>
-<p>This line allocates a sprite on the heap, when is then pointed to by the sprite variable (a <code>unique_ptr</code>). These heap resources (i.e. the sprites we are creating) are known as <em>managed objects</em>. The sprite properties are then configured, before we use a <code>std::move</code> operation to move the sprites <code>unique_ptr</code> into the vector:</p>
-<p><code>m_wallSprites.push_back(std::move(sprite));</code></p>
-<p>Why is this move operation required? All STL containers copy in and copy out. So, if we were to to do this instead:</p>
-<p><code>m_wallSprites.push_back(sprite);</code></p>
-<p>It would mean copy the <code>unique_ptr</code> into the vector, and <code>unique_ptr</code> cannot be copied for obvious reasons!</p>
-<p>In the <code>Game</code> constructor function, add a line to call the new member function:</p>
+<p>The sprites for each wall are simply appended to the vector. </p>
+<p>At the end of the <code>Game</code> constructor function, add a line to call the new member function:</p>
 <p><code>generateWalls();</code></p>
-<p><strong>Exercise 1</strong>: Build and run the project. Note the walls do not appear. Modify the<code>Game::render()</code> function so the walls get drawn.</p>
+<p><strong>Exercise 1</strong>: Build and run the project. Note the walls do not appear. Modify the <code>Game::render()</code> function so the walls get drawn.</p>
 <p><strong>5.3 Collision detection between tank and walls</strong></p>
-<p>Now the walls are visible, the next step is to add collision detection between the tank and walls. Add the following new member function to Game.h:</p>
-<p><code>bool checkTankWallCollision();</code></p>
-<p>and in Game.cpp, add the implementation:</p>
-<pre><code>bool Game::checkTankWallCollision()
+<p>Now the walls are visible, the next step is to add collision detection between the tank and walls. The tank will perform it's own collision checking. Therefore, we need to tell the tank where the walls are. Refactor the tank constructor to take a reference to the container of wall sprites (note that we try to keep our comments updated to relect the changes):</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Constructor that stores drawable state (texture, sprite) for the tank.
+/// Stores references to the texture, container of wall sprites and KeyHandler. 
+/// Creates sprites for the tank base and turret from the supplied texture.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;texture&quot;&gt;A reference to the sprite sheet texture&lt;/param&gt;
+///&lt; param name=&quot;texture&quot;&gt;A reference to the container of wall sprites&lt;/param&gt;
+/// &lt;param name=&quot;pos&quot;&gt;A reference to the KeyHandler object&lt;/param&gt;
+Tank(sf::Texture const &amp; texture, std::vector&lt;sf::Sprite&gt; &amp; wallSprites,  KeyHandler const &amp; keyHandler);
+</code></pre>
+
+<p>Next, add a new member variable to keep a reference to the wall sprite container in Tank.h:</p>
+<pre><code>// A reference to the container of wall sprites.
+std::vector&lt;sf::Sprite&gt; &amp; m_wallSprites;
+</code></pre>
+
+<p>The constructor definition now looks like:</p>
+<pre><code>////////////////////////////////////////////////////////////
+Tank::Tank(sf::Texture const &amp; texture, std::vector&lt;sf::Sprite&gt; &amp; wallSprites, KeyHandler const &amp; keyHandler)
+: m_texture(texture)
+, m_wallSprites(wallSprites)
+, m_keyHandler(keyHandler)
 {
-    for (std::unique_ptr&lt;sf::Sprite&gt; const &amp; sprite : m_wallSprites)
+    // Initialises the tank base and turret sprites.
+    initSprites();
+}
+</code></pre>
+
+<p>We now require a new member function in class Tank to check for collisions betweeen the tank and the walls:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Checks for collisions between the tank and the walls.
+/// 
+/// &lt;/summary&gt;
+/// &lt;returns&gt;True if collision detected between tank and wall.&lt;/returns&gt;
+bool checkWallCollision();
+</code></pre>
+
+<p>And the implementation looks like this:</p>
+<pre><code>////////////////////////////////////////////////////////////
+bool Tank::checkWallCollision()
+{
+    for (sf::Sprite const &amp; sprite : m_wallSprites)
     {
-        if (CollisionDetector::collision(m_tank-&gt;getTurretSprite(), *sprite))
+        // Checks if either the tank base or turret has collided with the current wall sprite.
+        if (CollisionDetector::collision(m_turret, sprite) ||
+            CollisionDetector::collision(m_tankBase, sprite))
         {
             return true;
         }
@@ -365,9 +401,128 @@ In Game.cpp, define the new member function:</p>
 }
 </code></pre>
 
-<p>Note: you will need to add a getter member function to the <code>Tank</code> class to return the <code>sf::Sprite</code> representing the turret, like this:</p>
-<p><code>sf::Sprite const &amp; getTurretSprite() const;</code></p>
-<p><strong>Exercise 2</strong>: Build and run the project. Note that the tank still runs through the walls as our <code>Game::checkTankWallCollision()</code> function is not called anywhere. Add some logic to <code>Game::update()</code> so the tank stops when it hits a wall.</p>
+<p><code>CollisionDetector::collision()</code> is a static method that takes two sprites and returns true if their bounding boxes intersect.
+Note how we check both the tank base <strong>AND</strong> the turret for wall collisions.</p>
+<p>Build and run the project. Note that the tank still runs through the walls as our <code>Tank::checkWallCollision()</code> function is not called anywhere.</p>
+<p><strong>Exercise 2</strong>: In <code>Tank::update()</code> we want to call our collision check function. At the end of <code>update()</code>, add the following:</p>
+<pre><code>if (checkWallCollision())
+{
+    deflect();
+}
+</code></pre>
+
+<p>There are several collision scenarios we need to take into account:</p>
+<p>(1) The tank is moving in a straight line and collides with a wall. In this case we <em>bounce</em> the tank back in the direction of travel and disable turret rotations while this is happening.</p>
+<p>(2) The tank is stopped, but it rotates into a wall, so we bounce the tank base in the opposite direction (away from the wall). </p>
+<p>(3) Again the tank is not moving, but the turret rotates and collides with an adjacent wall. In this case, we want to deflect the turret back (slightly) in the direction it was moving from. These scenarios are captured below in our new member function <code>deflect()</code> which you can add to Tank.h:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Stops the tank if moving and applies a small increase in speed in the opposite direction of travel.
+/// If the tank speed is currently 0, the rotation is set to a value that is less than the previous rotation value
+///  (scenario: tank is stopped and rotates into a wall, so it gets rotated towards the opposite direction).
+/// If the tank is moving, further rotations are disabled and the previous tank position is restored.
+/// The tank speed is adjusted so that it will travel slowly in the opposite direction. The tank rotation 
+///  is also adjusted as above if necessary (scenario: tank is both moving and rotating, upon wall collision it's 
+///  speed is reversed but with a smaller magnitude, while it is rotated in the opposite direction of it's 
+///  pre-collision rotation).
+/// &lt;/summary&gt;
+void deflect();
+</code></pre>
+
+<p>Here's the implementation for <code>Tank::deflect()</code></p>
+<pre><code>void Tank::deflect()
+{
+    // In case tank was rotating.
+    adjustRotation();
+
+    // If tank was moving.
+    if (m_speed != 0)
+    {
+        // Temporarily disable turret rotations on collision.
+        m_enableRotation = false;
+        // Back up to position in previous frame.
+        m_tankBase.setPosition(m_previousPosition);
+        // Apply small force in opposite direction of travel.
+        if (m_previousSpeed &lt; 0)
+        {
+            m_speed = 8;
+        }
+        else
+        {
+            m_speed = -8;           
+        }
+    }
+}
+</code></pre>
+
+<p>Firstly, you will need to add new member variables <code>m_enableRotation</code>, <code>m_previousPosition</code> and <code>m_previousSpeed</code>. Rotations should be enabled initially, but are disabled when there is a collision. Rotations should be re-enabled after a collision has been resolved (think about where this should happen).
+The variable <code>m_previousPosition</code> should always be updated before the tank moves to a new position.
+We will deal with <code>m_previousSpeed</code> shortly.</p>
+<p>Next, add a new private member function for <code>adjustRotation()</code>:</p>
+<pre><code>void adjustRotation();
+</code></pre>
+
+<p>with the following implementation:</p>
+<pre><code>////////////////////////////////////////////////////////////
+void Tank::adjustRotation()
+{
+    // If tank was rotating...
+    if (m_rotation != m_previousRotation)
+    {
+        // Work out which direction to rotate the tank base post-collision.
+        if (m_rotation &gt; m_previousRotation)
+        {
+            m_rotation = m_previousRotation - 1;
+        }
+        else
+        {
+            m_rotation = m_previousRotation + 1;
+        }
+    }
+    // If turret was rotating while tank was moving
+    if (m_turretRotation != m_previousTurretRotation)
+    {
+        // Set the turret rotation back to it's pre-collision value.
+        m_turretRotation = m_previousTurretRotation;
+    }
+}
+</code></pre>
+
+<p>The last new member variable we need is <code>m_previousTurretRotation</code> to keep track of the previous turrent rotation. Add this now. 
+Note that <code>m_previousTurretRotation</code> should save the turret's current rotation value before it gets updated. Where should this be done?</p>
+<p>Finally, we need to make some changes to our <code>Tank::handleKeyInput()</code> function..the relevant changes are commented below:</p>
+<pre><code>////////////////////////////////////////////////////////////
+void Tank::handleKeyInput()
+{   
+    if (m_enableRotation) // NEW
+    {
+        if (m_keyHandler.isPressed(sf::Keyboard::Right))
+        {
+            m_previousRotation = m_rotation; // NEW
+            increaseRotation();
+            increaseTurretRotation();
+        }
+        if (m_keyHandler.isPressed(sf::Keyboard::Left))
+        {
+            m_previousRotation = m_rotation; // NEW
+            decreaseRotation();
+            decreaseTurretRotation();
+        }
+    }
+    if (m_keyHandler.isPressed(sf::Keyboard::Up))
+    {
+        m_previousSpeed = m_speed; // NEW
+        increaseSpeed();
+    }
+    if (m_keyHandler.isPressed(sf::Keyboard::Down))
+    {
+        m_previousSpeed = m_speed; // NEW
+        decreaseSpeed();
+    }
+    ...
+</code></pre>
+
+<p>Note how we save the current speed state into <code>m_previousSpeed</code>. </p>
+<p>Build and run the project - test all three possible collision scenarios. The results are not perfect but work reasonably well.</p>
 
 </body>
 </html>
