@@ -553,7 +553,7 @@ You may have noticed other strange looking functions defined in LevelLoader.cpp,
 </code></pre>
 
 <p>which looks up the scalar node <code>&quot;file&quot;</code>, returns the mapped value (<code>Background.jpg</code>) as a <code>std::string</code> and stores it in <code>background.m_filename</code></p>
-<p><strong>Exercise 1:</strong> Which function do you think will be called as a result of the line:</p>
+<p><strong>Exercise 2:</strong> Which function do you think will be called as a result of the line:</p>
 <pre><code>levelNode[&quot;tank&quot;] &gt;&gt; level.m_tank;
 </code></pre>
 
@@ -586,8 +586,8 @@ for (unsigned i = 0; i &lt; obstaclesNode.size(); ++i)
 </code></pre>
 
 <p>and we add the obstacle to the rear of the vector <code>level.m_obstacles</code> using the method <code>push_back()</code>.</p>
-<p><strong>Exercise 2:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100.</p>
-<p><strong>Exercise 3:</strong>  In Game.h, add two member variables <code>m_bgTexture</code> and <code>m_bgSprite</code> for the background texture and sprite respectively. In the Game.cpp constructor function, load the background as a sprite using the supplied filename.  In <code>Game::render()</code>, draw the background sprite first.</p>
+<p><strong>Exercise 3:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100.</p>
+<p><strong>Exercise 4:</strong>  In Game.h, add two member variables <code>m_bgTexture</code> and <code>m_bgSprite</code> for the background texture and sprite respectively. In the Game.cpp constructor function, load the background as a sprite using the supplied filename.  In <code>Game::render()</code>, draw the background sprite first.</p>
 <p><strong>Displaying the obstacle data</strong></p>
 <p>The final thing to do is process our obstacle data and learn the basic usage of <code>std::vector</code>. 
 Open <code>Game.h</code> and add the following member variable:</p>
@@ -622,7 +622,7 @@ Inside the loop, we position the temporary sprite and apply the correct rotation
 
 <p>However, this is not necessary in the case of <code>sf::Sprite</code>, as it is considered a lightweight class that is not expensive to copy (Sprites simply keep a pointer to a texture, not a copy of the texture, hence why they are considered lightweight objects). We will see similar examples later when we discuss smart pointers.</p>
 <hr />
-<p><strong>Exercise 4:</strong> Inside the <code>render()</code> member function in Game.cpp, write a range based loop to draw each sprite.</p>
+<p><strong>Exercise 5:</strong> Inside the <code>render()</code> member function in Game.cpp, write a range based loop to draw each sprite.</p>
 
 </body>
 </html>
