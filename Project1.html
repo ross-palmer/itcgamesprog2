@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Mini Project 1</title>
+<title>Lab Project 1</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,45 +291,71 @@ img {
 </style>
 </head>
 <body>
-<h2>Mini Project 1: Adding gameplay to the Tank demo</h2>
+<h2>Lab Project 1: Arkanoid Invaders</h2>
 <p><strong>Instructions:</strong> </p>
 <ul>
-<li>Projects must be pushed to github by 5pm Friday 9th December. </li>
-<li>You will be required to demonstrate your project in the lab the last week of term.</li>
+<li>Projects must be pushed to github by 9am Monday 11th December. </li>
+<li>You will be required to demonstrate your project in the lab the last week of term 1.</li>
 <li>Plagiarism is a very serious offence and will be treated accordingly.</li>
 </ul>
-<p>Add the following functionality to introduce some gameplay to the tank demo:
-(marks for each section is shown inside square brackets).</p>
+<p>The brief is to create an initial version of a cross between Space Invaders and <a href="https://en.wikipedia.org/wiki/Arkanoid">Arkanoid</a> that you will improve later in Mini Project 2. In this project, the goal is to clear the level of enemy invaders within a defined time period. The enemy invaders will move horizontally only (left/right) and will be protected by a row of blocks underneath. This pattern will be repeated to give four rows in total (invaders, blocks, invaders, blocks).
+The player will control a paddle that will deflect a laser bolt up towards the bricks/invaders. A collision between the bolt and brick or invader will destroy the target and result in a deflection of the bolt. Note: for this project, you can use a circular shape for the bolt, as a 'baton' shaped bolt would need to be rotated upon deflection.</p>
+<p><strong>Functionality and marking scheme</strong></p>
 <ol>
 <li>
-<p>Implement projectile firing. It should be possible to fire a projectile at a rate of 1 per second. The projectile should not pass through a wall. A speed value of about 1000 works well, don't forget to use the delta time (<code>dt</code>) when translating the projectile (hint: see how we use delta time for moving the Tank in <code>Tank::update()</code>). The artwork for a shell is available in the sprite sheet. <strong>[15]</strong></p>
+<p>Create four rows of invaders/bricks. There should be one row of 6 invaders with another row of bricks underneath that to cover the width of the screen. Repeat this pattern to give four rows in total. You can decide on the initial placement of the invaders, but they should all move in unison either towards the left or right side of the screen and then reverse direction. If for example the invaders are moving left, they keep moving in that direction until the leftmost invader reaches the leftmost screen position and then they all reverse direction. This process is repeated.  <strong>[15]</strong></p>
 </li>
 <li>
-<p>Add a countdown timer of 60 seconds after which the game should stop. Show the value of the timer on a HUD (if using a floating point variable, don't show decimal places on the HUD). <strong>[10]</strong></p>
+<p>At the start of the game, a laser bolt should drop at an angle towards the player paddle. The bolt should be deflected off the paddle as follows. 
+Assume the length of the paddle is <code>l</code> and the distance of the bounce position of the bolt on the paddle from one edge is <code>d</code>. The bolt should be reflected by 90 degrees when it hits the exact middle and 45 degrees from the very edges. The points between these should interpolate linearly between these values.
+To calculate the deflection angle, we do it in 2 steps.</p>
+<p>Step 1: Divide <code>d</code> with <code>l</code>, subtract 0.5 from it:</p>
+<pre><code>deflectionAmount = (d / l - 0.5)
+</code></pre>
+
+<p>Step 2: Multiply 90 by the absolute value of deflectionAmount and subtract the result from 90 degrees:</p>
+<pre><code>angle = 90 - (90 * abs(deflectionAmount))
+</code></pre>
+
+<p>If for example, the paddle length is 10, and the bolt strikes the exact middle of the paddle, then we get:</p>
+<pre><code>deflectionAmount = ( 5 / 10 - 0.5 ) = 0
+angle = 90 - ( 90 * abs(0) ) = 90 - 0 = 90 degrees
+</code></pre>
+
+<p>To take a second example, if the bolt strikes the very left edge of the paddle, then we get:</p>
+<pre><code>deflectionAmount = ( 0 / 10 - 0.5 ) = -0.5
+angle = 90 - ( 90 * abs(-0.5) ) = 90 - 45 = 45 degrees
+</code></pre>
+
+<p>The angle should be converted to a direction vector and applied to the bolt:</p>
+<pre><code>x = cos(angle) * speed
+y = sin(angle) * speed
+</code></pre>
+
+<p>Note that you will need to retain the sign (+ or -) of the x component of the bolt's direction vector so you know which way to bounce the bolt. <strong>[10]</strong></p>
 </li>
 <li>
-<p>Draw the player's tank in one corner of the screen, where the corner is picked randomly. Add pop-up targets - you decide on the duration they stay on screen. The target properties should be defined in the yaml file i.e. duration, position, rotation etc. The targets should not always appear in the same position and should not appear overlapping a wall. For example, in the yaml file you could define a targets position as:</p>
-<p><code>position: {x: 50, y: 300, randomOffset: 20}</code></p>
-<p>where a maximum random offset of up to +20 or -20 is applied to it's x and y position. Targets should appear in sequence (one by one) and not all together. 
-<strong>[20]</strong></p>
+<p>Paddle movement and bolt speed. Use the left/right arrow keys for paddle movement (paddle should not move off-screen, but stop when it reaches the extents of each side). Use the up arrow key to grant the player a bolt &quot;power-up&quot; - this is temporary increase in bolt speed. Use playtesting to determine the appropriate time value. If the bolt goes off-screen, it should reset at the normal speed. Allow the player 3 uses of this feature. <strong>[10]</strong></p>
 </li>
 <li>
-<p>A warning should be given to the player to indicate a target is about to disappear. For example, the target may flash on and off. <strong>[10]</strong></p>
+<p>Bolt to wall collisions. Use the principle that the angle of incidence is angle of reflection. Assume three walls in the game - left side, right side and top. If the bolt collides with the top wall, reverse the y component of the bolt's direction vector. <strong>[10]</strong></p>
 </li>
 <li>
-<p>Targets should also disappear when hit by a projectile from the tank and the player's score should be updated on the HUD. If the player strikes a target, the next target should appear immediately and the previous target's remaining time should be added to the new target as a reward. It should be possible (but challenging) to clear all targets in a game. <strong>[15]</strong></p>
+<p>Bolt to brick collisions. Upon collision, the brick will disappear. If the bolt collides with the bottom of a brick, the bolt should deflect downwards. If the bolt collides with the top of a brick, deflect upwards. If the bolt collides with either the left or right edge of a brick, allow the bolt continue in it's y direction of travel. In all cases, again use the principle that the angle of incidence is angle of reflection. Bolt to invader collisions should work on the same principle as bolt to brick collisions. <strong>[10]</strong></p>
 </li>
 <li>
-<p>At game over, report the player's score (number of targets hit) and accuracy. For example, if 20 shots were fired, but only 10 targets hit, the accuracy is 50%. The game should also keep track of the player's best peformances, i.e.  show the player their previous best score/accuracy and current score/accuracy  at game over. <strong>[10]</strong></p>
+<p>Timer, HUD and game states. Add a target time by which all invaders should be destroyed - you will need to playtest to determine a suitable time. Show the value of the timer on a HUD (if using a floating point variable, don't show decimal places on the HUD). If the bolt passes below the position of the paddle it is out of bounds. In this case, apply a small time penalty and reset the bolt to it's starting position. The HUD should also show the number of bolt power-ups remaining. Add a simple game win/lose screen and the possibility to play again. <strong>[20]</strong></p>
 </li>
 <li>
-<p>Extras: <strong>[20]</strong></p>
+<p>All on-screen entities (paddle, bricks, invaders) should have their position defined in a yaml file, along with the game level duration (this will be a value in seconds). Position the paddle on the lower part of the display.  <strong>[10]</strong></p>
+</li>
+<li>
+<p>Extras: <strong>[15]</strong></p>
 <p>Add something interesting to the project such as <strong>one</strong> of the following:</p>
 <ul>
-<li>Add sound effects for firing, target hit etc. <a href="http://www.sfml-dev.org/tutorials/2.0/audio-sounds.php">Resource Link</a></li>
-<li>Add particle effects for firing, target hit. <a href="http://www.bromeon.ch/libraries/thor/tutorials/v2.0/particles.html">Reource Link</a>.</li>
+<li>Add sound effects for bolt deflections, target hit etc. <a href="http://www.sfml-dev.org/tutorials/2.4/audio-sounds.php">Resource Link</a></li>
+<li>Add particle effects for bolt deflections, target hit. <a href="http://www.bromeon.ch/libraries/thor/tutorials/v2.0/particles.html">Reource Link</a>.</li>
 <li>Use the Thor library to add animations to the project. <a href="http://www.bromeon.ch/libraries/thor/tutorials/v2.0/animations.html">Resource Link</a>.</li>
-<li>Improve the collision detection/response between the tank and the wall (your implementation should be non-trivial).</li>
 <li>Your own idea. Please ask/email me for approval beforehand.</li>
 </ul>
 </li>
@@ -349,6 +375,9 @@ img {
         <td><b>Working to specification, fully commented. May have minor problems</b></td>
     </tr>
 </table>
+<p>Tech note: Use the delta time (<code>dt</code>) when translating any on screen objects. If you don’t multiply with the time delta, objects will slow down if the framerate drops below the point at which it has been fixed (our frame rate is fixed to the monitor refresh rate with <code>m_window.setVerticalSyncEnabled(true)</code>).
+So, multiplying with the delta time ensures objects move the same distance regardless of frame rate.</p>
+
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
