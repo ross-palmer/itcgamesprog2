@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-<title>index</title>
+<title>Project2</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -122,11 +122,11 @@ ul, ol {
   padding-left: 30px;
 }
 
-ul li > :first-child, 
-ol li > :first-child, 
-ul li ul:first-of-type, 
-ol li ol:first-of-type, 
-ul li ol:first-of-type, 
+ul li > :first-child,
+ol li > :first-child,
+ul li ul:first-of-type,
+ol li ol:first-of-type,
+ul li ol:first-of-type,
 ol li ul:first-of-type {
   margin-top: 0px;
 }
@@ -291,41 +291,55 @@ img {
 </style>
 </head>
 <body>
-<h2>Programming Year 2 SFML Labs 2017/18</h2>
-<p>This page outlines the practicals you will undertake this year. Practicals count for 20% of your overall mark as follows:</p>
+<h2>Mini Project 2: Adding gameplay to the Tank demo</h2>
+<p><strong>Instructions:</strong> </p>
 <ul>
-<li>Eight lab exercises (8 x 1.5% = 12%)</li>
-<li>Two lab projects (2 x 4% = 8%)</li>
+<li>Projects must be pushed to github by 9am Tuesday 27th February. </li>
+<li>You will be required to demonstrate your project in the lab on the following Friday.</li>
+<li>Plagiarism is a very serious offence and will be treated accordingly.</li>
 </ul>
-<p>You will receive a participation mark for each practical and the results will be put on the grade centre on blackboard each week. You may need to put in some small additional time outside of the scheduled lab hours to complete the lab projects. Please note:</p>
-<ul>
-<li>
-<p><strong>You must be present in the lab to get a participation mark</strong>, unless you have a legitimate reason for your absence (e.g. medical certificate).</p>
-</li>
-<li>
-<p><strong>It is your responsibility</strong> to ensure your work is demonstrated to the lab supervisor. If fail to do this, you will receive no credit for it.</p>
-</li>
-<li>
-<p>The practicals should be completed by the deadline indicated for that lab. You may present work <strong>at the beginning of your next lab session</strong>, but beyond that it will be graded with a penalty. Any work presented that is 2 or more weeks late will receive no credit unless you have a legitimate reason as indicated above.</p>
-</li>
-<li>
-<p><strong>It is your responsibility</strong> to check your practical results regularly on blackboard and to notify me immediately if you have a query.</p>
-</li>
-</ul>
-<p>The source code and assets that you will need to complete these labs will kept under source code control on github. Read <a href="http://ross-palmer.github.io/itcgamesprog2/github_basics.html">here</a> first before continuing below.</p>
+<p>Following on from the work you have completed in lab 8, extend the tank demo to add the following functionality:</p>
 <ol>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab1.html">SFML Basic Concepts</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab2.html">Level Loading: using YAML to represent game data</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab3.html">Moving and rotating a tracked vehicle</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab4.html">Introducing the KeyHandler class</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab5.html">Detecting Collisions</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Project1.html">Lab Project 1</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab6.html">Projectiles</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab7.html">AI with steering and player seek behaviours</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Lab8.html">Game States</a></li>
-<li><a href="http://ross-palmer.github.io/itcgamesprog2/Project2.html">Lab Project 2</a></li>
+<li>
+<p>Add capability for the AI tank to fire at the player tank. Add an <code>AIState</code> enum to the <code>TankAI</code> class as follows:</p>
+<p><code>enum class AIState
+{
+   SEEK_PLAYER,
+   FIND_HEALTH,
+   FIND_COVER
+};</code></p>
+<p>These will represent the three states for the AI tank which will determine it's behaviour.
+The AI should start in <code>SEEK_PLAYER</code> mode, which means it will seek out the player tank. The AI should stop and fire when within a certain range of the player tank.
+The AI should always rotate it's turret to aim, unless the player tank is straight ahead. Add an appropriate delay between shots fired by the AI tank. <strong>[25]</strong></p>
+</li>
+<li>
+<p>At predetermined intervals, spawn one health pickup at a random location on the map, but only on empty map areas. These pickups should stay on the map for a limited time before disappearing. Pickups should remain invisible until either tank is within a specific range of them. The HUD will show the pickup status (available/not available). Health pickups replenish the AI or player tank health by a specific amount [Note: you will need to assign a health property to both player and AI]. <strong>[20]</strong></p>
+</li>
+<li>
+<p>The AI will switch to FIND_HEALTH state if it's health drops below a certain value. In this mode, the AI will seek out a health pickup if it knows one is available. Once the AI is within range of a pickup it will get its exact position and should seek to it. If none are available, the AI should switch state to <code>FIND_COVER</code>. <strong>[25]</strong></p>
+</li>
+<li>
+<p>In <code>FIND_COVER</code> mode, the AI will seek cover from the player tank by positioning behind a wall (see if you can devise a good strategy for this). In the <code>FIND_HEALTH</code> and <code>FIND_COVER</code> modes, consider giving the AI a boosted top speed. Switch from <code>FIND_COVER</code> to <code>FIND_HEALTH</code> mode once a health pack becomes available. <strong>[20]</strong></p>
+</li>
+<li>
+<p>The AI must show its current state on the HUD at all times. Also show the health of both tanks. <strong>[10]</strong></p>
+</li>
 </ol>
-
+<p>Each section will be marked accordingly:</p>
+<table>
+	<tr>
+        <td><b>0-1</b></td>
+        <td><b>Not done/nothing of value or significant problems</b></td>
+    </tr>
+    <tr>
+        <td><b>2-3</b></td>
+        <td><b>Partial implementation, something of merit, mostly uncommented</b></td>
+    </tr>
+    <tr>
+        <td><b>4-5</b></td>
+        <td><b>Working to specification, fully commented. May have minor problems</b></td>
+    </tr>
+</table>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
