@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 3: Moving and rotating a tracked vehicle</h2>
-<p><strong>To be completed by:</strong> Week 8 (Fri 3/11)</p>
+<p><strong>To be completed by:</strong> Week 8 (Fri 2/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Reorganise a project's directory structure to separate source and header files and update the relevant compiler settings. </li>
@@ -306,7 +306,7 @@ img {
 <p><strong>3.1 Reorganising the project structure.</strong></p>
 <p>We are going to reorganise our project structure to make it more orderly. </p>
 <p>1) Open the project in Visual Studio and remove all the header and source files (right click on each, then Remove but <strong>don't</strong> delete). Starting inside your solution folder, make an <code>include</code> folder and a <code>src</code> folder.</p>
-<p>2) Download the additional files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtAO1LLyXWUVkc7nl">here</a>. Copy the files Tank.h and Tank.cpp from this download into your solution folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
+<p>2) Download the additional files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtg2ajquB1YwC7MlH">here</a>. Copy the files Tank.h and Tank.cpp from this download into your solution folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
 <p>3) Make another folder called <code>resources</code>. Inside resources create two further folders called <code>levels</code> and <code>images</code>. Move your image files (.png, .jpg) into the images folder and move the .yaml level file into the levels folder.</p>
 <p>4) Returning to Visual Studio, note that VS provides filters that allow us manage all the
 source files in our project. By default, VS provides filters called <code>Header files</code> and <code>Source files</code>. Here's an example of the <code>Header files</code> filter:</p>
@@ -418,16 +418,12 @@ double m_speed{ 0.0 };
 double m_rotation{ 0.0 };
 </code></pre>
 
-<p>Notice that in our MathUtility class, we have declared a static constant to be used when converting from degrees to radians:</p>
-<pre><code>double static const DEG_TO_RAD;
-</code></pre>
-
-<p>This constant is defined in MathUtility.cpp like this: </p>
-<pre><code>double const Tank::DEG_TO_RAD = thor::Pi / 180.0f;
+<p>Notice that in our MathUtility header file, we have declared a namespace called MathUtility. Inside this namespace, there are some useful maths functions we will use later in this project. For now, we are just using a constant that is useful when converting from degrees to radians:</p>
+<pre><code>double const DEG_TO_RAD = thor::Pi / 180.0f;
 </code></pre>
 
 <p>Note the use of the <code>thor::Pi</code> constant. Because this constant is in the <code>thor</code> namespace, we need to add the following line to the top of MathUtility.h:</p>
-<pre><code>#include &lt;Thor/Math.hpp&gt;
+<pre><code>#include &lt;Thor/Vectors.hpp&gt;
 </code></pre>
 
 <p>Next, add the implementation of the above new Tank member functions as follows:</p>
@@ -472,14 +468,32 @@ void Tank::decreaseRotation()
 
 <p>You may need to tweak the increment/decrement amounts later.</p>
 <p><strong>Exercise 2:</strong> In Game.cpp, add the following logic to function <code>Game::processGameEvents()</code></p>
+<ul>
+<li>
 <p>if the right arrow key is pressed, increase the rotation angle of the tank.</p>
+</li>
+<li>
 <p>if the left arrow key is pressed, decrease the rotation angle of the tank.</p>
+</li>
+<li>
 <p>if the up arrow key is pressed, increase the tank speed.</p>
+</li>
+<li>
 <p>if the down arrow key is pressed, decrease the tank speed.</p>
+</li>
+</ul>
 <p><strong>Exercise 3:</strong> In <code>Tank::update()</code>, we want to calculate the new position and rotation of the tank in response to keyboard input. The formula for an approximated tracked vehicle movement can be expressed as follows:</p>
+<ul>
+<li>
 <p>new x position = current x position + cos(rotation) * speed * (delta time / 1000)</p>
+</li>
+<li>
 <p>new y position = current y position + sin(rotation) * speed * (delta time / 1000)</p>
+</li>
+<li>
 <p>move tank base to this new position</p>
+</li>
+</ul>
 <p>Additionally, you will need to update the rotation angle of the tank base to the value of the member variable holding the rotation value.</p>
 <p>Build and execute the project. </p>
 <p><strong>Problem 1:</strong> Does the tank move in response to keyboard input? If not, see if you can fix the problem.</p>
