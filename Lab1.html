@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 1: SFML Basic Concepts</h2>
-<p><strong>To be completed by:</strong> Week 5 (Fri 13/10)</p>
+<p><strong>To be completed by:</strong> Week 5 (Fri 12/10)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Distinguish between the SFML game loop and event loop.</li>
@@ -326,7 +326,7 @@ img {
             update(MS_PER_UPDATE);
             lag -= MS_PER_UPDATE;
         }
-        update(MS_PER_UPDATE);
+        update(lag);
 
         render();
     }
@@ -431,7 +431,7 @@ What happens? Can you explain the result? Fix the problem before continuing to e
 <p><strong>Exercise 3 - Rotating a sprite.</strong></p>
 <p>Draw the sprite anywhere so it is fully visible (i.e. translate the sprite somewhere). Rotate the sprite by 90 degrees. Which direction has the tank rotated (clockwise or anti-clockwise)?
 By default, in SFML, 0° corresponds to &quot;right&quot;, i.e. along the positive x-axis. This means our tank sprite should face straight down the positive y-axis when rotated 90°. How can this be fixed?</p>
-<p>Finally, be sure to read the SFML tutorial on Sprites <a href="https://www.sfml-dev.org/tutorials/2.4/graphics-sprite.php">here</a> </p>
+<p>Finally, be sure to read the SFML tutorial on Sprites <a href="https://www.sfml-dev.org/tutorials/2.5/graphics-sprite.php">here</a> </p>
 
 </body>
 </html>

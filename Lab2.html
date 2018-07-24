@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 2: Level Loading: using YAML to represent game data</h2>
-<p><strong>To be completed by:</strong> Week 7 (Fri 27/10)</p>
+<p><strong>To be completed by:</strong> Week 7 (Fri 26/10)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Explain what YAML is and how it can be used to represent game data.</li>
@@ -362,7 +362,7 @@ Lists are used to store a collection of ordered values. The values are not assoc
 <p><strong>YAML mappings</strong></p>
 <p>The value associated to a key can also be another map of key-value pairs. To achieve this, omit the value and instead write the key-value pairs in the following lines. However, you must prefix them with at least one more space character than the key. Here's an example:</p>
 <pre><code>background:
-   file: background.png # The key background: maps to a key/value pair.
+   file: background.jpg # The key background: maps to a key/value pair.
 tank:
    file: tank.png
    armour: 100 
@@ -400,11 +400,11 @@ If you want to learn more about YAML, have a look at these resources:</p>
 <ul>
 <li>https://github.com/Animosity/CraftIRC/wiki/Complete-idiot's-introduction-to-yaml</li>
 <li>http://yaml.org/spec/current.html</li>
-<li>http://www.gamedev.net/page/resources/_/technical/apis-and-tools/yaml-basics-and-parsing-with-yaml-cpp-r3508</li>
+<li>https://www.gamedev.net/articles/programming/engines-and-middleware/yaml-basics-and-parsing-with-yaml-cpp-r3508</li>
 </ul>
 <p><strong>2.2 Project setup</strong></p>
 <p>We need a way of decoding or parsing the YAML information and loading it into a C++ class. We are going to use a C++ YAML parser called <a href="https://github.com/jbeder/yaml-cpp">yaml-cpp</a>. </p>
-<p>1) To begin, download all the source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs2tmJme3RVJGZpOn">here</a>.
+<p>1) To begin, download all the source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtgzQZoLlXg1VxGUc">here</a>.
 Extract the downloaded file and copy the folder named 'yaml-cpp' into your project directory.</p>
 <p>2) Copy the files <code>level1.yaml</code> and <code>Background.jpg</code> into your solution folder.</p>
 <p>3) In your solution folder, create a folder called <code>lib</code> and copy the file <code>libyaml-cppmdd.lib</code> into that folder. This file contains pre-compiled functions from the YAML library that the linker requires.</p>
@@ -461,7 +461,7 @@ public:
 
    LevelLoader();
 
-   static bool load(int nr, LevelData&amp; level);
+   static void load(int nr, LevelData&amp; level);
 };
 </code></pre>
 
@@ -473,13 +473,21 @@ LevelData m_level;
 <p>In Game.cpp, at the start of the constructor function add the following:</p>
 <pre><code>int currentLevel = 1;
 
-if (!LevelLoader::load(currentLevel, m_level))
+// Will generate an exception if level loading fails.
+try
 {
-    return;
+    LevelLoader::load(currentLevel, m_level);
+}
+catch (std::exception &amp; e)
+{
+    std::cout &lt;&lt; &quot;Level Loading failure.&quot; &lt;&lt; std::endl;
+    std::cout &lt;&lt; e.what() &lt;&lt; std::endl;
+    throw e;
 }
 </code></pre>
 
 <p>This calls our static load function passing the level number (1) and a reference to the data structure representing our level (<code>m_level</code>). We will look at the implementation of <code>LevelLoader::load()</code> in a moment.
+If level loading fails (e.g. the yaml file is missing), then the catch block above executes where we report the error and rethrow the exception - this deliberately prevents the Game constructor function from completing.
 To confirm everything is setup correctly, build and run the application (you won't see any new output yet). </p>
 <p><strong>The <code>LevelLoader::load()</code> function</strong></p>
 <p>This is where the yaml parser is used. Here's the first piece of the function:</p>
