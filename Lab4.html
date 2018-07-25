@@ -292,90 +292,76 @@ img {
 </head>
 <body>
 <h2>Lab 4: Introducing the KeyHandler class</h2>
-<p><strong>To be completed by:</strong> Week 10 (Fri 17/11)</p>
+<p><strong>To be completed by:</strong> Week 10 (Fri 16/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Implement a solution to handle simultaneous key input in SFML.</li>
-<li>Explain the purpose of enabling vertical sync on the SFML window.</li>
-<li>Explain the purpose of the STL container <code>std::map</code>.</li>
-<li>Demonstrate the basic usage of <code>std::map</code>.</li>
+<li>Distinguish between polling for key events and handling real-time key input.</li>
+<li>Explain the purpose of enabling vertical sync on the SFML window</li>
 </ul>
 <hr />
 <p>Continue with the sample Visual Studio solution 'SFML Playground' from lab 3.</p>
 <p><strong>4.1 Handling simultaneous key presses.</strong></p>
-<p>In this lab, we want to implement a solution to handle simultaneous key presses so that our tank can accelerate/decelerate and rotate at the same time. In doing so, we introduce another type of container from the C++ Standard Template Library (STL) called <code>std::map</code>. 
-Start by downloading the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs23PoebrFj7G73GO">here</a> and add them to your project.</p>
-<p><strong>The KeyHandler class</strong></p>
-<p>In KeyHandler.h notice the declaration of our map data structure:</p>
-<pre><code>typedef std::map&lt;sf::Keyboard::Key, bool&gt; KeyMap;
-KeyMap m_keyMap;
-</code></pre>
-
-<p><code>typedef</code> means type definition and is used to create an alias for any data type in C++. The reason for using a <code>typedef</code> is to essentially shorten a declaration for convenience. In this example, <code>KeyMap</code> is a <code>typedef</code> for <code>std::map&lt;sf::Keyboard::Key, bool&gt;</code> and the member variable <code>m_keyMap</code> is a variable of this type. 
-So, what is a map? A map is a data structure that maps one type (known as a key) to another type known as a value. In <code>std::map</code>, the key must be unique, but of course the values do not have to be. In this case the key type is <code>sf::Keyboard::Key</code> and the value type is <code>bool</code>.
-We have seen this concept in a different form in YAML data files. The purpose of <code>m_keyMap</code> is to store keycodes that are mapped to a bool status where true indicates the key is down (pressed) and false indicates the key is up (not pressed). For example, if the player presses the Left and Up arrow keys simultaneously, two entries are made in our map like this:</p>
-<table>
-	<tr>
-        <td><b>Key</b></td>
-        <td><b>Value</b></td>
-    </tr>
-    <tr>
-        <td>Left arrow</td>
-        <td>true</td>
-    </tr>
-    <tr>
-        <td>Up arrow</td>
-        <td>true</td>
-    </tr>
-</table>
-<p>When the keys are released, their status will revert to <code>false</code>. Of course the map is initially empty and we have to write the logic to make the above happen.
-In KeyHandler.cpp, we have the <code>KeyHandler::updateKey()</code> member function: </p>
-<pre><code>void KeyHandler::updateKey(sf::Keyboard::Key key, bool isPressed)
+<p>In this lab, we want to implement a solution to handle simultaneous key presses so that our tank can accelerate/decelerate and rotate at the same time. Our current solution checks the SFML event queue every update to see if there is a pending key event. Let's remind ourselves of the code:</p>
+<pre><code>////////////////////////////////////////////////////////////
+void Game::processGameEvents(sf::Event&amp; event)
 {
-   m_keyMap[key] = isPressed;
-}
-</code></pre>
-
-<p>This function should be called whenever we get a key down OR key up event. The line:</p>
-<p><code>m_keyMap[key] = isPressed;</code></p>
-<p>makes an entry in the map using the variable <code>key</code> as the map key, and the corresponding value is whatever the value of the bool <code>isPressed</code> happens to be. If the key is already in the map, then no new entry is made and the above line will simply update the value.</p>
-<p>The other member function is <code>KeyHandler::isPressed(sf::Keyboard::Key key)</code>:</p>
-<pre><code>bool KeyHandler::isPressed(sf::Keyboard::Key key) const
-{
-   KeyMap::const_iterator it = m_keyMap.find(key);
-
-   if (it != m_keyMap.end())
-   {
-      return it-&gt;second;
-   }
-
-   return false;
-}
-</code></pre>
-
-<p>This is a simple helper function that returns the &quot;pressed&quot; status of the specified key, i.e. the function will return <code>true</code> or <code>false</code>. It does this by searching the map with: </p>
-<pre><code>m_keyMap.find(key)) 
-</code></pre>
-
-<p><code>find()</code> returns an iterator - an object that behaves like a pointer. The iterator will either point to the map entry containing the key/value pair or it will point to the map end (<code>m_keyMap.end()</code>) if the key/value pair does not exist. The expression <code>it-&gt;second</code> returns the value (or the second part of the pair), which is of course a <code>bool</code>.</p>
-<p><strong>Exercise 1:</strong> Refactor the member function <code>Game::processGameEvents()</code> to use our <code>KeyHandler</code> class as follows:</p>
-<pre><code>void Game::processGameEvents(sf::Event&amp; event)
-{   
-    switch (event.type)
+    // check if the event is a key press event
+    if (sf::Event::KeyPressed == event.type)
     {
-        case sf::Event::KeyPressed:         
-            m_keyHandler.updateKey(event.key.code, true);
+        switch (event.key.code)
+        {
+        case sf::Keyboard::Escape:
+            m_window.close();
             break;
-        case sf::Event::KeyReleased:            
-            m_keyHandler.updateKey(event.key.code, false);
+        case sf::Keyboard::Right:
+            m_tank.increaseRotation();
+            break;
+        case sf::Keyboard::Left:
+            m_tank.decreaseRotation();
+            break;
+        case sf::Keyboard::Up:
+            m_tank.increaseSpeed();
+            break;
+        case sf::Keyboard::Down:
+            m_tank.decreaseSpeed();
+            break;
+        default:
+            break;
+        }
+    }
+}
+</code></pre>
+
+<p>This is a less than optimal solution - say we have both a right and down key press. Once the case statement for the right key press has executed, we break out of the switch and have to wait for the next key event (down press) to be polled. Effectively, we are stuck handling one key press at a time. The solution for handling multiple key presses is to discard this approach to polling key events for the tank movement. SFML allows us to query the global state of the keyboard at any time in order to determine which key(s) are pressed. The <code>sf::Keyboard</code> class gives us access to this state, and it provides a single static function <code>isKeyPressed</code>, which checks the current status of a key (pressed or not pressed). Let's conside a quick example to check if the up and right arrow keys are pressed:</p>
+<pre><code>if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+{
+    // Move up...
+}
+if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+{
+    // Move right...
+}
+</code></pre>
+
+<p><strong>Exercise 1:</strong> Refactor the member function <code>Game::processGameEvents()</code> to remove the key handling code for the tank movement:</p>
+<pre><code>void Game::processGameEvents(sf::Event&amp; event)
+{
+    // check if the event is a a mouse button release
+    if (sf::Event::KeyPressed == event.type)
+    {
+        switch (event.key.code)
+        {
+        case sf::Keyboard::Escape:
+            m_window.close();
             break;      
         default:
             break;
-    }   
+        }
+    }
 }
 </code></pre>
 
-<p>Notice that we now are checking for either a <code>sf::Event::KeyPressed</code> or <code>sf::Event::KeyReleased</code> event as opposed to checking for specific key presses. </p>
 <p><strong>Exercise 2:</strong> Add a new member function to <code>Tank</code> called <code>Tank::handleKeyInput()</code>. </p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Processes control keys and applies speed/rotation as appropriate.
@@ -383,17 +369,7 @@ In KeyHandler.cpp, we have the <code>KeyHandler::updateKey()</code> member funct
 void handleKeyInput();
 </code></pre>
 
-<p>This function should use the <code>KeyHandler</code> object to check which of the four control keys have been pressed and move/rotate the tank accordingly. Hint: The <code>Tank</code> class will need to store a reference to the <code>KeyHandler</code> object and you will need to pass the <code>KeyHandler</code> object to the <code>Tank</code>constructor function:</p>
-<pre><code>/// &lt;summary&gt;
-/// @brief Constructor that stores drawable state (texture, sprite) for the tank.
-/// Stores references to the texture and KeyHandler. 
-/// Creates sprites for the tank base and turret from the supplied texture.
-/// &lt;/summary&gt;
-/// &lt;param name=&quot;texture&quot;&gt;A reference to the sprite sheet texture&lt;/param&gt;
-/// &lt;param name=&quot;keyHandler&quot;&gt;A reference to the KeyHandler object&lt;/param&gt;
-Tank(sf::Texture const &amp; texture, KeyHandler const &amp; keyHandler);
-</code></pre>
-
+<p>This function should use the <code>sf::Keyboard</code> class to check which of the four control keys have been pressed and move/rotate the tank accordingly. </p>
 <p><strong>Exercise 3:</strong> Call the new function from the start of <code>Tank::update()</code>. What happens? </p>
 <p><strong>Exercise 4:</strong> Comment out the line at the beginning of the Game constructor function:</p>
 <pre><code>m_window.setVerticalSyncEnabled(true); // Comment out this line
@@ -404,6 +380,10 @@ Tank(sf::Texture const &amp; texture, KeyHandler const &amp; keyHandler);
 <pre><code>void increaseTurretRotation();
 
 void decreaseTurretRotation();
+</code></pre>
+
+<p><strong>Exercise 6:</strong> It should be possible to re-centre the turret by pressing the 'C' key. Add this functionality to the project with another member function:</p>
+<pre><code>void centreTurret();
 </code></pre>
 
 

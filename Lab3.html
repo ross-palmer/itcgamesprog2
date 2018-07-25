@@ -307,7 +307,11 @@ img {
 <p>We are going to reorganise our project structure to make it more orderly. </p>
 <p>1) Open the project in Visual Studio and remove all the header and source files (right click on each, then Remove but <strong>don't</strong> delete). Starting inside your solution folder, make an <code>include</code> folder and a <code>src</code> folder.</p>
 <p>2) Download the additional files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtg2ajquB1YwC7MlH">here</a>. Copy the files Tank.h and Tank.cpp from this download into your solution folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
-<p>3) Make another folder called <code>resources</code>. Inside resources create two further folders called <code>levels</code> and <code>images</code>. Move your image files (.png, .jpg) into the images folder and move the .yaml level file into the levels folder.</p>
+<p>3) Make another folder called <code>resources</code>. Inside resources create two further folders called <code>levels</code> and <code>images</code>. Move your image files (.png, .jpg) into the images folder and move the .yaml level file into the levels folder. Now that we have moved our image file (the background) to a new folder, we need to update the relevant entry in the YAML file:</p>
+<pre><code>background:
+   file: ./resources/images/Background.jpg # Sample comment
+</code></pre>
+
 <p>4) Returning to Visual Studio, note that VS provides filters that allow us manage all the
 source files in our project. By default, VS provides filters called <code>Header files</code> and <code>Source files</code>. Here's an example of the <code>Header files</code> filter:</p>
 <p><img src="vs_filters.jpg" /></p>
