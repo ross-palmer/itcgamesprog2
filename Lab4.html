@@ -382,6 +382,8 @@ void handleKeyInput();
 void decreaseTurretRotation();
 </code></pre>
 
+<p>Hint: Add a new member variable to Tank.h called <code>m_turretRotation</code> to keep track of the current turret rotation. </p>
+<p>Note: Although the turret can now rotate independently, if the tank base rotates, the turret should rotate by the same amount as the base.</p>
 <p><strong>Exercise 6:</strong> It should be possible to re-centre the turret by pressing the 'C' key. Add this functionality to the project with another member function:</p>
 <pre><code>void centreTurret();
 </code></pre>
