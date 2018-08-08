@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 7: AI with steering and player seek behaviours</h2>
-<p><strong>To be completed by:</strong> Week 18 (Fri 2/2)</p>
+<p><strong>To be completed by:</strong> Week 18 (Fri 1/2)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Explain the operation of a steering algorithm with collision avoidance.</li>
@@ -301,10 +301,9 @@ img {
 <hr />
 <p><strong>7.1 Introduction</strong></p>
 <p>In this lab, we will add an AI tank that will use a basic steering algorithm to track the player and steer around obstacles. First you must read <a href="https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777">this article</a> which explains how a steering algorithm with collision avoidance works. You should be able to follow the logic of this article with just a basic understanding of vector maths - the code examples are illustrated in pseudocode similar to C#/C++.</p>
-<p>Now that you have read the article, download the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs3EQsD_LThwQCWGh">here</a>. </p>
-<p>Copy the small Maths library MathUtility.h to your <code>include</code> folder and MathUtility.cpp to your <code>src</code> folder. Note: you have an existing <code>MathUtility</code> class, overwrite it with the new one (which puts the Maths functions into a namespace called <code>MathUtility</code> instead of a class).</p>
+<p>Now that you have read the article, download the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtg7j_fvSpQmPjUpU">here</a>. </p>
 <p>Copy TankAI.h to <code>include</code> and TankAI.cpp to <code>src</code>.</p>
-<p>Don't forget to add all these files to your project.</p>
+<p>Don't forget to add these files to your project.</p>
 <p><strong>7.2 Refactoring the existing code base</strong></p>
 <p>Next, we need to refactor or change our existing code base to accomodate the new functionality of an AI opponent. Firstly, the AI tank will need to know the world coordinates of the player tank, so add a <code>getPosition()</code> member function to class Tank:</p>
 <pre><code>/// &lt;summary&gt;
@@ -364,7 +363,7 @@ TankAi m_aiTank;
 <p>In Game.cpp, initialise <code>m_aiTank</code> in the Game constructor:</p>
 <pre><code>Game::Game()
 : m_window(sf::VideoMode(1440, 900, 32), &quot;SFML Playground&quot;, sf::Style::Default)
-, m_tank(m_texture, m_wallSprites, m_keyHandler)
+, m_tank(m_texture, m_wallSprites)
 , m_aiTank(m_texture, m_wallSprites)    // ADD THIS
 </code></pre>
 
@@ -390,8 +389,24 @@ m_aiTank.init(m_level.m_aiTank.m_position);
 
 <p>Finally, add some code to update the AI tank (hint: <code>Game::update()</code>), and also render it (hint: <code>Game::render()</code>).</p>
 <p><strong>Exercise 1:</strong> Build and run the project - You should see an AI tank drawn in the bottom left corner, but it doesn't move yet.</p>
-<p><strong>Exercise 2:</strong> The actual AI steering code for the AI tank is defined in the TankAi class (TankAI.h/.cpp). Complete the implementation of the <code>TankAi::seek()</code> function by following the logic described from the article. Build and run the project when have completed this task. What does the AI tank do?</p>
-<p><strong>Exercise 3:</strong> Again, using the article as a guide, complete the implementation of the <code>TankAi::findMostThreatening()</code> member function. Hint: note the <code>MathUtility</code> namespace provides a <code>MathUtility::lineIntersectsCircle()</code> function that will help you.</p>
+<p><strong>Exercise 2:</strong> The actual AI steering code for the AI tank is defined in the TankAi class (TankAI.h/.cpp). Complete the implementation of the <code>TankAi::seek()</code> function by following the logic described from the article. Build and run the project when have completed this task. Using the debugger, can you explain why the AI tank follows the particular path you can observe? (Hint: have a look at what is going on inside <code>TankAI::collisionAvoidance()</code>)</p>
+<p><strong>Exercise 3:</strong> Again, using the article as a guide, complete the implementation of the <code>TankAi::findMostThreatening()</code> member function. Hint: note the <code>MathUtility</code> namespace provides <code>MathUtility::lineIntersectsCircle()</code> and <code>MathUtility::distance()</code> functions that will help you.</p>
+<p><strong>Exercise 4:</strong> For a slight variation on the steering behaviour, we can also calculate an acceleration using the mass of the AI Tank, so bigger things can be slow and have &quot;more inertia&quot;. In TankAI::update(), try adding the new lines below and observe the new steering behaviour:</p>
+<pre><code>    sf::Vector2f acceleration; // ADD THIS
+    switch (m_aiBehaviour)
+    {
+    case AiBehaviour::SEEK_PLAYER:
+        m_steering += thor::unitVector(vectorToPlayer);
+        m_steering += collisionAvoidance();
+        m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
+        acceleration = m_steering / MASS;  // ADD THIS
+        // Comment the line below out:
+        // m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
+        // Add the new line below:
+        m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
+</code></pre>
+
+<p>You will need to add MASS as a constant with an initial value of 100.0f. Notice how the tank accelerates and steers very slowly causing the collision avoidance to fail. What happens if you reduce the MASS by a factor of 10, i.e. to 10.0f? Does this improve the steering behaviour?</p>
 
 </body>
 </html>
