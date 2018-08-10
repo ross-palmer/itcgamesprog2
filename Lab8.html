@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 8: Game states</h2>
-<p><strong>To be completed by:</strong> Week 20 (Fri 16/2)</p>
+<p><strong>To be completed by:</strong> Week 20 (Fri 15/2)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Implement a simple HUD system.</li>
@@ -450,7 +450,7 @@ HUD m_hud;
 , m_hud(m_font) // Add this line
 </code></pre>
 
-<p>Note that the font (<code>m_font</code>) has not yet been loaded. This is fine as we are passing <code>m_font</code> by reference to the HUD constructor. This approach is fine as long as
+<p>Note that the font (<code>m_font</code>) has not yet been loaded. This is fine as we are passing <code>m_font</code> by reference to the HUD constructor. This approach works as long as
 we load the font before attempting to use it in the HUD class. Before the end of the Game constructor body, load the HUD font like this:</p>
 <pre><code>if (!m_font.loadFromFile(&quot;./resources/fonts/akashi.ttf&quot;))
 {
