@@ -404,10 +404,10 @@ If you want to learn more about YAML, have a look at these resources:</p>
 </ul>
 <p><strong>2.2 Project setup</strong></p>
 <p>We need a way of decoding or parsing the YAML information and loading it into a C++ class. We are going to use a C++ YAML parser called <a href="https://github.com/jbeder/yaml-cpp">yaml-cpp</a>. </p>
-<p>1) To begin, download all the source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtgzQZoLlXg1VxGUc">here</a>.
+<p>1) To begin, download all the source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtiKL-iOmBimPolVi">here</a>.
 Extract the downloaded file and copy the folder named 'yaml-cpp' into your project directory.</p>
-<p>2) Copy the files <code>level1.yaml</code> and <code>Background.jpg</code> into your solution folder.</p>
-<p>3) In your solution folder, create a folder called <code>lib</code> and copy the file <code>libyaml-cppmdd.lib</code> into that folder. This file contains pre-compiled functions from the YAML library that the linker requires.</p>
+<p>2) Copy the files <code>level1.yaml</code>, <code>Background.jpg</code> and <code>SpriteSheet.png</code> into your project folder. (We will create a proper folder structure in the next lab).</p>
+<p>3) In your project folder, create a folder called <code>lib</code> and copy the file <code>libyaml-cppmdd.lib</code> into that folder. This file contains pre-compiled functions from the YAML library that the linker requires.</p>
 <p>4) Inside visual studio, right click your solution name and choose properties. In the Property Pages dialog box, choose <code>Linker-&gt;General</code> and add the entry <code>.\lib</code> under <code>Additional Library Directories</code> as indicated below:</p>
 <p><img src="linkeryamlsettings.jpg" /></p>
 <p>This tells the linker to search in the current directory (designated as a .) for a folder called <code>lib</code>. How does the linker know what lib file to search for? We need to tell it which is the next step.</p>
@@ -594,19 +594,32 @@ for (unsigned i = 0; i &lt; obstaclesNode.size(); ++i)
 </code></pre>
 
 <p>and we add the obstacle to the rear of the vector <code>level.m_obstacles</code> using the method <code>push_back()</code>.</p>
-<p><strong>Exercise 3:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100.</p>
+<p><strong>Exercise 3:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100. Please use the same tank sprite from lab 1.</p>
 <p><strong>Exercise 4:</strong>  In Game.h, add two member variables <code>m_bgTexture</code> and <code>m_bgSprite</code> for the background texture and sprite respectively. In the Game.cpp constructor function, load the background as a sprite using the supplied filename.  In <code>Game::render()</code>, draw the background sprite first.</p>
 <p><strong>Displaying the obstacle data</strong></p>
 <p>The final thing to do is process our obstacle data and learn the basic usage of <code>std::vector</code>. 
-Open <code>Game.h</code> and add the following member variable:</p>
+Open <code>Game.h</code> and add the following member variables:</p>
 <pre><code>std::vector&lt;sf::Sprite&gt;  m_sprites;
+// A texture for the sprite sheet
+sf::Texture m_spriteSheetTexture;
 </code></pre>
 
 <p>In <code>Game.cpp</code>, add the following code to the end of your Game constructor function:</p>
-<pre><code>sf::Sprite sprite;
-sprite.setTexture(m_texture);
+<pre><code>if (!m_spriteSheetTexture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
+{
+    std::string errorMsg(&quot;Error loading texture&quot;);
+    throw std::exception(errorMsg.c_str());
+}
+
+// Extract the wall image from the spritesheet.
+sf::Sprite sprite;
+sf::IntRect wallRect(2, 129, 33, 23);
+sprite.setTexture(m_spriteSheetTexture);
+sprite.setTextureRect(wallRect);
+// Loop through each Obstacle instance - recall that Obstacles are structs
 for (auto &amp;obstacle : m_level.m_obstacles)
 {
+    // Position the wall sprite using the obstacle data
     sprite.setPosition(obstacle.m_position);
     sprite.rotate(obstacle.m_rotation);
     m_sprites.push_back(sprite);
