@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <title>Lab8</title>
@@ -479,7 +479,8 @@ This is a bit of work to complete this exercise, so I have given you some hints 
 <li>
 <p>The Projectile has a member function that checks for projectile/wall collisions - change this so it can also check for projectile/AI tank collisions.
 In C++, a function can return two values by using the built-in <code>std::pair</code> template class, for example to return two <code>bool</code>'s from a function:</p>
-<p>std::pair&lt;bool, bool&gt; result = checkCollisions();
+<p>
+<pre><code>std::pair&lt;bool, bool&gt; result = checkCollisions();
 if (result.first)
 {
    // Then the first bool is true...
@@ -487,7 +488,9 @@ if (result.first)
 else if (result.second)
 {
 	// Then the second bool is true...
-}</p>
+}
+</code></pre>
+</p>
 </li>
 <li>
 <p>The Tank class controls the projectiles, so you will need to pass the AI tank as a parameter to <code>Tank::update()</code>.</p>
