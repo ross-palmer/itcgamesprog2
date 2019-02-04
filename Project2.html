@@ -122,11 +122,11 @@ ul, ol {
   padding-left: 30px;
 }
 
-ul li > :first-child,
-ol li > :first-child,
-ul li ul:first-of-type,
-ol li ol:first-of-type,
-ul li ol:first-of-type,
+ul li > :first-child, 
+ol li > :first-child, 
+ul li ul:first-of-type, 
+ol li ol:first-of-type, 
+ul li ol:first-of-type, 
 ol li ul:first-of-type {
   margin-top: 0px;
 }
@@ -294,35 +294,40 @@ img {
 <h2>Mini Project 2: Adding gameplay to the Tank demo</h2>
 <p><strong>Instructions:</strong> </p>
 <ul>
-<li>Projects must be pushed to github by 9am Tuesday 27th February. </li>
-<li>You will be required to demonstrate your project in the lab on the following Friday.</li>
+<li>Projects must be pushed to github by midnight Thursday 7th March. </li>
+<li>You will be required to demonstrate your project in the lab on Friday 8th.</li>
 <li>Plagiarism is a very serious offence and will be treated accordingly.</li>
 </ul>
-<p>Following on from the work you have completed in lab 8, extend the tank demo to add the following functionality:</p>
+<p>Following on from the work you have completed in lab 8, extend the tank demo to add the following functionality. </p>
 <ol>
 <li>
-<p>Add capability for the AI tank to fire at the player tank. Add an <code>AIState</code> enum to the <code>TankAI</code> class as follows:</p>
+<p>Add a basic state machine to the AI tank to enable other behaviours. Add an <code>AIState</code> enum to the <code>TankAI</code> class as follows:</p>
 <p><code>enum class AIState
 {
+   PATROL_MAP,
    SEEK_PLAYER,
-   FIND_HEALTH,
-   FIND_COVER
+   SPAWN_ALLY
 };</code></p>
-<p>These will represent the three states for the AI tank which will determine it's behaviour.
-The AI should start in <code>SEEK_PLAYER</code> mode, which means it will seek out the player tank. The AI should stop and fire when within a certain range of the player tank.
-The AI should always rotate it's turret to aim, unless the player tank is straight ahead. Add an appropriate delay between shots fired by the AI tank. <strong>[25]</strong></p>
+<p>These will represent the three states for the AI tank which will determine it's behaviour. 	
+The AI should start in <code>PATROL_MAP</code> mode, patrolling the map and avoiding obstacles. If the AI tank detects the player tank (see point 2 below), it will switch state to <code>SEEK_PLAYER</code>. In this mode, the AI tank will gain a slight increase in speed so it moves faster than the player. If an AI tank touches the player tank at any stage, then the game is over. <strong>[25]</strong></p>
 </li>
 <li>
-<p>At predetermined intervals, spawn one health pickup at a random location on the map, but only on empty map areas. These pickups should stay on the map for a limited time before disappearing. Pickups should remain invisible until either tank is within a specific range of them. The HUD will show the pickup status (available/not available). Health pickups replenish the AI or player tank health by a specific amount [Note: you will need to assign a health property to both player and AI]. <strong>[20]</strong></p>
+<p>The Player tank leaves a heat haze behind as it traverses the map which slowly dissipates. The AI tank has IR vision and can only detect the player by this heat signature. To simulate this idea, every 100ms the player tank will add an invisible <code>sf::CircleShape</code> at it's current position to a <code>std::list</code>, but only if it is moving. The list should hold a maximum of 30 positions (circles) only, where the newest position is always at the front, and the oldest at the rear of the list. Every update, the AI tank will check if it's ahead vector intercepts any of the Circle shapes in this list. If so, it will then &quot;know&quot; the player position and seek out the player tank. <strong>[25]</strong></p>
 </li>
 <li>
-<p>The AI will switch to FIND_HEALTH state if it's health drops below a certain value. In this mode, the AI will seek out a health pickup if it knows one is available. Once the AI is within range of a pickup it will get its exact position and should seek to it. If none are available, the AI should switch state to <code>FIND_COVER</code>. <strong>[25]</strong></p>
+<p>The player tank has a finite number of projectiles. If a projectile hits an AI tank, the AI shrinks to half it's size, and it's movement speed is halved accordingly. The player must now touch the shrunken AI tank to eliminate it. This effect is only temporary after which the AI tank regains it's normal size and resumes in <code>PATROL_MAP</code> mode. The player must eliminate three AI tanks to complete the level. You decide on appropriate values here for projectiles and shrink duration. <strong>[20]</strong></p>
 </li>
 <li>
-<p>In <code>FIND_COVER</code> mode, the AI will seek cover from the player tank by positioning behind a wall (see if you can devise a good strategy for this). In the <code>FIND_HEALTH</code> and <code>FIND_COVER</code> modes, consider giving the AI a boosted top speed. Switch from <code>FIND_COVER</code> to <code>FIND_HEALTH</code> mode once a health pack becomes available. <strong>[20]</strong></p>
+<p>The AI tank can spawn a total of four allies, one at a time. You decide on when this should happen and the total upper number of allies that can be spawned (this should bear some relationship to the number of projectiles that player has). When spawning an ally, the AI switches to SPAWN_ALLY mode, and stops moving. Ally tanks have the exact same behaviour as the the main AI tank, but you cannot exceed the maximum number of spawned tanks. <strong>[10]</strong></p>
 </li>
 <li>
-<p>The AI must show its current state on the HUD at all times. Also show the health of both tanks. <strong>[10]</strong></p>
+<p>Add a debug mode that is activated by a key press. In this mode, draw the ahead and ahead2 vectors. Also draw the circle shapes that represent obstacles, and use a different colour to show the circle shapes that depict the trail of the player tank. <strong>[10]</strong></p>
+</li>
+<li>
+<p>A game time of 1 minute applies. Use a HUD to show any relevant information (e.g. game time, remaining projectiles, number of AI eliminated, remaining number of spawnable AI tanks). <strong>[10]</strong></p>
+</li>
+<li>
+<p>Bonus: If you complete this section, you can &quot;top up&quot; your project mark up to a maximum of 100. See if you can use a shader to add a heat haze effect behind the player tank (the area covered by the shader will be determined by the last position in the list maintained by the player tank). Example: <a href="https://github.com/SFML/SFML/wiki/Source%3A-HeatHazeShader">https://github.com/SFML/SFML/wiki/Source%3A-HeatHazeShader</a> <strong>[20]</strong></p>
 </li>
 </ol>
 <p>Each section will be marked accordingly:</p>
