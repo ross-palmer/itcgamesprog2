@@ -306,12 +306,12 @@ img {
 </li>
 <li>
 <p>Clone your new empty repository. This means it will be downloaded to your local (G:) drive from where you can begin adding files to it. The <code>clone</code> command is:</p>
-<p><code>git clone https://github.com/ITCGamesProg2/labs-youremail.git</code></p>
+<p><code>git clone https://github.com/ITCGamesProg2/lab19-youremail.git</code></p>
 <p>where <strong>youremail</strong> is first part of your email address (i.e. up to the @ sign) you used to sign up to github.</p>
 <p>Rename your repository so that it is formatted as follows:</p>
-<p>https://github.com/ITCGamesProg2/labs18-firstName-lastName.git</p>
+<p>https://github.com/ITCGamesProg2/labs19-firstName-lastName.git</p>
 <p>For example:
-https://github.com/ITCGamesProg2/labs18-Jane-Bloggs.git</p>
+https://github.com/ITCGamesProg2/labs19-Jane-Bloggs.git</p>
 <p>Go to settings, then click in the box containing your repository name, replace your email address with (your) firstName-lastName, then click Rename.</p>
 </li>
 <li>
@@ -333,6 +333,10 @@ You can now open the Visual Studio solution and work on the project.</p>
 <p>Commit the files that you've staged in your local repository:</p>
 <p><code>git commit -m 'First commit'</code></p>
 <p><code>'First commit'</code> is a commit string - this should generally summarise the changes you have made to the code base, so this will obviously change between commits.</p>
+</li>
+<li>
+<p>If you are working in lab A200, you will need to configure git to use the proxy server:</p>
+<p><code>git config --global http.proxy http://proxycw3.itcarlow.ie:8080</code></p>
 </li>
 <li>
 <p>Push the changes in your local repository to the remote (a.k.a origin) master branch on GitHub:</p>
