@@ -335,7 +335,7 @@ Tank m_tank;
 <p>In the Game constructor function in Game.cpp, initialise the tank object in the member initialiser list like this:</p>
 <pre><code>////////////////////////////////////////////////////////////
 Game::Game()
-    : m_window(sf::VideoMode(ScreenSize::height(), ScreenSize::width(), 32), &quot;SFML Playground&quot;, sf::Style::Default)
+    : m_window(sf::VideoMode(ScreenSize::width(), ScreenSize::height(), 32), &quot;SFML Playground&quot;, sf::Style::Default)
     , m_tank(m_texture)
 </code></pre>
 
@@ -504,6 +504,7 @@ void Tank::decreaseRotation()
 <p><strong>Problem 2:</strong> Assuming the tank base moves ok, what happens to the turret? See if you can coordinate the movement of the turret and the tank base.</p>
 <p><strong>Problem 3:</strong> What happens to the turret when the tank base rotates? See if you can fix this problem.</p>
 <p>The final issue we have is we cannot rotate and accelerate/decelerate at the same time, in other words our current approach does not allow for processing multiple key presses. We will fix this in the next lab.</p>
+<p><strong>Exercise 4:</strong> At the end of <code>Tank::update()</code>, apply a small frictional force to the tank so its speed will slowly decrease. For example, if the tank is currently moving, it should gradually come to a rest with no further player input. Use the <code>std::clamp</code> algorithm to ensure the speed is kept within a sensible min and max (hint: you might want to define a constant in Tank.h for the maximum allowable speed). You can find examples on usage of <code>std::clamp</code> <a href="https://www.geeksforgeeks.org/stdclamp-in-cpp-17/" title="here">here</a>.</p>
 
 </body>
 </html>
