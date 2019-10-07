@@ -495,7 +495,7 @@ If level loading fails (e.g. the yaml file is missing), then the catch block abo
 To confirm everything is setup correctly, build and run the application (you won't see any new output yet). </p>
 <p><strong>The <code>LevelLoader::load()</code> function</strong></p>
 <p>This is where the yaml parser is used. Here's the first piece of the function:</p>
-<pre><code>bool LevelLoader::load(int nr, LevelData&amp; level)
+<pre><code>void LevelLoader::load(int nr, LevelData&amp; level)
 {
    std::stringstream ss;
    ss &lt;&lt; &quot;level&quot;;

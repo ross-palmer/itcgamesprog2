@@ -296,6 +296,7 @@ img {
 <p>Learning Outcomes:</p>
 <ul>
 <li>Reorganise a project's directory structure to separate source and header files and update the relevant compiler settings. </li>
+<li>Learn how to enable C++17 language features in Visual Studio.</li>
 <li>Explain the role of a filter in Visual Studio.</li>
 <li>Explain what a texture rectangle is used for in SFML.</li>
 <li>Add an external library (<code>thor</code>) to an SFML project.</li>
@@ -339,7 +340,7 @@ Game::Game()
     , m_tank(m_texture)
 </code></pre>
 
-<p>Note how we pass m_texture by reference to the Tank constructor. In fact, the tank texture is not yet loaded, but we will do this shortly. Next, remove any code that creates a Tank sprite and any obstacles. Load the sprite sheet you copied earlier as follows:</p>
+<p>Note how we pass m_texture by reference to the Tank constructor. In fact, the tank texture is not yet loaded, but we will do this shortly. Next, remove any code that creates a Tank sprite from your previous lab - don't forget to remove any unused <code>sf::Sprite</code> or <code>sf::Texture</code> member variables from class <code>Game</code>. Load the sprite sheet you copied earlier as follows:</p>
 <pre><code>if (!m_texture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
 {
     std::string s(&quot;Error loading texture&quot;);
@@ -504,7 +505,7 @@ void Tank::decreaseRotation()
 <p><strong>Problem 2:</strong> Assuming the tank base moves ok, what happens to the turret? See if you can coordinate the movement of the turret and the tank base.</p>
 <p><strong>Problem 3:</strong> What happens to the turret when the tank base rotates? See if you can fix this problem.</p>
 <p>The final issue we have is we cannot rotate and accelerate/decelerate at the same time, in other words our current approach does not allow for processing multiple key presses. We will fix this in the next lab.</p>
-<p><strong>Exercise 4:</strong> At the end of <code>Tank::update()</code>, apply a small frictional force to the tank so its speed will slowly decrease. For example, if the tank is currently moving, it should gradually come to a rest with no further player input. Use the <code>std::clamp</code> algorithm to ensure the speed is kept within a sensible min and max (hint: you might want to define a constant in Tank.h for the maximum allowable speed). You can find examples on usage of <code>std::clamp</code> <a href="https://www.geeksforgeeks.org/stdclamp-in-cpp-17/" title="here">here</a>.</p>
+<p><strong>Exercise 4:</strong> At the end of <code>Tank::update()</code>, apply a small frictional force to the tank so its speed will slowly decrease. For example, if the tank is currently moving, it should gradually come to a rest with no further player input. Use the <code>std::clamp</code> algorithm to ensure the speed is kept within a sensible min and max (hint: you might want to define a constant in Tank.h for the maximum allowable speed). You can find examples on usage of <code>std::clamp</code> <a href="https://www.geeksforgeeks.org/stdclamp-in-cpp-17/" title="here">here</a>. Note: because <code>std::clamp</code> is a language feature introduced in C++17, you need to enable C++17 language features in Visual Studio. To do this, right click your project name, then choose Properties -&gt; C/C++ -&gt; Language. On the right hand side of the property pages for Language, there is an entry <strong>C++ Language Standard</strong>. Change this to <strong>ISO C++ 17 Standard (/std:c++17)</strong></p>
 
 </body>
 </html>
