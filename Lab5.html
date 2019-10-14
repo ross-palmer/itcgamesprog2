@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 5: Detecting Collisions</h2>
-<p><strong>To be completed by:</strong> Week 9 (Fri 9/11)</p>
+<p><strong>To be completed by:</strong> Week 9 (Fri 8/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Perform elementary collision detection and response between sprites.</li>
@@ -346,7 +346,7 @@ void Game::generateWalls()
 <p><code>generateWalls();</code></p>
 <p><strong>Exercise 1</strong>: Build and run the project. Note the walls do not appear. Modify the <code>Game::render()</code> function so the walls get drawn. Hint: Think about what we have just done in the <code>generateWalls()</code> function.</p>
 <p><strong>5.3 Collision detection between tank and walls</strong></p>
-<p>Now the walls are visible, the next step is to add collision detection between the tank and walls. The tank will perform it's own collision checking. Therefore, we need to tell the tank where the walls are. Refactor the <code>Tank</code> constructor to take a reference to the container of wall sprites (note that we try to keep our comments updated to relect the changes):</p>
+<p>Now the walls are visible, the next step is to add collision detection between the tank and walls. The tank will perform its own collision checking. Therefore, we need to tell the tank where the walls are. Refactor the <code>Tank</code> constructor - start by removing the second construction argument (i.e. the <code>sf::Vector2f</code> position argument) - we have a <code>Tank::setPosition()</code> method now to take care of setting the tank position. Add a second parameter instead to take a reference to the container of wall sprites (note that we try to keep our comments updated to relect the changes):</p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Constructor that stores drawable state (texture, sprite) for the tank.
 /// Stores references to the texture and container of wall sprites. 
