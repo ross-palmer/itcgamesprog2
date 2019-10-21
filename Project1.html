@@ -300,7 +300,7 @@ img {
 </ul>
 <p>Add the following functionality to introduce some gameplay to the tank demo:
 (marks for each section is shown inside square brackets).</p>
-<h2>Part 1 [55 marks]: final commit end of Thursday 22nd November.</h2>
+<h2>Part 1 [55 marks]: final commit end of Thursday 21st November.</h2>
 <ol>
 <li>
 <p>Implement projectile firing. It should be possible to fire a projectile at a rate of 1 per second. The projectile should not pass through a wall. A speed value of about 1000 works well, don't forget to use the delta time (<code>dt</code>) when translating the projectile (hint: see how we use delta time for moving the Tank in <code>Tank::update()</code>). The artwork for a shell is available in the sprite sheet. <strong>[15]</strong></p>
@@ -318,7 +318,7 @@ img {
 <p>A warning should be given to the player to indicate a target is about to disappear. For example, the target may flash on and off. <strong>[10]</strong></p>
 </li>
 </ol>
-<h2>Part 2 [45 marks] : final commit end of Friday 7th December.</h2>
+<h2>Part 2 [45 marks] : final commit end of Friday 6th December.</h2>
 <ol>
 <li>
 <p>Targets should disappear when hit by a projectile from the tank and the player's score should be updated on the HUD. If the player strikes a target, the next target should appear immediately and the previous target's remaining time should be added to the new target as a reward. It should be possible (but challenging) to clear all targets in a game. <strong>[15]</strong></p>
@@ -328,11 +328,13 @@ img {
 </li>
 <li>
 <p>Extras: <strong>[20]</strong></p>
-<p>Add something interesting to the project such as <strong>one</strong> of the following:</p>
+<p>Add something interesting to the project such as <strong>one</strong> item from the list below. Note, if you have time to spare, consider doing more than one, as this should be one of your portfolio pieces from second year.</p>
 <ul>
 <li>Add particle effects for firing, target hit. <a href="http://www.bromeon.ch/libraries/thor/tutorials/v2.0/particles.html">Reource Link</a>.</li>
 <li>Use the Thor library to add animations to the project. <a href="http://www.bromeon.ch/libraries/thor/tutorials/v2.0/animations.html">Resource Link</a>.</li>
 <li>Add a larger map that scrolls as the player tank moves around. If a target appears off-screen, draw an arrow on the HUD to show the direction the player should move. <a href="https://github.com/SFML/SFML/wiki/Tutorial:-Using-View">Resource link for sf::View</a>. <a href="http://www.bromeon.ch/libraries/thor/documentation/v2.0/classthor_1_1_arrow.html">Resource link for drawing arrows</a></li>
+<li>Create a two player mode with controller support, where two players can duel it out on the one screen.</li>
+<li>Create a simple level editor where the player can place wall sprites, targets etc on the map. The editor should write to a YAML file (I will provide some assistance with this aspect) which is then used by the game.</li>
 <li>Your own idea. Please ask/email me for approval beforehand.</li>
 </ul>
 </li>
