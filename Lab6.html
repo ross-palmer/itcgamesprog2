@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <title>Lab6</title>
@@ -291,35 +291,44 @@ img {
 </style>
 </head>
 <body>
-<h2>Lab 6: Projectiles</h2>
-<p><strong>To be completed by:</strong> Week 16 (Fri 18/1)</p>
-<p>Learning Outcomes:</p>
-<ul>
-<li>Explain the principles behind the object pool pattern.</li>
-<li>Implement a simple pool system for projectiles.</li>
-<li>Explain the role of a friend class in C++.</li>
-</ul>
-<hr />
-<p>Continue with the sample Visual Studio solution 'SFML_Playground' from lab 5.</p>
-<p><strong>6.1 Implementing a projectile pool</strong></p>
-<p>We are now going to implement projectile firing from our tank. We could simply generate projectiles on demand as the user presses fire. However, rather than
-allocating and destroying these objects on demand, we keep a set of initialised projectiles in a container (such as an array) ready to be used. A client
-of the pool will request a projectile, perform operations on it and it will be 'returned' to the pool when no longer needed. This type of approach is often applied
-in cases where many objects need to be generated quickly, and those objects have a short life span.</p>
-<p>We will use a game design pattern called the <a href="http://gameprogrammingpatterns.com/object-pool.html">Object Pool pattern</a> to implement a pool of projectiles.<br />
-We start with two classes. The first class, <code>Projectile</code>, will store basic information about the projectile such as it's speed and screen position.
-The second class, <code>ProjectilePool</code>, will manage a container (pool) of projectiles, and it is through <code>ProjectilePool</code> that we request access to a <code>Projectile</code>.
-Let's try and visualise how this will work. Say we have a small pool of 7 projectiles. Initially the pool is full and will look like this:</p>
-<p><img src="pool_full.jpg" /></p>
-<p>The pool class maintains an index of the next available projectile, which is set to 0 initially. Now imagine that 6 of the 7 projectiles are on-screen.
-The pool now looks like this:</p>
-<p><img src="pool_almost_empty.jpg" /></p>
-<p>The index of the next available projectile points to the last object in the pool. When this object is requested, the pool will now be empty. What do we do if a further projectile is requested from the pool? There are several possible strategies we could take, but the simplest is to wrap the index so that it starts at 0 again:</p>
-<p><img src="pool_empty.jpg" /></p>
-<p>If a request comes in for another projectile, we must then re-use the projectile at index 0 which is currently on-screen. Note that the position of a projectile
-within the array does not tell us anything about how long it has been on-screen, i.e. if projectiles are used in sequence from index 0 to index 6, you cannot assume the 'oldest' projectile will always be at index 0. Projectiles are returned to the pool when they go off-screen or collide with an obstacles such as a wall or another tank.  </p>
-<p><strong>6.2 Implementing a projectile pool</strong></p>
-<p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs3JAZsW_jah0Q80P">here</a>. Unzip the file and add the files <code>Projectile.h</code>, <code>ProjectilePool.h</code> and their respective .cpp files to your project. Let's consider class ProjectilePool first, let's consider it's private data members first:</p>
+    <h2>Lab 6: Projectiles</h2>
+    <p><strong>To be completed by:</strong> Week 16 (Fri 17/1)</p>
+    <p>Learning Outcomes:</p>
+    <ul>
+        <li>Explain the principles behind the object pool pattern.</li>
+        <li>Implement a simple pool system for projectiles.</li>
+        <li>Explain the role of a friend class in C++.</li>
+    </ul>
+    <hr />
+    <p>Continue with the sample Visual Studio solution 'SFML_Playground' from lab 5.</p>
+    <p>Note: If you have already implemented a projectile pool into your project, go straight to section 6.3 below.</p>
+    <p><strong>6.1 Implementing a projectile pool</strong></p>
+    <p>
+        We are now going to implement projectile firing from our tank. We could simply generate projectiles on demand as the user presses fire. However, rather than
+        allocating and destroying these objects on demand, we keep a set of initialised projectiles in a container (such as an array) ready to be used. A client
+        of the pool will request a projectile, perform operations on it and it will be 'returned' to the pool when no longer needed. This type of approach is often applied
+        in cases where many objects need to be generated quickly, and those objects have a short life span.
+    </p>
+    <p>
+        We will use a game design pattern called the <a href="http://gameprogrammingpatterns.com/object-pool.html">Object Pool pattern</a> to implement a pool of projectiles.<br />
+        We start with two classes. The first class, <code>Projectile</code>, will store basic information about the projectile such as it's speed and screen position.
+        The second class, <code>ProjectilePool</code>, will manage a container (pool) of projectiles, and it is through <code>ProjectilePool</code> that we request access to a <code>Projectile</code>.
+        Let's try and visualise how this will work. Say we have a small pool of 7 projectiles. Initially the pool is full and will look like this:
+    </p>
+    <p><img src="pool_full.jpg" /></p>
+    <p>
+        The pool class maintains an index of the next available projectile, which is set to 0 initially. Now imagine that 6 of the 7 projectiles are on-screen.
+        The pool now looks like this:
+    </p>
+    <p><img src="pool_almost_empty.jpg" /></p>
+    <p>The index of the next available projectile points to the last object in the pool. When this object is requested, the pool will now be empty. What do we do if a further projectile is requested from the pool? There are several possible strategies we could take, but the simplest is to wrap the index so that it starts at 0 again:</p>
+    <p><img src="pool_empty.jpg" /></p>
+    <p>
+        If a request comes in for another projectile, we must then re-use the projectile at index 0 which is currently on-screen. Note that the position of a projectile
+        within the array does not tell us anything about how long it has been on-screen, i.e. if projectiles are used in sequence from index 0 to index 6, you cannot assume the 'oldest' projectile will always be at index 0. Projectiles are returned to the pool when they go off-screen or collide with an obstacles such as a wall or another tank.
+    </p>
+    <p><strong>6.2 Implementing a projectile pool</strong></p>
+    <p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs3JAZsW_jah0Q80P">here</a>. Unzip the file and add the files <code>Projectile.h</code>, <code>ProjectilePool.h</code> and their respective .cpp files to your project. Let's consider class ProjectilePool first, let's consider it's private data members first:</p>
 <pre><code>private:
 static const int s_POOL_SIZE = 100;
 
@@ -333,18 +342,22 @@ int m_nextAvailable { 0 };
 bool m_poolFull { false };
 </code></pre>
 
-<p>So the pool size is 100. We use a C++11 style array to hold the projectile instances. <code>std::array</code> is a template class, the first template argument is the class type you wish to store in the array (<code>Projectile</code>), the second is the size of the array (<code>s_POOL_SIZE</code>). 
-The index of the next available projectile is set to 0, and finally we have a flag <code>m_poolFull</code> to keep track of the pool full status.</p>
-<p>In the public interface, there is a standard no-op default constructor defined:</p>
+    <p>
+        So the pool size is 100. We use a C++11 style array to hold the projectile instances. <code>std::array</code> is a template class, the first template argument is the class type you wish to store in the array (<code>Projectile</code>), the second is the size of the array (<code>s_POOL_SIZE</code>).
+        The index of the next available projectile is set to 0, and finally we have a flag <code>m_poolFull</code> to keep track of the pool full status.
+    </p>
+    <p>In the public interface, there is a standard no-op default constructor defined:</p>
 <pre><code>/// &lt;summary&gt;
 /// @brief No-op default constructor
 /// &lt;/summary&gt;
 ProjectilePool() = default;
 </code></pre>
 
-<p>Note that when we make an instance of ProjectilePool, the array <code>m_projectiles</code> is automatically populated with 100 Projectile instances.
-Next, we have a member function called <code>create()</code> which client code will use to request access to a projectile (read the comments to see exactly
-what each function does):</p>
+    <p>
+        Note that when we make an instance of ProjectilePool, the array <code>m_projectiles</code> is automatically populated with 100 Projectile instances.
+        Next, we have a member function called <code>create()</code> which client code will use to request access to a projectile (read the comments to see exactly
+        what each function does):
+    </p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Creates a projectile.
 /// Creates a projectile from the pool of available projectiles.
@@ -358,7 +371,7 @@ what each function does):</p>
 void create(sf::Texture const &amp; texture, double x, double y, double rotation);
 </code></pre>
 
-<p>The main task of the <code>update()</code> member function is to loop through every projectile in the array and invoke their <code>update()</code> function in turn:</p>
+    <p>The main task of the <code>update()</code> member function is to loop through every projectile in the array and invoke their <code>update()</code> function in turn:</p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Updates all projectiles in the pool.
 /// Sets an index to the next available projectile. Also sets a 
@@ -369,8 +382,10 @@ void create(sf::Texture const &amp; texture, double x, double y, double rotation
 void update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
 </code></pre>
 
-<p>Finally, the <code>render()</code> member function draws all active projectiles. A projectile is considered active if it's speed value is set (i.e. to it's max. 
-possible speed). </p>
+    <p>
+        Finally, the <code>render()</code> member function draws all active projectiles. A projectile is considered active if it's speed value is set (i.e. to it's max.
+        possible speed).
+    </p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Draws all active projectiles.
 /// &lt;/summary&gt;
@@ -378,14 +393,16 @@ possible speed). </p>
 void render(sf::RenderWindow &amp; window);
 </code></pre>
 
-<p>Note that in the implementation of the <code>render()</code> function, we have this line:</p>
+    <p>Note that in the implementation of the <code>render()</code> function, we have this line:</p>
 <pre><code>window.draw(m_projectiles.at(i).m_projectile);
 </code></pre>
 
-<p><code>m_projectile</code> is a <code>sf::Sprite</code> which is a private property of the <code>Projectile</code> class. So how can this class access the private member variable
-of class <code>Projectile</code>? In C++, we have a special mechanism to enable this behaviour by which one class can 'befriend' another. Which brings us
-nicely to the Projectile class...</p>
-<p>At the beginning of the declaration for class <code>Projectile</code>, we have:</p>
+    <p>
+        <code>m_projectile</code> is a <code>sf::Sprite</code> which is a private property of the <code>Projectile</code> class. So how can this class access the private member variable
+        of class <code>Projectile</code>? In C++, we have a special mechanism to enable this behaviour by which one class can 'befriend' another. Which brings us
+        nicely to the Projectile class...
+    </p>
+    <p>At the beginning of the declaration for class <code>Projectile</code>, we have:</p>
 <pre><code>class Projectile
 {
     // Allows the ProjectilePool direct access to the private members of Projectile.
@@ -394,10 +411,12 @@ nicely to the Projectile class...</p>
     friend class ProjectilePool;
 </code></pre>
 
-<p>The declaration <code>friend class ProjectilePool</code> enables the <code>ProjectilePool</code> class access the private member variables of class <code>Projectile</code> without
-the need to provide a getter method. This is considered acceptable practice because the <code>Projectile</code> objects are tightly coupled to the <code>ProjectilePool</code>
-class. </p>
-<p>Let's start with a quick look at the private members of Projectile:</p>
+    <p>
+        The declaration <code>friend class ProjectilePool</code> enables the <code>ProjectilePool</code> class access the private member variables of class <code>Projectile</code> without
+        the need to provide a getter method. This is considered acceptable practice because the <code>Projectile</code> objects are tightly coupled to the <code>ProjectilePool</code>
+        class.
+    </p>
+    <p>Let's start with a quick look at the private members of Projectile:</p>
 <pre><code>private:
     bool Projectile::isOnScreen(sf::Vector2f position) const;
 
@@ -414,12 +433,16 @@ class. </p>
     sf::IntRect m_projectileRect { 5, 178, 10, 6 }; 
 </code></pre>
 
-<p><code>isOnScreen()</code> is a private helper method that returns true if this projectile is on screen. 
-<code>s_MAX_SPEED</code> is a constant value that we use to define the projectiles maximum speed.
-The current movement speed of a projectile is stored in <code>m_speed</code>. 
-<code>m_projectile</code> is our sprite representation of a projectile, while m_projectileRect defines the bounding rectangle for the projectile - this information is taken from the sprite sheet.</p>
-<p>In the public interface, we have an <code>init()</code> member function that takes the same arguments as <code>ProjectilePool::init()</code>. This is how we initialise a Projectile - remember we don't create them as they exist already in the pool.
-The primary job of the <code>update()</code> member function is to calculate the next screen position for the projectile, and to perform collision checking between the projectile and walls:</p>
+    <p>
+        <code>isOnScreen()</code> is a private helper method that returns true if this projectile is on screen.
+        <code>s_MAX_SPEED</code> is a constant value that we use to define the projectiles maximum speed.
+        The current movement speed of a projectile is stored in <code>m_speed</code>.
+        <code>m_projectile</code> is our sprite representation of a projectile, while m_projectileRect defines the bounding rectangle for the projectile - this information is taken from the sprite sheet.
+    </p>
+    <p>
+        In the public interface, we have an <code>init()</code> member function that takes the same arguments as <code>ProjectilePool::init()</code>. This is how we initialise a Projectile - remember we don't create them as they exist already in the pool.
+        The primary job of the <code>update()</code> member function is to calculate the next screen position for the projectile, and to perform collision checking between the projectile and walls:
+    </p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Calculates the new position of the projectile.
 /// If this projectile is currently in use (on screen, speed non-zero), it's next screen position
@@ -434,9 +457,9 @@ The primary job of the <code>update()</code> member function is to calculate the
 bool update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
 </code></pre>
 
-<p><strong>Exercise 1</strong>: Add the <code>ProjectilePool</code> as a data member of class <code>Tank</code> called <code>m_pool</code>. (Note: this is an example of composition - a Tank 'has a' projectile pool).</p>
-<p><strong>Exercise 2</strong>: Add the following member function to class <code>Tank</code>:</p>
-<p>Tank.h</p>
+    <p><strong>Exercise 1</strong>: Add the <code>ProjectilePool</code> as a data member of class <code>Tank</code> called <code>m_pool</code>. (Note: this is an example of composition - a Tank 'has a' projectile pool).</p>
+    <p><strong>Exercise 2</strong>: Add the following member function to class <code>Tank</code>:</p>
+    <p>Tank.h</p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Generates a request to fire a projectile.
 /// A projectile will be fired from the tip of the turret only if time limit between shots
@@ -445,7 +468,7 @@ bool update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
 void requestFire();
 </code></pre>
 
-<p>Tank.cpp</p>
+    <p>Tank.cpp</p>
 <pre><code>////////////////////////////////////////////////////////////
 void Tank::requestFire()
 {
@@ -460,17 +483,82 @@ void Tank::requestFire()
 }
 </code></pre>
 
-<p>This new member function will request a projectile from the pool and position it at the tip of the tank turret. </p>
-<p>Add the constant <code>s_TIME_BETWEEN_SHOTS</code> to class Tank as follows:</p>
+    <p>This new member function will request a projectile from the pool and position it at the tip of the tank turret. </p>
+    <p>Add the constant <code>s_TIME_BETWEEN_SHOTS</code> to class Tank as follows:</p>
 <pre><code>// The delay time between shots in milliseconds.
 static int const s_TIME_BETWEEN_SHOTS { 800 };
 </code></pre>
 
-<p>You will also need to add member variables <code>m_fireRequested</code> and <code>m_shootTimer</code>. Don't forget to initialise these variables to sensible values. Hint: <code>m_shootTimer</code> is intended as a countdown timer, so consider this when initialising its value.</p>
-<p>Make sure the project builds ok before proceeding.</p>
-<p><strong>Exercise 3</strong>: Add the following logic to class <code>Tank</code>. Pressing the space bar should cause the tank to fire a projectile. If fire is pressed, call the new <code>Tank::requestFire()</code> member function. Build and run project to test. A projectile should appear at the tip of tank turret. (Hint: if you see nothing, remember that projectiles need to be drawn).</p>
-<p>Try rotating the turret and fire again. Does the projectile appear in the correct place?</p>
-<p><strong>Exercise 4</strong>: Now add the following logic to <code>Tank::update()</code>. If a fire request has been generated, then decrement the shoot timer by the delta time (<code>dt</code>). If the shoot timer is 0 or less, reset it to the value <code>s_TIME_BETWEEN_SHOTS</code> and set the fire requested status to <code>false</code>. Build and run project to test. If the projectile is not moving, remember you need to call <code>ProjectilePool::update()</code> from <code>Tank::update()</code>.</p>
+    <p>You will also need to add member variables <code>m_fireRequested</code> and <code>m_shootTimer</code>. Don't forget to initialise these variables to sensible values. Hint: <code>m_shootTimer</code> is intended as a countdown timer, so consider this when initialising its value.</p>
+    <p>Make sure the project builds ok before proceeding.</p>
+    <p><strong>Exercise 3</strong>: Add the following logic to class <code>Tank</code>. Pressing the space bar should cause the tank to fire a projectile. If fire is pressed, call the new <code>Tank::requestFire()</code> member function. Build and run project to test. A projectile should appear at the tip of tank turret. (Hint: if you see nothing, remember that projectiles need to be drawn).</p>
+    <p>Try rotating the turret and fire again. Does the projectile appear in the correct place?</p>
+    <p><strong>Exercise 4</strong>: Now add the following logic to <code>Tank::update()</code>. If a fire request has been generated, then decrement the shoot timer by the delta time (<code>dt</code>). If the shoot timer is 0 or less, reset it to the value <code>s_TIME_BETWEEN_SHOTS</code> and set the fire requested status to <code>false</code>. Build and run project to test. If the projectile is not moving, remember you need to call <code>ProjectilePool::update()</code> from <code>Tank::update()</code>.</p>
+    <p><strong>6.3 Implementing a spatial partition</strong></p>
+    <p>Note: this section is optional - only attempt it if you have previously implemented a pool for your projectiles.</p>
+    <p>
+        A spatial partition allows us to efficiently locate objects by storing them in a data structure organized by their positions.
+        In the case of the this project, we are checking each projectile against every obstacle (wall) that exists on the map.
+        A much more efficient way would be to query for obstacles at or near the location of the projectile only.
+        Imagine the game world divided up into 10x10 grid like this:
+    </p>
+    <p><img src="grid.jpg" /></p>
+    <p>
+        Cells are numbered in sequential order from 0 to 99 as shown. The cell dimensions in this image are 145 x 75 (the image is not to scale).<br />
+        We need to assign every single wall the id of the cell it occupies.
+        Consider the two circled walls in the bottom left of the picture. The first wall exists at world position 87, 539 – this is the top left corner of the sprite.
+        To work out which cell it occupies, we calculate:
+    </p>
+    <p>
+<pre><code>    
+// floor returns the nearest integer value which is less than or equal to the floating point argument
+floor( wallX / cell width ) + ( floor( wallY / cell height ) * number of columns )
+= floor( 87 / 145 ) + ( floor ( 539 / 75 ) * 10 )
+= floor(0.6) + ( floor (7.19) * 10 ) 
+= 0 + (7 * 10)
+= 70
+</p>
+</code></pre>
+<p>This tells us that the top left corner of this particular wall exists in cell 70. This calculation needs to be repeated for each of the remaining three corners of the sprite. </p>
+<p>Let's take the second (rightmost) wall inside the circled area and apply the same calculation with the top right corner point to illustrate. The top right corner is at 151, 545. </p>
+<p>
+<pre><code>      
+floor( wallX / cell width ) + ( floor( wallY / cell height ) * number of columns )
+= floor( 151 / 145 ) + ( floor ( 545 / 75 ) * 10 )
+= floor(1.04) + ( floor (7.27) * 10 ) 
+= 1 + (7 * 10)
+= 71</p>
+</code></pre>
+<p>This particular section of the wall exists in cell 71. </p>
+<p>A data structure is required to keep track of each cell id and what objects (walls) are associated with that cell id. In C++, we can use both a <code>std::map</code> and a <code>std::list</code> for this purpose.</p>
+<p>A <code>std::map</code> associates two pieces of information, much like a phone directory might associate a name with a telephone number. In our case, we want to associate the cell id (an integer) with a list
+of sprites. Here's a quick example of how a C++ map to manage this information might look like: </p>
+<pre><code>
+#include&lt;map&gt;
+#include&lt;list&gt;
+<p>// Create a mapping of integers to std::list, where each list entry will be a sf::Sprite
+std::map&lt;int, std::list&lt;sf::Sprite&gt;&gt; spatialMap; 
+// Calculate the cell id for a particular wall...
+// Insert a new entry
+spatialMap[cellId].push_back(wallSprite);</p>
+</code></pre>
+
+<p>The expression <code>spatialMap[cellId]</code> will initally return an empty <code>std::list</code> for the given integer (cellId). The wall sprite for which we have calculated the cellId is then appended to the list.
+If we calculate the cellId for another wall and it happens to have the same cellId, then it will be appended to the list as a second item.
+Every wall in the level needs to be assigned a cell id, noting the same wall could exists in up to 4 different cells and therefore be assigned 4 cell ids.</p>
+<p>Now as your projectile is fired from the tank, you will need to calculate which cell id it is currently in. Then it is a case of simply looking up the map, and checking
+if there is a collision between your projectile and any of the wall sprites that have the same cell id. The process will look similar to this:</p>
+<p>
+<pre><code>    
+// projectileCellId is the current cell id of the projectile.
+std::list&lt;sf::Sprite&gt; &amp; walls = spatialMap[projectileCellId];
+// Loop through the list checking for a collision between the projectile and each wall
+for (sf::Sprite &amp; wallSprite : walls)
+{
+     // Check here for a collision between the projectile sprite and the wall sprite.
+}</p>
+</code></pre>
+<p>Note that as the projectile is moving (unlike the walls), you will need to recalculate its cell id every update. See if you can implement the above idea into your tank project.</p>
 
 </body>
 </html>
