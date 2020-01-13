@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 7: AI with steering and player seek behaviours</h2>
-<p><strong>To be completed by:</strong> Week 18 (Fri 1/2)</p>
+<p><strong>To be completed by:</strong> Week 18 (Fri 31/1)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Explain the operation of a steering algorithm with collision avoidance.</li>
@@ -407,6 +407,10 @@ m_aiTank.init(m_level.m_aiTank.m_position);
 </code></pre>
 
 <p>You will need to add MASS as a constant with an initial value of 100.0f. Notice how the tank accelerates and steers very slowly causing the collision avoidance to fail. What happens if you reduce the MASS by a factor of 10, i.e. to 10.0f? Does this improve the steering behaviour?</p>
+<p><strong>Exercise 5:</strong> You will have noticed the tank movement is not smooth when steering around obstacles. For example, at at frame N, the ahead vector is inside the circle and the force is pushing it back.
+At N+1, it is outside the circle so it continues to move towards its target. At N+2, the ahead vector enters the circle again and the force pushes it back again, and this cycle repeats causing jitter.
+A possible solution (proposed by the original author of the tutorial) is <em>&quot;to test how close the ahead point is from the obstacle center, i.e. if the distance between ahead and the obstacle center is less than 
+the radius of the obstacle. You can then skip the calculation of any collision avoidance force if the ahead point is barely inside (or outside) the obstacle, i.e. distance to the obstacle center is greater than 0.95 * radius or less than 1.05 * radius. It's like a proximity dead zone with no collision avoidance.&quot;</em></p>
 
 </body>
 </html>
