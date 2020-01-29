@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 <title>Lab8</title>
@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 8: Game states</h2>
-<p><strong>To be completed by:</strong> Week 20 (Fri 15/2)</p>
+<p><strong>To be completed by:</strong> Week 20 (Fri 14/2)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Implement a simple HUD system.</li>
@@ -474,13 +474,12 @@ the HUD should update with the message &quot;You Lost&quot;.</p>
 <p><strong>Exercise 2</strong>: After the GAME_LOSE game state is detected, add a short delay so the game restarts automatically. Use the delta time
 value (<code>dt</code>) passed into <code>Game::update()</code> to keep track of the elapsed time.</p>
 <p><strong>Exercise 3</strong>: Add the appropriate logic for GAME_WIN, i.e. you will need to check if the player hits the AI tank with a projectile.
-This is a bit of work to complete this exercise, so I have given you some hints below.</p>
+There is a bit of work to complete this exercise, so I have given you some hints below - there are some pieces you have to work out.</p>
 <ol>
 <li>
 <p>The Projectile has a member function that checks for projectile/wall collisions - change this so it can also check for projectile/AI tank collisions.
-In C++, a function can return two values by using the built-in <code>std::pair</code> template class, for example to return two <code>bool</code>'s from a function:</p>
-<p>
-<pre><code>std::pair&lt;bool, bool&gt; result = checkCollisions();
+In C++, a function can return two values by using the built-in <code>std::pair</code> template class, for example to return two <code>bool</code>'s from a function</p>
+<p><pre><code>// std::pair&lt;bool, bool&gt; result = checkCollisions(); 
 if (result.first)
 {
    // Then the first bool is true...
@@ -488,12 +487,59 @@ if (result.first)
 else if (result.second)
 {
 	// Then the second bool is true...
-}
-</code></pre>
-</p>
+}</pre></code></p>
+</li>
+<p>So the return type for <code>Projectile::update()</code> will no longer be a <code>bool</code>, but rather a <code>std::pair&lt;bool,bool&gt;</code></p>
+<li>
+<p>Because <code>Projectile::update()</code> needs to check for projectile/AI Tank collisions, it needs to know about the sprite representation of the AI tank.
+This can be passed in also using <code>std::pair</code>, so <code>update()</code> now looks like:</p>
+<p><pre><code>std::pair&lt;bool, bool&gt; Projectile::update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites, std::pair&lt;sf::Sprite, sf::Sprite&gt; aiTankSprites)</pre></code></p>
+</li>
+<p>and you will have two separate collision checks inside the function, one to check for projectile/wall collisions and another to check for projectile/AI Tank collisions.</p>
+<li>
+<p>The Tank class controls the projectiles, so you will need to pass the AI tank as a parameter to <code>Tank::update()</code>. Be careful when including the header for class TankAI, 
+as TankAI already includes class Tank (because it needs the Player position). A foward reference will help here, i.e. before the declaration of the TankAI class, we write:</p>
+<p><pre><code>class Tank; // forward reference, do not #include &quot;Tank.h&quot; yet...</p>
+<p>class TankAi
+{
+  // Body of class TankAI
+}</p>
+#include &quot;Tank.h&quot; // The include goes at the BOTTOM of the header file in TankAI.h</pre></code>
 </li>
 <li>
-<p>The Tank class controls the projectiles, so you will need to pass the AI tank as a parameter to <code>Tank::update()</code>.</p>
+<p>Refactor the <code>ProjectilePool::update()</code> method so the inner for loop looks like this:</p>
+<p><pre><code>for (int i = 0; i &lt; s<em>POOL</em>SIZE; i++)
+{
+  result = m_projectiles.at(i).update(dt, wallSprites, aiTankSprites);</p>
+  if(result.first)
+  {
+    // If this projectile has expired, make it the next available.
+    m_nextAvailable = i;
+  }
+  else
+  {
+    // So we know how many projectiles are active.
+    activeCount++;
+  }
+
+  if (result.second)
+  {
+    hitCount++;
+  }
+}</pre></code>
+<p></p>
+</li>
+<p>Note the new local variable <code>hitCount</code> - this will represent the number of projectile / player tank hits that have happened (you need to create and initialise this local variable). You now need to return
+this value from the function. So <code>ProjectilePool::update()</code> looks like this:</p>
+<pre><code>int ProjectilePool::update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites, std::pair&lt;sf::Sprite, sf::Sprite&gt; aiTankSprites)
+{
+   ... 
+   return hitCount
+}
+</code></pre>
+<li>
+<p>Finally, go to <code>Tank::update()</code> and locate the line where you update the projectile pool. You need to check the return value from <code>ProjectilePool::update()</code> - if
+it is &gt; 0, then you need to apply damage to the AI tank (see step 6).</p>
 </li>
 <li>
 <p>I suggest you write a member function called <code>takeDamage()</code> for the AI tank, and this gets called when a collision is detected
