@@ -291,44 +291,42 @@ img {
 </style>
 </head>
 <body>
-<h2>Mini Project 2: Adding gameplay to the Tank demo</h2>
+<h2>Mini Project 2: Adding gameplay to the Tank demo [DRAFT]</h2>
 <p><strong>Instructions:</strong> </p>
 <ul>
-    <li>Projects must be pushed to github by midnight Thursday 7th March. </li>
-    <li>There are three working sessions for the project (Friday 15/2, Friday 22/2 and Friday 1/3). You must make at least one meaningful commit to github per working session, otherwise a deduction of 10 marks per session will apply to your final mark</li>
-    <li>You will be required to demonstrate your project in the lab on Friday 8th.</li>
-    <li>Plagiarism is a very serious offence and will be treated accordingly.</li>
+<li>Projects must be pushed to github by midnight Thursday 27th February. </li>
+<li>You will be required to demonstrate your project in the lab on Friday 28th.</li>
+<li>Plagiarism is a very serious offence and will be treated accordingly.</li>
 </ul>
-<p>Following on from the work you have completed in lab 8, extend the tank demo to add the following functionality. </p>
+<p>Following on from the work you have completed in lab 8, extend the tank demo to add the following functionality described below. The gameplay involves the player traversing the map to collect 10 items (targets) while avoiding the AI. The player tank does not have any firing capability. The game ends when the player has collected all the items or has been destroyed by the AI. The AI tank will have unlimited projectiles, but there is an appropriate delay between shots (you decide). The projectile moves reasonably slowly so the player has a chance of avoiding them. However, the closer the AI tank is to the player, the less the chance the player has of manouvering out of the way. The player tank can move slightly faster than the AI tank. I suggest scaling down the sprite dimensions for the tanks as a simple way of enlarging the playing area.*</p>
 <ol>
 <li>
 <p>Add a basic state machine to the AI tank to enable other behaviours. Add an <code>AIState</code> enum to the <code>TankAI</code> class as follows:</p>
-<p><code>enum class AIState
+<p><pre><code>enum class AIState
 {
    PATROL_MAP,
-   SEEK_PLAYER,
-   SPAWN_ALLY
-};</code></p>
-<p>These will represent the three states for the AI tank which will determine it's behaviour. 	
-The AI should start in <code>PATROL_MAP</code> mode, patrolling the map and avoiding obstacles. If the AI tank detects the player tank (see point 2 below), it will switch state to <code>SEEK_PLAYER</code>. In this mode, the AI tank will gain a slight increase in speed so it moves faster than the player. If an AI tank touches the player tank at any stage, then the game is over. <strong>[25]</strong></p>
+   ATTACK_PLAYER
+};</pre></code></p>
+<p>These will represent the two states for the AI tank which will determine its behaviour. 	
+The AI tank has a vision cone which will enable it to see the player tank if it is 30 degrees left or right of its line-of-sight and within range of the cone. The AI will start in a tracking mode (PATROL_MAP) and will patrol random locations on the map looking for the player. In ATTACK_PLAYER mode, the vision cone has a long range but narrow field of view, and does a 360 degree sweep of the map. The vision cone is always drawn and visible to the player. <strong>[30]</strong></p>
 </li>
 <li>
-<p>The Player tank leaves a heat haze behind as it traverses the map which slowly dissipates. The AI tank has IR vision and can only detect the player by this heat signature. To simulate this idea, every 100ms the player tank will add an invisible <code>sf::CircleShape</code> at it's current position to a <code>std::list</code>, but only if it is moving. The list should hold a maximum of 30 positions (circles) only, where the newest position is always at the front, and the oldest at the rear of the list. Every update, the AI tank will check if it's ahead vector intercepts any of the Circle shapes in this list. If so, it will then &quot;know&quot; the player position and seek out the player tank. <strong>[25]</strong></p>
+<p>Once the player tank is detected inside the cone, the AI switches modes to ATTACK_PLAYER and the following happens...</p>
+<p>2.1 The AI tank will proceed in the direction of the player and constantly measure the distance to that point, until it decides it is within a reasonable shooting range. The AI will no longer sweep the cone through 360 degrees, but will try to keep the player tank centered inside it.  <strong>[20]</strong></p>
+<p>2.2 If the player is approximately halfway inside the vision cone, the AI will adjust the cone,  reducing its radius by about one third, but increases its spread to -40 and +40 degrees. <strong>[10]</strong> (AI will continue attempts to keep player centered inside the vision cone)</p>
+<p>2.3 If the player moves outside the vision cone, the AI will revert to the behaviour described for PATROL_MAP mode (this includes re-adjusting the vision cone). <strong>[10]</strong></p>
 </li>
 <li>
-<p>The player tank has a finite number of projectiles. If a projectile hits an AI tank, the AI shrinks to half it's size, and it's movement speed is halved accordingly. The player must now touch the shrunken AI tank to eliminate it. This effect is only temporary after which the AI tank regains it's normal size and resumes in <code>PATROL_MAP</code> mode. The player must eliminate three AI tanks to complete the level. You decide on appropriate values here for projectiles and shrink duration. <strong>[20]</strong></p>
+<p>Implement a simple damage model for the player. For example, hits from the AI may result in a random chance of any of the following handling characteristics being affected: turning radius made larger, reduction in top speed or reduced ability to slow down. The player tank will be destroyed if it takes enough hits. <strong>[15]</strong> </p>
 </li>
 <li>
-<p>The AI tank can spawn a total of four allies, one at a time. You decide on when this should happen and the total upper number of allies that can be spawned (this should bear some relationship to the number of projectiles that player has). When spawning an ally, the AI switches to SPAWN_ALLY mode, and stops moving. Ally tanks have the exact same behaviour as the the main AI tank, but you cannot exceed the maximum number of spawned tanks. <strong>[10]</strong></p>
+<p>Use a HUD to show any relevant information (e.g. current damage, number of items left to be collected...). Use icons where appropriate. <strong>[10]</strong></p>
 </li>
 <li>
-<p>Add a debug mode that is activated by a key press. In this mode, draw the ahead and ahead2 vectors. Also draw the circle shapes that represent obstacles, and use a different colour to show the circle shapes that depict the trail of the player tank. <strong>[10]</strong></p>
+<p>Implement bounds checking on the map so neither tank can leave the playing area. <strong>[5]</strong></p>
 </li>
 <li>
-<p>A game time of 1 minute applies. Use a HUD to show any relevant information (e.g. game time, remaining projectiles, number of AI eliminated, remaining number of spawnable AI tanks). <strong>[10]</strong></p>
-</li>
-<li>
-<p>Bonus: If you complete this section, you can &quot;top up&quot; your project mark up to a maximum of 100. See if you can use a shader to add a heat haze effect behind the player tank (the area covered by the shader will be determined by the last position in the list maintained by the player tank). Example: <a href="https://github.com/SFML/SFML/wiki/Source%3A-HeatHazeShader">https://github.com/SFML/SFML/wiki/Source%3A-HeatHazeShader</a> <strong>[20]</strong></p>
+<p>Bonus: If you attempt this section, you can &quot;top up&quot; your project mark up to a maximum of 100. See if you can implement a system that blocks (any part) of the AI vision cone from seeing through obstacles (walls) <strong>[20]</strong></p>
 </li>
 </ol>
 <p>Each section will be marked accordingly:</p>
