@@ -324,9 +324,16 @@ git push origin master
 <p>3.3. Commit the files that you've staged in your local repository:</p>
 <p><code>git commit -m &quot;First commit&quot;</code></p>
 <p>'First commit'` is a commit string - this should generally summarise the changes you have made to the code base, so this will obviously change between commits.</p>
-<p>3.4 Push the branch to the remote repository:</p>
+<p>3.4 Push the branch to the corresponding branch on the remote repository:</p>
 <p><code>git push origin feature_x</code></p>
-<p>3.5 Checking out another branch</p>
+<p>3.5 When you have finished the feature and are ready for a code review, you first need to sync your the master branch on your local repository with the master branch on the remote repository. This is because it may well be the case that remote master branch now has changes that your local version doesn't have. The steps are, (1) switch to your local master branch and (2) pull the latest version of the remote master branch in order to update your local copy.</p>
+<p><code>git checkout master</code></p>
+<p><code>git pull origin master</code></p>
+<p>3.6 Open a pull request to initiate your code review. See the example <a href="https://gist.github.com/vlandham/3b2b79c40bc7353ae95a">here</a></p>
+<p>3.7 When you have finished your code review (and made any final changes that as a result of the review), merge your new feature with the local master branch. Switch to the branch you wish to merge into (in the case master):</p>
+<p><code>git checkout master</code></p>
+<p><code>git merge feature_x</code></p>
+<p>3.8 Checking out another branch</p>
 <p>Say another team member has pushed a new feature to a new branch called feature_y on the remote repository. If you want to checkout this new branch to your local repository, first switch to the master branch:</p>
 <p><code>git checkout master</code></p>
 <p>then pull the <code>feature_y</code> branch you are interested in:</p>
