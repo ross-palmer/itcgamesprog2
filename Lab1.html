@@ -1,313 +1,315 @@
+﻿
 <!DOCTYPE html>
 <html>
 <head>
-<title>Lab1</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
-/* Author: Nicolas Hery - http://nicolashery.com */
-/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
-/* Source: https://github.com/nicolahery/markdownpad-github */
+    <title>Lab1</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
 
-/* RESET
-=============================================================================*/
+                /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+                /* Author: Nicolas Hery - http://nicolashery.com */
+                /* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+                /* Source: https://github.com/nicolahery/markdownpad-github */
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
+                /* RESET
+        =============================================================================*/
 
-/* BODY
-=============================================================================*/
+                html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                }
 
-body {
-  font-family: Helvetica, arial, freesans, clean, sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333;
-  background-color: #fff;
-  padding: 20px;
-  max-width: 960px;
-  margin: 0 auto;
-}
+                /* BODY
+        =============================================================================*/
 
-body>*:first-child {
-  margin-top: 0 !important;
-}
+                body {
+                    font-family: Helvetica, arial, freesans, clean, sans-serif;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #fff;
+                    padding: 20px;
+                    max-width: 960px;
+                    margin: 0 auto;
+                }
 
-body>*:last-child {
-  margin-bottom: 0 !important;
-}
+                    body > *:first-child {
+                        margin-top: 0 !important;
+                    }
 
-/* BLOCKS
-=============================================================================*/
+                    body > *:last-child {
+                        margin-bottom: 0 !important;
+                    }
 
-p, blockquote, ul, ol, dl, table, pre {
-  margin: 15px 0;
-}
+                /* BLOCKS
+        =============================================================================*/
 
-/* HEADERS
-=============================================================================*/
+                p, blockquote, ul, ol, dl, table, pre {
+                    margin: 15px 0;
+                }
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 20px 0 10px;
-  padding: 0;
-  font-weight: bold;
-  -webkit-font-smoothing: antialiased;
-}
+                /* HEADERS
+        =============================================================================*/
 
-h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
-  font-size: inherit;
-}
+                h1, h2, h3, h4, h5, h6 {
+                    margin: 20px 0 10px;
+                    padding: 0;
+                    font-weight: bold;
+                    -webkit-font-smoothing: antialiased;
+                }
 
-h1 {
-  font-size: 28px;
-  color: #000;
-}
+                    h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+                        font-size: inherit;
+                    }
 
-h2 {
-  font-size: 24px;
-  border-bottom: 1px solid #ccc;
-  color: #000;
-}
+                h1 {
+                    font-size: 28px;
+                    color: #000;
+                }
 
-h3 {
-  font-size: 18px;
-}
+                h2 {
+                    font-size: 24px;
+                    border-bottom: 1px solid #ccc;
+                    color: #000;
+                }
 
-h4 {
-  font-size: 16px;
-}
+                h3 {
+                    font-size: 18px;
+                }
 
-h5 {
-  font-size: 14px;
-}
+                h4 {
+                    font-size: 16px;
+                }
 
-h6 {
-  color: #777;
-  font-size: 14px;
-}
+                h5 {
+                    font-size: 14px;
+                }
 
-body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
+                h6 {
+                    color: #777;
+                    font-size: 14px;
+                }
 
-a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
-  margin-top: 0;
-  padding-top: 0;
-}
+                body > h2:first-child, body > h1:first-child, body > h1:first-child + h2, body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
 
-h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
-  margin-top: 10px;
-}
+                a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
 
-/* LINKS
-=============================================================================*/
+                h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+                    margin-top: 10px;
+                }
 
-a {
-  color: #4183C4;
-  text-decoration: none;
-}
+                /* LINKS
+        =============================================================================*/
 
-a:hover {
-  text-decoration: underline;
-}
+                a {
+                    color: #4183C4;
+                    text-decoration: none;
+                }
 
-/* LISTS
-=============================================================================*/
+                    a:hover {
+                        text-decoration: underline;
+                    }
 
-ul, ol {
-  padding-left: 30px;
-}
+                /* LISTS
+        =============================================================================*/
 
-ul li > :first-child, 
-ol li > :first-child, 
-ul li ul:first-of-type, 
-ol li ol:first-of-type, 
-ul li ol:first-of-type, 
-ol li ul:first-of-type {
-  margin-top: 0px;
-}
+                ul, ol {
+                    padding-left: 30px;
+                }
 
-ul ul, ul ol, ol ol, ol ul {
-  margin-bottom: 0;
-}
+                    ul li > :first-child,
+                    ol li > :first-child,
+                    ul li ul:first-of-type,
+                    ol li ol:first-of-type,
+                    ul li ol:first-of-type,
+                    ol li ul:first-of-type {
+                        margin-top: 0px;
+                    }
 
-dl {
-  padding: 0;
-}
+                    ul ul, ul ol, ol ol, ol ul {
+                        margin-bottom: 0;
+                    }
 
-dl dt {
-  font-size: 14px;
-  font-weight: bold;
-  font-style: italic;
-  padding: 0;
-  margin: 15px 0 5px;
-}
+                dl {
+                    padding: 0;
+                }
 
-dl dt:first-child {
-  padding: 0;
-}
+                    dl dt {
+                        font-size: 14px;
+                        font-weight: bold;
+                        font-style: italic;
+                        padding: 0;
+                        margin: 15px 0 5px;
+                    }
 
-dl dt>:first-child {
-  margin-top: 0px;
-}
+                        dl dt:first-child {
+                            padding: 0;
+                        }
 
-dl dt>:last-child {
-  margin-bottom: 0px;
-}
+                        dl dt > :first-child {
+                            margin-top: 0px;
+                        }
 
-dl dd {
-  margin: 0 0 15px;
-  padding: 0 15px;
-}
+                        dl dt > :last-child {
+                            margin-bottom: 0px;
+                        }
 
-dl dd>:first-child {
-  margin-top: 0px;
-}
+                    dl dd {
+                        margin: 0 0 15px;
+                        padding: 0 15px;
+                    }
 
-dl dd>:last-child {
-  margin-bottom: 0px;
-}
+                        dl dd > :first-child {
+                            margin-top: 0px;
+                        }
 
-/* CODE
-=============================================================================*/
+                        dl dd > :last-child {
+                            margin-bottom: 0px;
+                        }
 
-pre, code, tt {
-  font-size: 12px;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
-}
+                /* CODE
+        =============================================================================*/
 
-code, tt {
-  margin: 0 0px;
-  padding: 0px 0px;
-  white-space: nowrap;
-  border: 1px solid #eaeaea;
-  background-color: #f8f8f8;
-  border-radius: 3px;
-}
+                pre, code, tt {
+                    font-size: 12px;
+                    font-family: Consolas, "Liberation Mono", Courier, monospace;
+                }
 
-pre>code {
-  margin: 0;
-  padding: 0;
-  white-space: pre;
-  border: none;
-  background: transparent;
-}
+                code, tt {
+                    margin: 0 0px;
+                    padding: 0px 0px;
+                    white-space: nowrap;
+                    border: 1px solid #eaeaea;
+                    background-color: #f8f8f8;
+                    border-radius: 3px;
+                }
 
-pre {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
-  font-size: 13px;
-  line-height: 19px;
-  overflow: auto;
-  padding: 6px 10px;
-  border-radius: 3px;
-}
+                pre > code {
+                    margin: 0;
+                    padding: 0;
+                    white-space: pre;
+                    border: none;
+                    background: transparent;
+                }
 
-pre code, pre tt {
-  background-color: transparent;
-  border: none;
-}
+                pre {
+                    background-color: #f8f8f8;
+                    border: 1px solid #ccc;
+                    font-size: 13px;
+                    line-height: 19px;
+                    overflow: auto;
+                    padding: 6px 10px;
+                    border-radius: 3px;
+                }
 
-kbd {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #DDDDDD;
-    background-image: linear-gradient(#F1F1F1, #DDDDDD);
-    background-repeat: repeat-x;
-    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
-    border-image: none;
-    border-radius: 2px 2px 2px 2px;
-    border-style: solid;
-    border-width: 1px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 10px;
-    padding: 1px 4px;
-}
+                    pre code, pre tt {
+                        background-color: transparent;
+                        border: none;
+                    }
 
-/* QUOTES
-=============================================================================*/
+                kbd {
+                    -moz-border-bottom-colors: none;
+                    -moz-border-left-colors: none;
+                    -moz-border-right-colors: none;
+                    -moz-border-top-colors: none;
+                    background-color: #DDDDDD;
+                    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+                    background-repeat: repeat-x;
+                    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+                    border-image: none;
+                    border-radius: 2px 2px 2px 2px;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    line-height: 10px;
+                    padding: 1px 4px;
+                }
 
-blockquote {
-  border-left: 4px solid #DDD;
-  padding: 0 15px;
-  color: #777;
-}
+                /* QUOTES
+        =============================================================================*/
 
-blockquote>:first-child {
-  margin-top: 0px;
-}
+                blockquote {
+                    border-left: 4px solid #DDD;
+                    padding: 0 15px;
+                    color: #777;
+                }
 
-blockquote>:last-child {
-  margin-bottom: 0px;
-}
+                    blockquote > :first-child {
+                        margin-top: 0px;
+                    }
 
-/* HORIZONTAL RULES
-=============================================================================*/
+                    blockquote > :last-child {
+                        margin-bottom: 0px;
+                    }
 
-hr {
-  clear: both;
-  margin: 15px 0;
-  height: 0px;
-  overflow: hidden;
-  border: none;
-  background: transparent;
-  border-bottom: 4px solid #ddd;
-  padding: 0;
-}
+                /* HORIZONTAL RULES
+        =============================================================================*/
 
-/* TABLES
-=============================================================================*/
+                hr {
+                    clear: both;
+                    margin: 15px 0;
+                    height: 0px;
+                    overflow: hidden;
+                    border: none;
+                    background: transparent;
+                    border-bottom: 4px solid #ddd;
+                    padding: 0;
+                }
 
-table th {
-  font-weight: bold;
-}
+                /* TABLES
+        =============================================================================*/
 
-table th, table td {
-  border: 1px solid #ccc;
-  padding: 6px 13px;
-}
+                table th {
+                    font-weight: bold;
+                }
 
-table tr {
-  border-top: 1px solid #ccc;
-  background-color: #fff;
-}
+                table th, table td {
+                    border: 1px solid #ccc;
+                    padding: 6px 13px;
+                }
 
-table tr:nth-child(2n) {
-  background-color: #f8f8f8;
-}
+                table tr {
+                    border-top: 1px solid #ccc;
+                    background-color: #fff;
+                }
 
-/* IMAGES
-=============================================================================*/
+                    table tr:nth-child(2n) {
+                        background-color: #f8f8f8;
+                    }
 
-img {
-  max-width: 100%
-}
-</style>
+                /* IMAGES
+        =============================================================================*/
+
+                img {
+                    max-width: 100%
+                }
+    </style>
 </head>
 <body>
-<h2>Lab 1: SFML Basic Concepts</h2>
-<p><strong>To be completed by:</strong> Week 3 (Fri 27/9)</p>
-<p>Learning Outcomes:</p>
-<ul>
-<li>Distinguish between the SFML game loop and event loop.</li>
-<li>Load a texture from an image file and create a sprite.</li>
-<li>Perform basic sprite operations (translate, rotate, set origin).</li>
-</ul>
-<p>We will start by looking at the sample Visual Studio solution 'SFML Playground'. You should have cloned this project by now from github. If not, see <a href="http://ross-palmer.github.io/itcgamesprog2/github_basics.html">here</a>.</p>
-<p><strong>1.1 The SFML game loop</strong></p>
-<p>Let's start inside the constructor function of class Game (game.cpp).</p>
-<p>The first thing we do is create the SFML render window - the arguments include the screen resolution, colour depth (32 bits per pixel) and the window title:</p>
+    <h2>Lab 1: SFML Basic Concepts</h2>
+    <p><strong>To be completed by:</strong> Week 2 (Fri 2/10)</p>
+    <p>Learning Outcomes:</p>
+    <ul>
+        <li>Distinguish between the SFML game loop and event loop.</li>
+        <li>Load a texture from an image file and create a sprite.</li>
+        <li>Perform basic sprite operations (translate, rotate, set origin).</li>
+    </ul>
+    <p>We will start by looking at the sample Visual Studio solution 'SFML Playground'. You should have cloned this project by now from github. If not, see <a href="https://github.com/ross-palmer/SFML_Playground">here</a>.</p>
+    <p><strong>1.1 The SFML game loop</strong></p>
+    <p>Let's start inside the constructor function of class Game (game.cpp).</p>
+    <p>The first thing we do is create the SFML render window - the arguments include the screen resolution, colour depth (32 bits per pixel) and the window title:</p>
 <pre><code>Game::Game()
 : m_window(sf::VideoMode(1440, 900, 32), &quot;SFML Playground&quot;, sf::Style::Default)
 </code></pre>
 
-<p>Next, the <code>Game::run()</code> method encapsulates our game loop, where our <code>update()</code> functionality runs at a different FPS than the <code>render()</code> functionality. Essentially, this is to prioritise <code>update()</code> operations over <code>render()</code> operations on a slow computer. This is explained below:</p>
+    <p>Next, the <code>Game::run()</code> method encapsulates our game loop, where our <code>update()</code> functionality runs at a different FPS than the <code>render()</code> functionality. Essentially, this is to prioritise <code>update()</code> operations over <code>render()</code> operations on a slow computer. This is explained below:</p>
 <pre><code>void Game::run()
 {
     sf::Clock clock;
@@ -333,14 +335,16 @@ img {
 }
 </code></pre>
 
-<p>The above loop will continue while the game window has not been closed. Inside the loop,
-we call <code>clock.restart()</code> which does two things - it resets the clock and returns the delta time (<code>dt</code>), which tells us how much time has passed since the last frame.
-The delta time is accumulated into a variable called <code>lag</code>. 
-We then process any key or mouse events by calling <code>processEvents()</code>.
-The inner while loop references a constant called <code>MS_PER_UPDATE</code> - this is defined as 10ms and represents a notional amount of time we set aside for one update cycle. On a fast computer, this inner loop may not execute for a particular frame, because one update cycle is done in less than 10ms. In this scenario, we get exactly one update and one render (eventually lag will be &gt; <code>MS_PER_UPDATE</code> as it accumulates the delta time).
-On a slow computer, <code>lag</code> may well be &gt; <code>MS_PER_UPDATE</code> most frames. In this scenario, we get multiple updates for each render operation.</p>
-<p><strong>1.2 The SFML event loop</strong></p>
-<p>The next member function is <code>Game::processEvents()</code></p>
+    <p>
+        The above loop will continue while the game window has not been closed. Inside the loop,
+        we call <code>clock.restart()</code> which does two things - it resets the clock and returns the delta time (<code>dt</code>), which tells us how much time has passed since the last frame.
+        The delta time is accumulated into a variable called <code>lag</code>.
+        We then process any key or mouse events by calling <code>processEvents()</code>.
+        The inner while loop references a constant called <code>MS_PER_UPDATE</code> - this is defined as 10ms and represents a notional amount of time we set aside for one update cycle. On a fast computer, this inner loop may not execute for a particular frame, because one update cycle is done in less than 10ms. In this scenario, we get exactly one update and one render (eventually lag will be &gt; <code>MS_PER_UPDATE</code> as it accumulates the delta time).
+        On a slow computer, <code>lag</code> may well be &gt; <code>MS_PER_UPDATE</code> most frames. In this scenario, we get multiple updates for each render operation.
+    </p>
+    <p><strong>1.2 The SFML event loop</strong></p>
+    <p>The next member function is <code>Game::processEvents()</code></p>
 <pre><code>void Game::processEvents()
 {
     sf::Event event;
@@ -355,12 +359,14 @@ On a slow computer, <code>lag</code> may well be &gt; <code>MS_PER_UPDATE</code>
 }
 </code></pre>
 
-<p>Note that SFML stores events internally in a queue structure. The method:</p>
+    <p>Note that SFML stores events internally in a queue structure. The method:</p>
 <pre><code>app.pollEvent(event)
 </code></pre>
 
-<p>pops (removes) the next event from the queue and stores it in the <code>event</code> variable. This method will return <code>false</code> when there are no more events available in the queue, thus causing the loop to exit. Events are identified by the <code>sf::Event::EventType</code> enum (enumeration). So, for example, <code>sf::Event::Closed</code> signifies a window closed event. Likewise, <code>sf::Event::KeyPressed</code> signifies a key pressed event. 
-The above member function simply checks if we have a window close event (because the user clicked the close window button) and then passes any events to another member function <code>processGameEvents()</code>.</p>
+    <p>
+        pops (removes) the next event from the queue and stores it in the <code>event</code> variable. This method will return <code>false</code> when there are no more events available in the queue, thus causing the loop to exit. Events are identified by the <code>sf::Event::EventType</code> enum (enumeration). So, for example, <code>sf::Event::Closed</code> signifies a window closed event. Likewise, <code>sf::Event::KeyPressed</code> signifies a key pressed event.
+        The above member function simply checks if we have a window close event (because the user clicked the close window button) and then passes any events to another member function <code>processGameEvents()</code>.
+    </p>
 <pre><code>void Game::processGameEvents(sf::Event&amp; event)
 {
     // check if the event is a a mouse button release
@@ -381,19 +387,18 @@ The above member function simply checks if we have a window close event (because
 }
 </code></pre>
 
-<p>This function is where we can handle all key and mouse input. Looking more closely at this:</p>
+    <p>This function is where we can handle all key and mouse input. Looking more closely at this:</p>
 <pre><code>switch (event.key.code)
 </code></pre>
 
-<p>code is an enum of type <code>sf::Keyboard::Key</code>, and this enum is turn is defined inside a struct called <code>KeyEvent</code>, where <code>key</code> in an instance of <code>KeyEvent</code>.</p>
-<p>Thus, the switch statement interrogates the code variable to determine which key was pressed (in this example, we exit if the Escape key is pressed). </p>
-<p><strong>1.3 Game updates and rendering</strong></p>
-<p>The last two member functions are where we handle the game updates and the game rendering:</p>
+    <p>code is an enum of type <code>sf::Keyboard::Key</code>, and this enum is turn is defined inside a struct called <code>KeyEvent</code>, where <code>key</code> in an instance of <code>KeyEvent</code>.</p>
+    <p>Thus, the switch statement interrogates the code variable to determine which key was pressed (in this example, we exit if the Escape key is pressed). </p>
+    <p><strong>1.3 Game updates and rendering</strong></p>
+    <p>The last two member functions are where we handle the game updates and the game rendering:</p>
 <pre><code>void Game::update(double dt)
 {
 
 }
-
 
 void Game::render()
 {
@@ -407,13 +412,13 @@ void Game::render()
 }
 </code></pre>
 
-<p>Note our render function clears the screen to black and displays the contents of whatever <code>draw()</code> calls we have made to the SFML window on-screen. We haven't drawn anything yet so the screen will stay black.</p>
-<p><strong>Exercise 1 - Drawing a sprite.</strong></p>
-<p>Open Game.h and add a member variable of type Sprite:</p>
+    <p>Note our render function clears the screen to black and displays the contents of whatever <code>draw()</code> calls we have made to the SFML window on-screen. We haven't drawn anything yet so the screen will stay black.</p>
+    <p><strong>Exercise 1 - Drawing a sprite.</strong></p>
+    <p>Open Game.h and add a member variable of type Sprite:</p>
 <pre><code>sf::Sprite m_sprite;
 </code></pre>
 
-<p>In Game.cpp, inside the constructor function, add the following code:</p>
+    <p>In Game.cpp, inside the constructor function, add the following code:</p>
 <pre><code>    sf::Texture myTexture;
     if (!myTexture.loadFromFile(&quot;E-100.png&quot;))
     {
@@ -424,14 +429,18 @@ void Game::render()
     m_sprite.setTexture(myTexture);
 </code></pre>
 
-<p>Finally, don't forget to draw the sprite inside the <code>render()</code> function. 
-What happens? Can you explain the result? Fix the problem before continuing to exercise 2.</p>
-<p><strong>Exercise 2 - Setting the sprite origin.</strong></p>
-<p>By default the origin of the sprite is set to the top left corner. Set the origin of the sprite to it's centre point. Where is the sprite now drawn? Can you explain why part of the sprite is missing?</p>
-<p><strong>Exercise 3 - Rotating a sprite.</strong></p>
-<p>Draw the sprite anywhere so it is fully visible (i.e. translate the sprite somewhere). Rotate the sprite by 90 degrees. Which direction has the tank rotated (clockwise or anti-clockwise)?
-By default, in SFML, 0° corresponds to &quot;right&quot;, i.e. along the positive x-axis. This means our tank sprite should face straight down the positive y-axis when rotated 90°. How can this be fixed?</p>
-<p>Finally, be sure to read the SFML tutorial on Sprites <a href="https://www.sfml-dev.org/tutorials/2.5/graphics-sprite.php">here</a> </p>
+    <p>
+        Finally, don't forget to draw the sprite inside the <code>render()</code> function.
+        What happens? Can you explain the result? Fix the problem before continuing to exercise 2.
+    </p>
+    <p><strong>Exercise 2 - Setting the sprite origin.</strong></p>
+    <p>By default the origin of the sprite is set to the top left corner. Set the origin of the sprite to it's centre point. Where is the sprite now drawn? Can you explain why part of the sprite is missing?</p>
+    <p><strong>Exercise 3 - Rotating a sprite.</strong></p>
+    <p>
+        Draw the sprite anywhere so it is fully visible (i.e. translate the sprite somewhere). Rotate the sprite by 90 degrees. Which direction has the tank rotated (clockwise or anti-clockwise)?
+        By default, in SFML, 0° corresponds to &quot;right&quot;, i.e. along the positive x-axis. This means our tank sprite should face straight down the positive y-axis when rotated 90°. How can this be fixed?
+    </p>
+    <p>Finally, be sure to read the SFML tutorial on Sprites <a href="https://www.sfml-dev.org/tutorials/2.5/graphics-sprite.php">here</a> </p>
 
 </body>
 </html>
