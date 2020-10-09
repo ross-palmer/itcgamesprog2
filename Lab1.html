@@ -346,7 +346,7 @@ We will start by looking at the sample Visual Studio solution 'SFML Playground'.
 
         while (lag &gt; MS_PER_UPDATE)
         {
-            update(MS_PER_UPDATE);
+            update(lag);
             lag -= MS_PER_UPDATE;
         }
         update(lag);
