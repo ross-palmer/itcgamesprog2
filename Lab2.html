@@ -1,313 +1,314 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
-<title>Lab2</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
-/* Author: Nicolas Hery - http://nicolashery.com */
-/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
-/* Source: https://github.com/nicolahery/markdownpad-github */
+    <title>Lab2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+                /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+                /* Author: Nicolas Hery - http://nicolashery.com */
+                /* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+                /* Source: https://github.com/nicolahery/markdownpad-github */
 
-/* RESET
-=============================================================================*/
+                /* RESET
+        =============================================================================*/
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
+                html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                }
 
-/* BODY
-=============================================================================*/
+                /* BODY
+        =============================================================================*/
 
-body {
-  font-family: Helvetica, arial, freesans, clean, sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333;
-  background-color: #fff;
-  padding: 20px;
-  max-width: 960px;
-  margin: 0 auto;
-}
+                body {
+                    font-family: Helvetica, arial, freesans, clean, sans-serif;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #fff;
+                    padding: 20px;
+                    max-width: 960px;
+                    margin: 0 auto;
+                }
 
-body>*:first-child {
-  margin-top: 0 !important;
-}
+                    body > *:first-child {
+                        margin-top: 0 !important;
+                    }
 
-body>*:last-child {
-  margin-bottom: 0 !important;
-}
+                    body > *:last-child {
+                        margin-bottom: 0 !important;
+                    }
 
-/* BLOCKS
-=============================================================================*/
+                /* BLOCKS
+        =============================================================================*/
 
-p, blockquote, ul, ol, dl, table, pre {
-  margin: 15px 0;
-}
+                p, blockquote, ul, ol, dl, table, pre {
+                    margin: 15px 0;
+                }
 
-/* HEADERS
-=============================================================================*/
+                /* HEADERS
+        =============================================================================*/
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 20px 0 10px;
-  padding: 0;
-  font-weight: bold;
-  -webkit-font-smoothing: antialiased;
-}
+                h1, h2, h3, h4, h5, h6 {
+                    margin: 20px 0 10px;
+                    padding: 0;
+                    font-weight: bold;
+                    -webkit-font-smoothing: antialiased;
+                }
 
-h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
-  font-size: inherit;
-}
+                    h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+                        font-size: inherit;
+                    }
 
-h1 {
-  font-size: 28px;
-  color: #000;
-}
+                h1 {
+                    font-size: 28px;
+                    color: #000;
+                }
 
-h2 {
-  font-size: 24px;
-  border-bottom: 1px solid #ccc;
-  color: #000;
-}
+                h2 {
+                    font-size: 24px;
+                    border-bottom: 1px solid #ccc;
+                    color: #000;
+                }
 
-h3 {
-  font-size: 18px;
-}
+                h3 {
+                    font-size: 18px;
+                }
 
-h4 {
-  font-size: 16px;
-}
+                h4 {
+                    font-size: 16px;
+                }
 
-h5 {
-  font-size: 14px;
-}
+                h5 {
+                    font-size: 14px;
+                }
 
-h6 {
-  color: #777;
-  font-size: 14px;
-}
+                h6 {
+                    color: #777;
+                    font-size: 14px;
+                }
 
-body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
+                body > h2:first-child, body > h1:first-child, body > h1:first-child + h2, body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
 
-a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
-  margin-top: 0;
-  padding-top: 0;
-}
+                a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
 
-h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
-  margin-top: 10px;
-}
+                h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+                    margin-top: 10px;
+                }
 
-/* LINKS
-=============================================================================*/
+                /* LINKS
+        =============================================================================*/
 
-a {
-  color: #4183C4;
-  text-decoration: none;
-}
+                a {
+                    color: #4183C4;
+                    text-decoration: none;
+                }
 
-a:hover {
-  text-decoration: underline;
-}
+                    a:hover {
+                        text-decoration: underline;
+                    }
 
-/* LISTS
-=============================================================================*/
+                /* LISTS
+        =============================================================================*/
 
-ul, ol {
-  padding-left: 30px;
-}
+                ul, ol {
+                    padding-left: 30px;
+                }
 
-ul li > :first-child, 
-ol li > :first-child, 
-ul li ul:first-of-type, 
-ol li ol:first-of-type, 
-ul li ol:first-of-type, 
-ol li ul:first-of-type {
-  margin-top: 0px;
-}
+                    ul li > :first-child,
+                    ol li > :first-child,
+                    ul li ul:first-of-type,
+                    ol li ol:first-of-type,
+                    ul li ol:first-of-type,
+                    ol li ul:first-of-type {
+                        margin-top: 0px;
+                    }
 
-ul ul, ul ol, ol ol, ol ul {
-  margin-bottom: 0;
-}
+                    ul ul, ul ol, ol ol, ol ul {
+                        margin-bottom: 0;
+                    }
 
-dl {
-  padding: 0;
-}
+                dl {
+                    padding: 0;
+                }
 
-dl dt {
-  font-size: 14px;
-  font-weight: bold;
-  font-style: italic;
-  padding: 0;
-  margin: 15px 0 5px;
-}
+                    dl dt {
+                        font-size: 14px;
+                        font-weight: bold;
+                        font-style: italic;
+                        padding: 0;
+                        margin: 15px 0 5px;
+                    }
 
-dl dt:first-child {
-  padding: 0;
-}
+                        dl dt:first-child {
+                            padding: 0;
+                        }
 
-dl dt>:first-child {
-  margin-top: 0px;
-}
+                        dl dt > :first-child {
+                            margin-top: 0px;
+                        }
 
-dl dt>:last-child {
-  margin-bottom: 0px;
-}
+                        dl dt > :last-child {
+                            margin-bottom: 0px;
+                        }
 
-dl dd {
-  margin: 0 0 15px;
-  padding: 0 15px;
-}
+                    dl dd {
+                        margin: 0 0 15px;
+                        padding: 0 15px;
+                    }
 
-dl dd>:first-child {
-  margin-top: 0px;
-}
+                        dl dd > :first-child {
+                            margin-top: 0px;
+                        }
 
-dl dd>:last-child {
-  margin-bottom: 0px;
-}
+                        dl dd > :last-child {
+                            margin-bottom: 0px;
+                        }
 
-/* CODE
-=============================================================================*/
+                /* CODE
+        =============================================================================*/
 
-pre, code, tt {
-  font-size: 12px;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
-}
+                pre, code, tt {
+                    font-size: 12px;
+                    font-family: Consolas, "Liberation Mono", Courier, monospace;
+                }
 
-code, tt {
-  margin: 0 0px;
-  padding: 0px 0px;
-  white-space: nowrap;
-  border: 1px solid #eaeaea;
-  background-color: #f8f8f8;
-  border-radius: 3px;
-}
+                code, tt {
+                    margin: 0 0px;
+                    padding: 0px 0px;
+                    white-space: nowrap;
+                    border: 1px solid #eaeaea;
+                    background-color: #f8f8f8;
+                    border-radius: 3px;
+                }
 
-pre>code {
-  margin: 0;
-  padding: 0;
-  white-space: pre;
-  border: none;
-  background: transparent;
-}
+                pre > code {
+                    margin: 0;
+                    padding: 0;
+                    white-space: pre;
+                    border: none;
+                    background: transparent;
+                }
 
-pre {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
-  font-size: 13px;
-  line-height: 19px;
-  overflow: auto;
-  padding: 6px 10px;
-  border-radius: 3px;
-}
+                pre {
+                    background-color: #f8f8f8;
+                    border: 1px solid #ccc;
+                    font-size: 13px;
+                    line-height: 19px;
+                    overflow: auto;
+                    padding: 6px 10px;
+                    border-radius: 3px;
+                }
 
-pre code, pre tt {
-  background-color: transparent;
-  border: none;
-}
+                    pre code, pre tt {
+                        background-color: transparent;
+                        border: none;
+                    }
 
-kbd {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #DDDDDD;
-    background-image: linear-gradient(#F1F1F1, #DDDDDD);
-    background-repeat: repeat-x;
-    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
-    border-image: none;
-    border-radius: 2px 2px 2px 2px;
-    border-style: solid;
-    border-width: 1px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 10px;
-    padding: 1px 4px;
-}
+                kbd {
+                    -moz-border-bottom-colors: none;
+                    -moz-border-left-colors: none;
+                    -moz-border-right-colors: none;
+                    -moz-border-top-colors: none;
+                    background-color: #DDDDDD;
+                    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+                    background-repeat: repeat-x;
+                    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+                    border-image: none;
+                    border-radius: 2px 2px 2px 2px;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    line-height: 10px;
+                    padding: 1px 4px;
+                }
 
-/* QUOTES
-=============================================================================*/
+                /* QUOTES
+        =============================================================================*/
 
-blockquote {
-  border-left: 4px solid #DDD;
-  padding: 0 15px;
-  color: #777;
-}
+                blockquote {
+                    border-left: 4px solid #DDD;
+                    padding: 0 15px;
+                    color: #777;
+                }
 
-blockquote>:first-child {
-  margin-top: 0px;
-}
+                    blockquote > :first-child {
+                        margin-top: 0px;
+                    }
 
-blockquote>:last-child {
-  margin-bottom: 0px;
-}
+                    blockquote > :last-child {
+                        margin-bottom: 0px;
+                    }
 
-/* HORIZONTAL RULES
-=============================================================================*/
+                /* HORIZONTAL RULES
+        =============================================================================*/
 
-hr {
-  clear: both;
-  margin: 15px 0;
-  height: 0px;
-  overflow: hidden;
-  border: none;
-  background: transparent;
-  border-bottom: 4px solid #ddd;
-  padding: 0;
-}
+                hr {
+                    clear: both;
+                    margin: 15px 0;
+                    height: 0px;
+                    overflow: hidden;
+                    border: none;
+                    background: transparent;
+                    border-bottom: 4px solid #ddd;
+                    padding: 0;
+                }
 
-/* TABLES
-=============================================================================*/
+                /* TABLES
+        =============================================================================*/
 
-table th {
-  font-weight: bold;
-}
+                table th {
+                    font-weight: bold;
+                }
 
-table th, table td {
-  border: 1px solid #ccc;
-  padding: 6px 13px;
-}
+                table th, table td {
+                    border: 1px solid #ccc;
+                    padding: 6px 13px;
+                }
 
-table tr {
-  border-top: 1px solid #ccc;
-  background-color: #fff;
-}
+                table tr {
+                    border-top: 1px solid #ccc;
+                    background-color: #fff;
+                }
 
-table tr:nth-child(2n) {
-  background-color: #f8f8f8;
-}
+                    table tr:nth-child(2n) {
+                        background-color: #f8f8f8;
+                    }
 
-/* IMAGES
-=============================================================================*/
+                /* IMAGES
+        =============================================================================*/
 
-img {
-  max-width: 100%
-}
-</style>
+                img {
+                    max-width: 100%
+                }
+    </style>
 </head>
 <body>
-<h2>Lab 2: Level Loading: using YAML to represent game data</h2>
-<p><strong>To be completed by:</strong> Week 4 (Mon 19/10)</p>
-<p>Learning Outcomes:</p>
-<ul>
-<li>Explain what YAML is and how it can be used to represent game data.</li>
-<li>Use a YAML parser to extract information from a YAML file.</li>
-<li>Load a font and show text in SFML.</li>
-</ul>
-<hr />
-<p>Contine with the sample Visual Studio solution 'SFML Playground' from lab 1.</p>
-<p><strong>2.1 The YAML format</strong></p>
-<p>YAML is a recursive acronomyn that is expanded as:</p>
-<blockquote>
-<p>YAML Ain't a Markup Language.</p>
-</blockquote>
-<p>As stated in it's title, YAML is not a markup langauge and allows for more readable code. The following example illustrates this point by comparing a sample XML file against an equivalent YAML file: (taken from <a href="http://www.gamedev.net/page/resources/_/technical/apis-and-tools/yaml-basics-and-parsing-with-yaml-cpp-r3508">here</a>).</p>
-<p><strong>Sample XML file</strong></p>
+    <h2>Lab 2: Level Loading: using YAML to represent game data</h2>
+    <p><strong>To be completed by:</strong> Week 4 (Mon 19/10)</p>
+    <p>Learning Outcomes:</p>
+    <ul>
+        <li>Explain what YAML is and how it can be used to represent game data.</li>
+        <li>Use a YAML parser to extract information from a YAML file.</li>
+        <li>Load a font and show text in SFML.</li>
+    </ul>
+    <hr />
+    <p>By now you should have completed the <a href="https://instituteoftechnol663-my.sharepoint.com/:b:/g/personal/palmerr_itcarlow_ie/EXr5HJ4Q6tpKhuAE0rk5rUMBxfOL4LQwmgn36irPPYmQQA?e=XFGfcF">YAML exercise</a> which is a prerequisite for this lab exercise.  Open  your Visual Studio solution 'SFML Playground' from Q2 of this exercise. If you don't need a recap on the YAML format, skip to section<b> 2.2 Project setup</b>.</p>
+    <p><strong>2.1 The YAML format</strong></p>
+    <p>YAML is a recursive acronomyn that is expanded as:</p>
+    <blockquote>
+        <p>YAML Ain't a Markup Language.</p>
+    </blockquote>
+    <p>As stated in it's title, YAML is not a markup langauge and allows for more readable code. The following example illustrates this point by comparing a sample XML file against an equivalent YAML file: (taken from <a href="http://www.gamedev.net/page/resources/_/technical/apis-and-tools/yaml-basics-and-parsing-with-yaml-cpp-r3508">here</a>).</p>
+    <p><strong>Sample XML file</strong></p>
 <pre><code>&lt;settings&gt;
     &lt;graphics&gt;
         &lt;vsync&gt;true&lt;/vsync&gt;
@@ -325,7 +326,7 @@ img {
 &lt;/settings&gt;
 </code></pre>
 
-<p><strong>An equivalent YAML file</strong></p>
+    <p><strong>An equivalent YAML file</strong></p>
 <pre><code>settings:
     graphics:
         vsync: true
@@ -339,28 +340,32 @@ img {
         invert_y: false
 </code></pre>
 
-<p>So YAML is a data serialisation language that is designed to be easily read by humans. 
-Game data includes elements such as image filenames, image dimensions, attributes of specific game objects (e.g. initial health values, time-to-live value for bullets etc) and so on. It is always a good idea to keep this type of data external to your code base. Why? One reason is to avoid the necessity to rebuild the project when any specific piece of game data changes. For example during playtesting we may discover that the velocity of an AI unit is too high and should be lowered. Once the value is adjusted in the data file, we can re-run the program immediately and see the effect. Another advantage is to keep all the game data together in one external file where it is simpler to manage than looking through source files.</p>
-<p>Now we consider a very brief introduction to YAML so we can get up and running with a simple example. YAML has three basic structures: scalars, sequences and mappings. </p>
-<p><strong>YAML scalars</strong></p>
-<p>Scalars are simple values, such as strings or numbers that may have an optional identifying name. Here's an example that maps scalars to scalars:</p>
+    <p>
+        So YAML is a data serialisation language that is designed to be easily read by humans.
+        Game data includes elements such as image filenames, image dimensions, attributes of specific game objects (e.g. initial health values, time-to-live value for bullets etc) and so on. It is always a good idea to keep this type of data external to your code base. Why? One reason is to avoid the necessity to rebuild the project when any specific piece of game data changes. For example during playtesting we may discover that the velocity of an AI unit is too high and should be lowered. Once the value is adjusted in the data file, we can re-run the program immediately and see the effect. Another advantage is to keep all the game data together in one external file where it is simpler to manage than looking through source files.
+    </p>
+    <p>Now we consider a very brief introduction to YAML so we can get up and running with a simple example. YAML has three basic structures: scalars, sequences and mappings. </p>
+    <p><strong>YAML scalars</strong></p>
+    <p>Scalars are simple values, such as strings or numbers that may have an optional identifying name. Here's an example that maps scalars to scalars:</p>
 <pre><code>file: background.png # This is a simple string scalar
 spawn_interval: 20 # This is a simple number scalar
 </code></pre>
 
-<p>Note the # symbol designates a comment. Mappings use a colon and a space (&quot;: &quot;) to mark each mapping key: value pair (e.g. in the above, <code>file:</code> maps to <code>background.png</code>). In YAML terminology, <code>file:</code> is a <em>scalar node</em> and it's value is <code>background.png</code>.</p>
-<p><strong>YAML sequences</strong></p>
-<p>In YAML, block sequences (or lists) indicate each entry with a dash and space (&quot;- &quot;). For example, a sequence of scalars looks like this:</p>
+    <p>Note the # symbol designates a comment. Mappings use a colon and a space (&quot;: &quot;) to mark each mapping key: value pair (e.g. in the above, <code>file:</code> maps to <code>background.png</code>). In YAML terminology, <code>file:</code> is a <em>scalar node</em> and it's value is <code>background.png</code>.</p>
+    <p><strong>YAML sequences</strong></p>
+    <p>In YAML, block sequences (or lists) indicate each entry with a dash and space (&quot;- &quot;). For example, a sequence of scalars looks like this:</p>
 <pre><code>game_developers:
 - John McCarmack
 - Brenda Romero
 - Sid Meier
 </code></pre>
 
-<p>Note that tabs <strong>are not</strong> allowed in YAML. White spaces are meaningful when starting a line and are used to identify blocks (through indentation).
-Lists are used to store a collection of ordered values. The values are not associated with a key, only with a positional index obtained from the order in which they are specified.</p>
-<p><strong>YAML mappings</strong></p>
-<p>The value associated to a key can also be another map of key-value pairs. To achieve this, omit the value and instead write the key-value pairs in the following lines. However, you must prefix them with at least one more space character than the key. Here's an example:</p>
+    <p>
+        Note that tabs <strong>are not</strong> allowed in YAML. White spaces are meaningful when starting a line and are used to identify blocks (through indentation).
+        Lists are used to store a collection of ordered values. The values are not associated with a key, only with a positional index obtained from the order in which they are specified.
+    </p>
+    <p><strong>YAML mappings</strong></p>
+    <p>The value associated to a key can also be another map of key-value pairs. To achieve this, omit the value and instead write the key-value pairs in the following lines. However, you must prefix them with at least one more space character than the key. Here's an example:</p>
 <pre><code>background:
    file: background.jpg # The key background: maps to a key/value pair.
 tank:
@@ -368,20 +373,20 @@ tank:
    armour: 100 
 </code></pre>
 
-<p>YAML will consider that lines prefixed with more spaces than the parent key are contained inside it. In fact, all lines must be prefixed with the same amount of spaces to belong to the same map. In the above example, the key/value pairs <code>file:</code> and <code>armour:</code> belong to the key <code>tank:</code></p>
-<p>Note that:</p>
+    <p>YAML will consider that lines prefixed with more spaces than the parent key are contained inside it. In fact, all lines must be prefixed with the same amount of spaces to belong to the same map. In the above example, the key/value pairs <code>file:</code> and <code>armour:</code> belong to the key <code>tank:</code></p>
+    <p>Note that:</p>
 <pre><code> tank:
    position:
      x: 850
      y: 100
 </code></pre>
 
-<p>can also be written as:</p>
+    <p>can also be written as:</p>
 <pre><code>tank:
    position: {x: 850, y: 100}
 </code></pre>
 
-<p>Finally, it is possible to have mappings inside sequences. Consider this example:</p>
+    <p>Finally, it is possible to have mappings inside sequences. Consider this example:</p>
 <pre><code>obstacles: 
    - type: wall
      position: {x: 100, y: 660}
@@ -394,52 +399,46 @@ tank:
      rotation: 20
 </code></pre>
 
-<p>This describes an obstacle key that is a sequence of mappings. The mappings are type (each type is a wall), position and rotation. </p>
-<p>Next we look at setting up our Visual Studio project to put together a complete example.
-If you want to learn more about YAML, have a look at these resources</p>
-<ul>
-<li><a href="https://github.com/Animosity/CraftIRC/wiki/Complete-idiot's-introduction-to-yaml">https://github.com/Animosity/CraftIRC/wiki/Complete-idiot's-introduction-to-yaml</a></li>
-<li><a href="http://yaml.org/spec/current.html">http://yaml.org/spec/current.html</a></li>
-<li><a href="https://www.gamedev.net/articles/programming/engines-and-middleware/yaml-basics-and-parsing-with-yaml-cpp-r3508">https://www.gamedev.net/articles/programming/engines-and-middleware/yaml-basics-and-parsing-with-yaml-cpp-r3508</a></li>
-</ul>
-<p><strong>In-class Exercise</strong></p>
-<p>Shortly you will learn how to configure your SFML Playground project to support the YAML library (section 2.2 below). First, we will look at a small example to illustrate how we can load a simple YAML file in an SFML environment. </p>
-<p>Download the starter project from <a href="https://github.com/ross-palmer/SFML_YAML_Playground">here</a> and open it in Visual Studio.</p>
-<p>There are several exercises for you to complete in this example (see LevelLoader.cpp). When you are finished with the exercises, close the project, open your SFML Playground project from lab 1 and continue below.</p>
-<p><strong>2.2 Project setup</strong></p>
-<p>We need a way of decoding or parsing the YAML information and loading it into a C++ class. We are going to use a C++ YAML parser called <a href="https://github.com/jbeder/yaml-cpp">yaml-cpp</a>. </p>
-<p>1) To begin, download all the source files from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtiKL-iOmBimPolVi">here</a>.
-Extract the downloaded file and copy the folder named 'yaml-cpp' into your project directory.</p>
-<p>2) Copy the files <code>level1.yaml</code>, <code>Background.jpg</code> and <code>SpriteSheet.png</code> into your project folder. (We will create a proper folder structure in the next lab).</p>
-<p>3) In your project folder, create a folder called <code>lib</code> and copy the file <code>libyaml-cppmdd.lib</code> into that folder. This file contains pre-compiled functions from the YAML library that the linker requires.</p>
-<p>4) Inside visual studio, right click your solution name and choose properties. In the Property Pages dialog box, choose <code>Linker-&gt;General</code> and add the entry <code>.\lib</code> under <code>Additional Library Directories</code> as indicated below:</p>
-<p><img src="linkeryamlsettings.jpg" /></p>
-<p>This tells the linker to search in the current directory (designated as a .) for a folder called <code>lib</code>. How does the linker know what lib file to search for? We need to tell it which is the next step.</p>
-<p>5) Open main.cpp and before the first <code>#include</code> statement, add the line:</p>
-<pre><code>#pragma comment(lib,&quot;libyaml-cppmdd&quot;) 
-</code></pre>
+    <p>This describes an obstacle key that is a sequence of mappings. The mappings are type (each type is a wall), position and rotation. </p>
+    <p>
+        Next we look at setting up our Visual Studio project to put together a complete example.
+        If you want to learn more about YAML, have a look at these resources
+    </p>
+    <ul>
+        <li><a href="https://github.com/Animosity/CraftIRC/wiki/Complete-idiot's-introduction-to-yaml">https://github.com/Animosity/CraftIRC/wiki/Complete-idiot's-introduction-to-yaml</a></li>
+        <li><a href="http://yaml.org/spec/current.html">http://yaml.org/spec/current.html</a></li>
+        <li><a href="https://www.gamedev.net/articles/programming/engines-and-middleware/yaml-basics-and-parsing-with-yaml-cpp-r3508">https://www.gamedev.net/articles/programming/engines-and-middleware/yaml-basics-and-parsing-with-yaml-cpp-r3508</a></li>
+    </ul>
 
-<p>This tells the linker to use the lib file named inside the double quotes.</p>
-<p>6) Locate the files LevelLoader.h, LevelLoader.cpp that you downloaded from step 1) and add them to your project.</p>
-<p>7) Open Game.h and add the line:</p>
-<pre><code>#include LevelLoader.h
-</code></pre>
+    <p><strong>2.2 Project setup</strong></p>
+    <p>We need a way of decoding or parsing the YAML information and loading it into a C++ class. We are going to use a C++ YAML parser called <a href="https://github.com/jbeder/yaml-cpp">yaml-cpp</a>. </p>
+    <p>
+        1) To begin, download the source files and images from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/g/personal/palmerr_itcarlow_ie/EnUxQHM1A4pCrR2c7UGvaokBANOpOT4L41s04pRWzcqZUA?e=rfouGw">here</a>.
+        Copy the source files (.h and .cpp) to your SFML Playground project, make sure to overwrite your existing source files, i.e. replace your main.cpp, Game.h, Game.cpp, LevelLoader.h, LevelLoader.cpp files with the ones I have provided here. This will simplify the project setup.
+    </p>
+    <p>2) Replace your existing yaml file <code>level1.yaml</code> with the one provided. Copy <code>Background.jpg</code> and <code>SpriteSheet.png</code> into your project folder. (We will create a proper folder structure in the next lab).</p>
 
-<p><strong>2.3 Introducing <code>std::vector</code></strong></p>
-<p>Our <code>LevelLoader</code> class uses a C++ data structure called <code>vector</code>, so we introduce it first here. The C++ <code>std::vector</code> class is a type of container from the Standard Template Library (STL). It should not be confused with a mathematical vector. For now, simply think of a C++ vector as an array that can grow and shrink at runtime. This special attribute means we do not have to declare the size of the vector up front (as we do with arrays). To use it in our program, we must </p>
-<p><code>#include &lt;vector&gt;</code> </p>
-<p>Note this <code>#include</code> statement is already added to LevelLoader.h </p>
-<p>The vector class is defined in the standard (<code>std</code>) namespace and uses special notation to indicate what type of data it can store. For example:</p>
+    <p>3) Ensure the linker is configured to locate both your SFML lib files and the YAML lib file. If you are not sure how to do this, see the instructions and screenshots provided in the <a href="https://instituteoftechnol663-my.sharepoint.com/:b:/g/personal/palmerr_itcarlow_ie/EXr5HJ4Q6tpKhuAE0rk5rUMBxfOL4LQwmgn36irPPYmQQA?e=XFGfcF">YAML exercise</a> .</p>
+
+    <p><strong>2.3 Introducing <code>std::vector</code></strong></p>
+    <p>Our <code>LevelLoader</code> class uses a C++ data structure called <code>vector</code>, so we introduce it first here. The C++ <code>std::vector</code> class is a type of container from the Standard Template Library (STL). It should not be confused with a mathematical vector. For now, simply think of a C++ vector as an array that can grow and shrink at runtime. This special attribute means we do not have to declare the size of the vector up front (as we do with arrays). To use it in our program, we must </p>
+    <p><code>#include &lt;vector&gt;</code> </p>
+    <p>Note this <code>#include</code> statement is already added to LevelLoader.h </p>
+    <p>The vector class is defined in the standard (<code>std</code>) namespace and uses special notation to indicate what type of data it can store. For example:</p>
 <pre><code>std::vector&lt;int&gt; myVector;
 </code></pre>
 
-<p>declares a variable <code>myVector</code> that can store type <code>int</code>. The angle brackets means that
-vector is a <em>template</em> class, and a data type is <strong>always</strong> required inside the angle brackets (to fill the template if you like).
-We will learn how to add elements to and retrieve elements from a vector shortly.</p>
-<p><strong>2.4 How the YAML parser works</strong></p>
-<p>The LevelLoader class uses the YAML parser to extract the data from the file (<code>level1.yaml</code>) into the various structs defined inside LevelLoader.h
-There is a struct defined for each type of top level YAML node defined in the YAML file, i.e. we have three structs <code>ObstacleData</code>, <code>BackgroundData</code> and <code>TankData</code>.</p>
-<p>For example, our obstacle data has a type (a <code>std::string</code>), a position (a <code>sf::Vector2f</code>) and a rotation (a <code>double</code>).</p>
+    <p>
+        declares a variable <code>myVector</code> that can store type <code>int</code>. The angle brackets means that
+        vector is a <em>template</em> class, and a data type is <strong>always</strong> required inside the angle brackets (to fill the template if you like).
+        We will learn how to add elements to and retrieve elements from a vector shortly.
+    </p>
+    <p><strong>2.4 How the YAML parser works</strong></p>
+    <p>
+        The LevelLoader class uses the YAML parser to extract the data from the file (<code>level1.yaml</code>) into the various structs defined inside LevelLoader.h
+        There is a struct defined for each type of top level YAML node defined in the YAML file, i.e. we have three structs <code>ObstacleData</code>, <code>BackgroundData</code> and <code>TankData</code>.
+    </p>
+    <p>For example, our obstacle data has a type (a <code>std::string</code>), a position (a <code>sf::Vector2f</code>) and a rotation (a <code>double</code>).</p>
 <pre><code>struct ObstacleData
 {
   std::string m_type;
@@ -448,7 +447,7 @@ There is a struct defined for each type of top level YAML node defined in the YA
 };
 </code></pre>
 
-<p>We have one final struct that aggregates the three structs into one called <code>LevelData</code>:</p>
+    <p>We have one final struct that aggregates the three structs into one called <code>LevelData</code>:</p>
 <pre><code>struct LevelData
 {
    BackgroundData m_background;
@@ -457,24 +456,24 @@ There is a struct defined for each type of top level YAML node defined in the YA
 };
 </code></pre>
 
-<p>Note that <code>m_obstacles</code> is a <code>std::vector</code> of type <code>ObstacleData</code>.</p>
-<p>At the end of LevelLoader.h we have a constructor function and a static function called <code>load</code> that takes an integer representing the level number and a reference to a <code>LevelData</code> struct.</p>
+    <p>Note that <code>m_obstacles</code> is a <code>std::vector</code> of type <code>ObstacleData</code>.</p>
+    <p>At the end of LevelLoader.h we have a constructor function and a static function called <code>load</code> that takes an integer representing the level number and a reference to a <code>LevelData</code> struct.</p>
 <pre><code>class LevelLoader
 {
 public:
 
-   LevelLoader();
+   LevelLoader() = default;
 
    static void load(int nr, LevelData&amp; level);
 };
 </code></pre>
 
-<p><strong>Exercise 1:</strong> In <code>Game.h</code>, add a member variable for the level data:</p>
+    <p><strong>Exercise 1:</strong> In <code>Game.h</code>, add a member variable for the level data:</p>
 <pre><code>// Load the game level data.
 LevelData m_level;
 </code></pre>
 
-<p>In Game.cpp, at the start of the constructor function add the following:</p>
+    <p>In Game.cpp, at the start of the constructor function add the following:</p>
 <pre><code>int currentLevel = 1;
 
 // Will generate an exception if level loading fails.
@@ -490,48 +489,46 @@ catch (std::exception &amp; e)
 }
 </code></pre>
 
-<p>This calls our static load function passing the level number (1) and a reference to the data structure representing our level (<code>m_level</code>). We will look at the implementation of <code>LevelLoader::load()</code> in a moment.
-If level loading fails (e.g. the yaml file is missing), then the catch block above executes where we report the error and rethrow the exception - this deliberately prevents the Game constructor function from completing.
-To confirm everything is setup correctly, build and run the application (you won't see any new output yet). </p>
-<p><strong>The <code>LevelLoader::load()</code> function</strong></p>
-<p>This is where the yaml parser is used. Here's the first piece of the function:</p>
-<pre><code>void LevelLoader::load(int nr, LevelData&amp; level)
+    <p>
+        This calls our static load function passing the level number (1) and a reference to the data structure representing our level (<code>m_level</code>). We will look at the implementation of <code>LevelLoader::load()</code> in a moment.
+        If level loading fails (e.g. the yaml file is missing), then the catch block above executes where we report the error and rethrow the exception - this deliberately prevents the Game constructor function from completing.
+        To confirm everything is setup correctly, build and run the application (you won't see any new output yet).
+    </p>
+    <p><strong>The <code>LevelLoader::load()</code> function</strong></p>
+    <p>This is where the yaml parser is used. Here's the first piece of the function:</p>
+<pre><code>void LevelLoader::load(int t_levelNr, LevelData&amp; t_level)
 {
-   std::stringstream ss;
-   ss &lt;&lt; &quot;level&quot;;
-   ss &lt;&lt; nr;
-   ss &lt;&lt; &quot;.yaml&quot;;
+   std::string filename = "./levelData/level" + std::to_string(t_levelNr) + ".yaml";
    ...
 </code></pre>
 
-<p>The first line declares a <code>std::stringstream</code> object which can be used to concatenate strings and also convert numerics to strings. It is used just like the object <code>cout</code> - note the use of the insertion operator (<code>&lt;&lt;</code>). The lines:</p>
-<pre><code>ss &lt;&lt; &quot;level&quot;;
-ss &lt;&lt; nr;
-ss &lt;&lt; &quot;.yaml&quot;;
-</code></pre>
+    <p>This string <code>filename</code> simply represents the path to our yaml file. This path is <i>relative to our project folder</i> (the . in the path means up one level in the file system). Note how we convert the level number to a string to form the filename <i>level1.yaml</i>.
 
-<p>add the string <code>&quot;level&quot;</code>, followed by the value of variable <code>nr</code> (which is 1), followed by the string <code>&quot;.yaml&quot;</code>. Thus, our stringstring object <code>ss</code> now contains the string <code>&quot;level1.yaml&quot;</code>.</p>
-<p>The next part of the function defines a try block - this is a block where we may expect an exception (run time problem) to occur and that it should be handled in one of the following catch blocks.</p>
+    <p>The next part of the function defines a try block - this is a block where we may expect an exception (run time problem) to occur and that it should be handled in one of the following catch blocks.</p>
 <pre><code>try
 {
-    YAML::Node baseNode = YAML::LoadFile(ss.str());
+    YAML::Node baseNode = YAML::LoadFile(filename);
     if (baseNode.IsNull())
     {
-        std::string message(&quot;file: &quot; + ss.str() + &quot; not found&quot;);
+        std::string message(&quot;file: &quot; + filename + &quot; not found&quot;);
         throw std::exception(message.c_str());
     }
     baseNode &gt;&gt; level;
 }
 </code></pre>
 
-<p>We used the <code>YAML::LoadFile</code> API function to load the filename contained inside our <code>stringstream</code> object <code>ss</code> - note that <code>ss.str()</code> simply returns a <code>std::string</code> from the object <code>ss</code> as function <code>LoadFile</code> is expecting a string.
-If our YAML file is valid, <code>LoadFile()</code> creates a baseNode representing the top level node from which we can access all the scalar nodes we have defined. If the baseNode is null, meaning our yaml file is invalid (e.g. the file does not exist), then an exception is thrown and our program terminates.
-Assuming everything is ok, the next line to execute is:</p>
+    <p>
+        We used the <code>YAML::LoadFile</code> API function to load the specified filename.
+        If our YAML file is valid, <code>LoadFile()</code> creates a baseNode representing the top level node from which we can access all the scalar nodes we have defined. If the baseNode is null, meaning our yaml file is invalid (e.g. the file does not exist), then an exception is thrown and our program terminates.
+        Assuming everything is ok, the next line to execute is:
+    </p>
 <pre><code>baseNode &gt;&gt; level;
 </code></pre>
 
-<p>This is using the extraction operator, just as we have seen with the object <code>cin</code>.
-You may have noticed other strange looking functions defined in LevelLoader.cpp, such as this one:</p>
+    <p>
+        This is using the extraction operator, just as we have seen with the object <code>cin</code>.
+        You may have noticed other strange looking functions defined in LevelLoader.cpp, such as this one:
+    </p>
 <pre><code>void operator &gt;&gt; (const YAML::Node&amp; levelNode, LevelData&amp; level)
 {
    levelNode[&quot;background&quot;] &gt;&gt; level.m_background;
@@ -548,29 +545,29 @@ You may have noticed other strange looking functions defined in LevelLoader.cpp,
 }
 </code></pre>
 
-<p>This in fact is the function that will be called as a result of </p>
+    <p>This in fact is the function that will be called as a result of </p>
 <pre><code>baseNode &gt;&gt; level;
 </code></pre>
 
-<p>This function overloads the extraction operator and C++ will automatically pass <code>baseNode</code> as the first argument and <code>level</code> as the second argument.</p>
-<p>Note that this line:</p>
+    <p>This function overloads the extraction operator and C++ will automatically pass <code>baseNode</code> as the first argument and <code>level</code> as the second argument.</p>
+    <p>Note that this line:</p>
 <pre><code>levelNode[&quot;background&quot;] &gt;&gt; level.m_background;
 </code></pre>
 
-<p>calls this function:</p>
+    <p>calls this function:</p>
 <pre><code>void operator &gt;&gt; (const YAML::Node&amp; backgroundNode, BackgroundData&amp; background)
 {
    background.m_fileName = backgroundNode[&quot;file&quot;].as&lt;std::string&gt;();
 }
 </code></pre>
 
-<p>which looks up the scalar node <code>&quot;file&quot;</code>, returns the mapped value (<code>Background.jpg</code>) as a <code>std::string</code> and stores it in <code>background.m_filename</code></p>
-<p><strong>Exercise 2:</strong> Which function do you think will be called as a result of the line:</p>
+    <p>which looks up the scalar node <code>&quot;file&quot;</code>, returns the mapped value (<code>Background.jpg</code>) as a <code>std::string</code> and stores it in <code>background.m_filename</code></p>
+    <p><strong>Exercise 2:</strong> Which function do you think will be called as a result of the line:</p>
 <pre><code>levelNode[&quot;tank&quot;] &gt;&gt; level.m_tank;
 </code></pre>
 
-<p>What does this function do? See if you can answer the question by using the debugger.</p>
-<p>Remember that it is possible to have mappings inside sequences like this:</p>
+    <p>What does this function do? See if you can answer the question by using the debugger.</p>
+    <p>Remember that it is possible to have mappings inside sequences like this:</p>
 <pre><code>obstacles: 
    - type: wall
      position: {x: 100, y: 660}
@@ -583,7 +580,7 @@ You may have noticed other strange looking functions defined in LevelLoader.cpp,
      rotation: 20
 </code></pre>
 
-<p>The last part of our above function processes each obstacle:</p>
+    <p>The last part of our above function processes each obstacle:</p>
 <pre><code>const YAML::Node&amp; obstaclesNode = levelNode[&quot;obstacles&quot;].as&lt;YAML::Node&gt;();
 for (unsigned i = 0; i &lt; obstaclesNode.size(); ++i)
 {
@@ -593,22 +590,24 @@ for (unsigned i = 0; i &lt; obstaclesNode.size(); ++i)
 }
 </code></pre>
 
-<p>The first line gets a reference to the node (or key) called 'obstacles'. The loop goes round three times. For each iteration, we populate the <code>ObstacleData</code> struct with the function call:</p>
+    <p>The first line gets a reference to the node (or key) called 'obstacles'. The loop goes round three times. For each iteration, we populate the <code>ObstacleData</code> struct with the function call:</p>
 <pre><code>    obstaclesNode[i] &gt;&gt; obstacle;
 </code></pre>
 
-<p>and we add the obstacle to the rear of the vector <code>level.m_obstacles</code> using the method <code>push_back()</code>.</p>
-<p><strong>Exercise 3:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100. Please use the same tank sprite from lab 1.</p>
-<p><strong>Exercise 4:</strong>  In Game.h, add two member variables <code>m_bgTexture</code> and <code>m_bgSprite</code> for the background texture and sprite respectively. In the Game.cpp constructor function, load the background as a sprite using the supplied filename.  In <code>Game::render()</code>, draw the background sprite first.</p>
-<p><strong>Displaying the obstacle data</strong></p>
-<p>The final thing to do is process our obstacle data and learn the basic usage of <code>std::vector</code>. 
-Open <code>Game.h</code> and add the following member variables:</p>
+    <p>and we add the obstacle to the rear of the vector <code>level.m_obstacles</code> using the method <code>push_back()</code>.</p>
+    <p><strong>Exercise 3:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100. </p>
+    <p><strong>Exercise 4:</strong>  In Game.h, add two member variables <code>m_bgTexture</code> and <code>m_bgSprite</code> for the background texture and sprite respectively. In the Game.cpp constructor function, load the background as a sprite using the supplied filename.  In <code>Game::render()</code>, draw the background sprite first.</p>
+    <p><strong>Displaying the obstacle data</strong></p>
+    <p>
+        The final thing to do is process our obstacle data and learn the basic usage of <code>std::vector</code>.
+        Open <code>Game.h</code> and add the following member variables:
+    </p>
 <pre><code>std::vector&lt;sf::Sprite&gt;  m_sprites;
 // A texture for the sprite sheet
 sf::Texture m_spriteSheetTexture;
 </code></pre>
 
-<p>In <code>Game.cpp</code>, add the following code to the end of your Game constructor function:</p>
+    <p>In <code>Game.cpp</code>, add the following code to the end of your Game constructor function:</p>
 <pre><code>if (!m_spriteSheetTexture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
 {
     std::string errorMsg(&quot;Error loading texture&quot;);
@@ -630,24 +629,26 @@ for (auto &amp;obstacle : m_level.m_obstacles)
 }
 </code></pre>
 
-<p>This creates a temporary sprite variable and we use a C++ 11 range based loop to process each item in the vector. Note the for loop, i.e.</p>
+    <p>This creates a temporary sprite variable and we use a C++ 11 range based loop to process each item in the vector. Note the for loop, i.e.</p>
 <pre><code>for (auto &amp;obstacle : m_level.m_obstacles)
 </code></pre>
 
-<p>the keyword <code>auto</code> means the compiler will deduce the correct type for the variable <code>obstacle</code>, which in this case is type <code>ObstacleData</code>. It does this by looking at the type of the vector that we are looping through, in this case the vector <code>m_obstacles</code>. The use of the <code>&amp;</code> means that we only store a reference to each item in the vector. If we wrote the loop this way:</p>
+    <p>the keyword <code>auto</code> means the compiler will deduce the correct type for the variable <code>obstacle</code>, which in this case is type <code>ObstacleData</code>. It does this by looking at the type of the vector that we are looping through, in this case the vector <code>m_obstacles</code>. The use of the <code>&amp;</code> means that we only store a reference to each item in the vector. If we wrote the loop this way:</p>
 <pre><code>for (auto obstacle : m_level.m_obstacles)
 </code></pre>
 
-<p>it would mean that each item in the vector is <em>copied</em> into the variable obstacle on each pass of the loop, which is an unnecessary copy operation in this case. 
-Inside the loop, we position the temporary sprite and apply the correct rotation by using the data from the obstacle object. Finally, we copy the temporary sprite into the vector <code>m_sprites</code>. We need to do this as you will need to draw the sprites inside our <code>render()</code> method. (The obstacles use our tank image, but in our demo which we will build later, they will be walls).</p>
-<hr />
-<p><strong>Side note:</strong> Sometimes there are reasons why is not a good idea to store containers of instances, particularly if those objects are not lightweight. Firstly, all STL containers copy in and copy out. This means any object you wish to store in a container will be copied into that container, and any object you retrieve from the container will be copied out. Worse still, <code>std::vector</code> will copy all of it's elements to a new location in memory if it runs out of capacity. If you delete an element from a vector, any proceeding elements are copied down one place. For these reasons, it is often preferable to store pointers (or preferably smart pointers) to objects in containers like this:</p>
+    <p>
+        it would mean that each item in the vector is <em>copied</em> into the variable obstacle on each pass of the loop, which is an unnecessary copy operation in this case.
+        Inside the loop, we position the temporary sprite and apply the correct rotation by using the data from the obstacle object. Finally, we copy the temporary sprite into the vector <code>m_sprites</code>. We need to do this as you will need to draw the sprites inside our <code>render()</code> method. (The obstacles use our tank image, but in our demo which we will build later, they will be walls).
+    </p>
+    <hr />
+    <p><strong>Side note:</strong> Sometimes there are reasons why is not a good idea to store containers of instances, particularly if those objects are not lightweight. Firstly, all STL containers copy in and copy out. This means any object you wish to store in a container will be copied into that container, and any object you retrieve from the container will be copied out. Worse still, <code>std::vector</code> will copy all of it's elements to a new location in memory if it runs out of capacity. If you delete an element from a vector, any proceeding elements are copied down one place. For these reasons, it is often preferable to store pointers (or preferably smart pointers) to objects in containers like this:</p>
 <pre><code>std::vector&lt;sf::Sprite *&gt; myVector;
 </code></pre>
 
-<p>However, this is not necessary in the case of <code>sf::Sprite</code>, as it is considered a lightweight class that is not expensive to copy (Sprites simply keep a pointer to a texture, not a copy of the texture, hence why they are considered lightweight objects). We will see similar examples later when we discuss smart pointers.</p>
-<hr />
-<p><strong>Exercise 5:</strong> Inside the <code>render()</code> member function in Game.cpp, write a range based loop to draw each sprite.</p>
+    <p>However, this is not necessary in the case of <code>sf::Sprite</code>, as it is considered a lightweight class that is not expensive to copy (Sprites simply keep a pointer to a texture, not a copy of the texture, hence why they are considered lightweight objects). We will see similar examples later when we discuss smart pointers.</p>
+    <hr />
+    <p><strong>Exercise 5:</strong> Inside the <code>render()</code> member function in Game.cpp, write a range based loop to draw each sprite.</p>
 
 </body>
 </html>
