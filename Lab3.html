@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 3: Moving and rotating a tracked vehicle</h2>
-<p><strong>To be completed by:</strong> Week 5 (Fri 26/10)</p>
+<p><strong>To be completed by:</strong> Week 7 (Mon 9/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Reorganise a project's directory structure to separate source and header files and update the relevant compiler settings. </li>
@@ -307,7 +307,7 @@ img {
 <p><strong>3.1 Reorganising the project structure.</strong></p>
 <p>We are going to reorganise our project structure to make it more orderly. </p>
 <p>1) Open the project in Visual Studio and remove all the header and source files (right click on each, then Remove but <strong>don't</strong> delete). Starting inside your solution folder, make an <code>include</code> folder and a <code>src</code> folder.</p>
-<p>2) Download the additional files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtg2ajquB1YwC7MlH">here</a>. Copy the files Tank.h and Tank.cpp from this download into your solution folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
+<p>2) Download the additional files for this lab from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/g/personal/palmerr_itcarlow_ie/EnCJrmgcChpCu8-xLwvz-7gByrBc8iW1LG-GXwwT2AeGsA?e=D334Wj">here</a>. Copy the files Tank.h and Tank.cpp from this download into your solution folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
 <p>3) Make another folder called <code>resources</code>. Inside resources create two further folders called <code>levels</code> and <code>images</code>. Move your image files (.png, .jpg) into the images folder and move the .yaml level file into the levels folder. Now that we have moved our image file (the background) to a new folder, we need to update the relevant entry in the YAML file:</p>
 <pre><code>background:
    file: ./resources/images/Background.jpg # Sample comment
@@ -340,7 +340,7 @@ Game::Game()
     , m_tank(m_texture)
 </code></pre>
 
-<p>Note how we pass m_texture by reference to the Tank constructor. In fact, the tank texture is not yet loaded, but we will do this shortly. Next, remove any code that creates a Tank sprite from your previous lab - don't forget to remove any unused <code>sf::Sprite</code> or <code>sf::Texture</code> member variables from class <code>Game</code>. Load the sprite sheet you copied earlier as follows:</p>
+<p>Note how we pass m_texture by reference to the Tank constructor. In fact, the tank texture is not yet loaded, but we will do this shortly. <B>Next, remove any code that creates a Tank sprite from your previous lab - don't forget to remove any unused <code>sf::Sprite</code> or <code>sf::Texture</code> member variables from class <code>Game</code></B>. Load the sprite sheet you copied earlier as follows:</p>
 <pre><code>if (!m_texture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
 {
     std::string s(&quot;Error loading texture&quot;);
