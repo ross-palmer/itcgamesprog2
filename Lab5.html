@@ -318,7 +318,7 @@ The <code>OrientedBoundingBox</code> class is adapted slightly from the SFML wik
 void generateWalls();
 </code></pre>
 
-<p>We will need to create a <code>sf::Sprite</code> for each wall, and because there are multiple walls, we need to store the sprites in a container. Add the following new member variable:</p>
+<p>We will need to create a <code>sf::Sprite</code> for each wall, and because there are multiple walls, we need to store the sprites in a container. In Game.h, you should already have a <code>std::vector</code> defined to store your wall sprites from a previous exercise. If not, add a new member variable:</p>
 <pre><code>// Wall sprites
 std::vector&lt;sf::Sprite&gt; m_wallSprites;
 </code></pre>
@@ -342,8 +342,7 @@ void Game::generateWalls()
     }
 }
 </code></pre>
-
-<p>The sprites for each wall are simply appended to the vector. </p>
+<p>Important: please remove any existing code from the Game constructor (in Game.cpp) that already adds wall sprites to a vector.</p>
 <p>At the end of the <code>Game</code> constructor function, add a line to call the new member function:</p>
 <p><code>generateWalls();</code></p>
 <p><strong>Exercise 1</strong>: Build and run the project. Note the walls do not appear. Modify the <code>Game::render()</code> function so the walls get drawn. Hint: Think about what we have just done in the <code>generateWalls()</code> function.</p>
