@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 5: Detecting Collisions</h2>
-<p><strong>To be completed by:</strong> Week 7 (Mon 9/11)</p>
+<p><strong>To be completed by:</strong> Week 10 (Mon 29/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Perform elementary collision detection and response between sprites.</li>
@@ -303,9 +303,11 @@ img {
 <p>We are going to add a couple of sections of walls to add some interest to the level, when finished it will look like this: </p>
 <p><img src="level_with_walls.jpg" /></p>
 <p>It will obviously be necessary to check for collisions between the tank and the walls which is the focus of this lab.</p>
-<p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs24wErcn76NiLQaD">here</a>. Unzip the file and copy the updated .yaml file into your <code>resources\levels</code> folder. The yaml file defines additional walls as obstacles. 
+<p>Download the necessary files for this lab from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/g/personal/palmerr_itcarlow_ie/Ev5JutNnp5dIqX0rGaDbj_gBp2PWAkxd1dR_1ZyDZyQxAA?e=RDDPGA">here</a>.  
 Add the files <code>CollisionDetector.h</code>, <code>OrientedBoundingBox.h</code> and their respective .cpp files to your project.
-The <code>OrientedBoundingBox</code> class is adapted slightly from the SFML wiki <a href="https://github.com/SFML/SFML/wiki/Source%3A-Simple-Collision-Detection-for-SFML-2">here</a>. It provides an implementation of the <a href="http://gamedevelopment.tutsplus.com/tutorials/collision-detection-using-the-separating-axis-theorem--gamedev-169">Seperating Axis Theorem</a> which you may learn about in Graphics next year. </p>
+The <code>OrientedBoundingBox</code> class is adapted slightly from the SFML wiki <a href="https://github.com/SFML/SFML/wiki/Source%3A-Simple-Collision-Detection-for-SFML-2">here</a>. It provides an implementation of the <a href="http://gamedevelopment.tutsplus.com/tutorials/collision-detection-using-the-separating-axis-theorem--gamedev-169">Seperating Axis Theorem</a> which you may learn about next year. </p>
+<p>Note also the yaml file I have provided. Update your own YAML file by replacing your existing sequence of walls, with the sequence I have provided in the yaml file.</p>
+<p></p>
 <p><strong>5.2 Generating the walls</strong></p>
 <p>The first step is to get the level data for the Walls from our <code>Level</code> object - remember, the <code>Game</code> class has a member variable <code>m_level</code> which represents our level data. Note we don't need to make any changes to our <code>LevelLoader</code> as it will happily load up the additional walls we have defined in the yaml file. Add a new private member function to Game.h as follows:</p>
 <pre><code>/// &lt;summary&gt;
@@ -346,15 +348,15 @@ void Game::generateWalls()
 <p><code>generateWalls();</code></p>
 <p><strong>Exercise 1</strong>: Build and run the project. Note the walls do not appear. Modify the <code>Game::render()</code> function so the walls get drawn. Hint: Think about what we have just done in the <code>generateWalls()</code> function.</p>
 <p><strong>5.3 Collision detection between tank and walls</strong></p>
-<p>Now the walls are visible, the next step is to add collision detection between the tank and walls. The tank will perform its own collision checking. Therefore, we need to tell the tank where the walls are. Refactor the <code>Tank</code> constructor - start by removing the second construction argument (i.e. the <code>sf::Vector2f</code> position argument) - we have a <code>Tank::setPosition()</code> method now to take care of setting the tank position. Add a second parameter instead to take a reference to the container of wall sprites (note that we try to keep our comments updated to relect the changes):</p>
+<p>Now the walls are visible, the next step is to add collision detection between the tank and walls. The tank will perform its own collision checking. Therefore, we need to tell the tank where the walls are. Refactor the <code>Tank</code> constructor - start by removing the second construction argument (i.e. the <code>sf::Vector2f</code> position argument) - we have a <code>Tank::setPosition()</code> method now to take care of setting the tank position. In Game.cpp, locate the implementation of constructor function for class Game and find the line where the object <code>m_tank</code> is created - remove the second position argument from here as well. Add a second parameter instead to take a reference to the container of wall sprites (note that we try to keep our comments updated to relect the changes):</p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Constructor that stores drawable state (texture, sprite) for the tank.
 /// Stores references to the texture and container of wall sprites. 
 /// Creates sprites for the tank base and turret from the supplied texture.
 /// &lt;/summary&gt;
-/// &lt;param name=&quot;texture&quot;&gt;A reference to the sprite sheet texture&lt;/param&gt;
-///&lt; param name=&quot;texture&quot;&gt;A reference to the container of wall sprites&lt;/param&gt;  
-Tank(sf::Texture const &amp; texture, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
+/// &lt;param name=&quot;t_texture&quot;&gt;A reference to the sprite sheet texture&lt;/param&gt;
+///&lt; param name=&quot;t_wallSprites&quot;&gt;A reference to the container of wall sprites&lt;/param&gt;  
+Tank(sf::Texture const &amp; t_texture, std::vector&lt;sf::Sprite&gt; &amp; t_wallSprites);
 </code></pre>
 
 <p>Next, add a new member variable to keep a reference to the wall sprite container in Tank.h:</p>
@@ -364,16 +366,16 @@ std::vector&lt;sf::Sprite&gt; &amp; m_wallSprites;
 
 <p>The constructor definition now looks like:</p>
 <pre><code>////////////////////////////////////////////////////////////
-Tank::Tank(sf::Texture const &amp; texture, std::vector&lt;sf::Sprite&gt; &amp; wallSprites)
-: m_texture(texture)
-, m_wallSprites(wallSprites)
+Tank::Tank(sf::Texture const &amp; t_texture, std::vector&lt;sf::Sprite&gt; &amp; t_wallSprites)
+: m_texture(t_texture)
+, m_wallSprites(t_wallSprites)
 {
     // Initialises the tank base and turret sprites.
     initSprites();
 }
 </code></pre>
 
-<p>Don't forget to change the call to the tank constructor function in Game.cpp - you will need to pass in the vector of wall sprites.</p>
+<p>Don't forget to change the call to the tank constructor function at the beginning of Game.cpp (i.e. where variable <code>m_tank</code> is created) - you will need to pass in the vector of wall sprites.</p>
 <p>We now require a new member function in class Tank to check for collisions betweeen the tank and the walls:</p>
 <pre><code>/// &lt;summary&gt;
 /// @brief Checks for collisions between the tank and the walls.
