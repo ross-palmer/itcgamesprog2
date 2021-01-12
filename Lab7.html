@@ -1,7 +1,7 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
-<title>Lab7</title>
+<title>Lab6</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <style type="text/css">
 /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
@@ -291,126 +291,274 @@ img {
 </style>
 </head>
 <body>
-<h2>Lab 7: AI with steering and player seek behaviours</h2>
-<p><strong>To be completed by:</strong> Week 18 (Fri 31/1)</p>
-<p>Learning Outcomes:</p>
-<ul>
-<li>Explain the operation of a steering algorithm with collision avoidance.</li>
-<li>Implement seek and collision avoidance behaviour for an AI tank opponent.</li>
-</ul>
-<hr />
-<p><strong>7.1 Introduction</strong></p>
-<p>In this lab, we will add an AI tank that will use a basic steering algorithm to track the player and steer around obstacles. First you must read <a href="https://gamedevelopment.tutsplus.com/tutorials/understanding-steering-behaviors-collision-avoidance--gamedev-7777">this article</a> which explains how a steering algorithm with collision avoidance works. You should be able to follow the logic of this article with just a basic understanding of vector maths - the code examples are illustrated in pseudocode similar to C#/C++.</p>
-<p>Now that you have read the article, download the source files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCtg7j_fvSpQmPjUpU">here</a>. </p>
-<p>Copy TankAI.h to <code>include</code> and TankAI.cpp to <code>src</code>.</p>
-<p>Don't forget to add these files to your project.</p>
-<p><strong>7.2 Refactoring the existing code base</strong></p>
-<p>Next, we need to refactor or change our existing code base to accomodate the new functionality of an AI opponent. Firstly, the AI tank will need to know the world coordinates of the player tank, so add a <code>getPosition()</code> member function to class Tank:</p>
+    <h2>Lab 6: Projectiles</h2>
+    <p><strong>To be completed by:</strong> Week 16 (Fri 17/1)</p>
+    <p>Learning Outcomes:</p>
+    <ul>
+        <li>Explain the principles behind the object pool pattern.</li>
+        <li>Implement a simple pool system for projectiles.</li>
+        <li>Explain the role of a friend class in C++.</li>
+    </ul>
+    <hr />
+    <p>Continue with the sample Visual Studio solution 'SFML_Playground' from lab 5.</p>
+    <p>Note: If you have already implemented a projectile pool into your project, go straight to section 6.3 below.</p>
+    <p><strong>6.1 Implementing a projectile pool</strong></p>
+    <p>
+        We are now going to implement projectile firing from our tank. We could simply generate projectiles on demand as the user presses fire. However, rather than
+        allocating and destroying these objects on demand, we keep a set of initialised projectiles in a container (such as an array) ready to be used. A client
+        of the pool will request a projectile, perform operations on it and it will be 'returned' to the pool when no longer needed. This type of approach is often applied
+        in cases where many objects need to be generated quickly, and those objects have a short life span.
+    </p>
+    <p>
+        We will use a game design pattern called the <a href="http://gameprogrammingpatterns.com/object-pool.html">Object Pool pattern</a> to implement a pool of projectiles.<br />
+        We start with two classes. The first class, <code>Projectile</code>, will store basic information about the projectile such as it's speed and screen position.
+        The second class, <code>ProjectilePool</code>, will manage a container (pool) of projectiles, and it is through <code>ProjectilePool</code> that we request access to a <code>Projectile</code>.
+        Let's try and visualise how this will work. Say we have a small pool of 7 projectiles. Initially the pool is full and will look like this:
+    </p>
+    <p><img src="pool_full.jpg" /></p>
+    <p>
+        The pool class maintains an index of the next available projectile, which is set to 0 initially. Now imagine that 6 of the 7 projectiles are on-screen.
+        The pool now looks like this:
+    </p>
+    <p><img src="pool_almost_empty.jpg" /></p>
+    <p>The index of the next available projectile points to the last object in the pool. When this object is requested, the pool will now be empty. What do we do if a further projectile is requested from the pool? There are several possible strategies we could take, but the simplest is to wrap the index so that it starts at 0 again:</p>
+    <p><img src="pool_empty.jpg" /></p>
+    <p>
+        If a request comes in for another projectile, we must then re-use the projectile at index 0 which is currently on-screen. Note that the position of a projectile
+        within the array does not tell us anything about how long it has been on-screen, i.e. if projectiles are used in sequence from index 0 to index 6, you cannot assume the 'oldest' projectile will always be at index 0. Projectiles are returned to the pool when they go off-screen or collide with an obstacles such as a wall or another tank.
+    </p>
+    <p><strong>6.2 Implementing a projectile pool</strong></p>
+    <p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs3JAZsW_jah0Q80P">here</a>. Unzip the file and add the files <code>Projectile.h</code>, <code>ProjectilePool.h</code> and their respective .cpp files to your project. Let's consider class ProjectilePool first, let's consider it's private data members first:</p>
+<pre><code>private:
+static const int s_POOL_SIZE = 100;
+
+// A container for the projectiles.
+std::array&lt;Projectile, s_POOL_SIZE&gt; m_projectiles;
+
+// The index of the next available projectile.
+int m_nextAvailable { 0 };
+
+// A flag indicating whether there are any projectiles available (initially they are).
+bool m_poolFull { false };
+</code></pre>
+
+    <p>
+        So the pool size is 100. We use a C++11 style array to hold the projectile instances. <code>std::array</code> is a template class, the first template argument is the class type you wish to store in the array (<code>Projectile</code>), the second is the size of the array (<code>s_POOL_SIZE</code>).
+        The index of the next available projectile is set to 0, and finally we have a flag <code>m_poolFull</code> to keep track of the pool full status.
+    </p>
+    <p>In the public interface, there is a standard no-op default constructor defined:</p>
 <pre><code>/// &lt;summary&gt;
-/// @brief Reads the player tank position.
-/// &lt;returns&gt;The tank base position.&lt;/returns&gt;
+/// @brief No-op default constructor
 /// &lt;/summary&gt;
-sf::Vector2f getPosition() const;
+ProjectilePool() = default;
 </code></pre>
 
-<p>and in Tank.cpp:</p>
+    <p>
+        Note that when we make an instance of ProjectilePool, the array <code>m_projectiles</code> is automatically populated with 100 Projectile instances.
+        Next, we have a member function called <code>create()</code> which client code will use to request access to a projectile (read the comments to see exactly
+        what each function does):
+    </p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Creates a projectile.
+/// Creates a projectile from the pool of available projectiles.
+///  If no projectiles are available, the next in (pool) sequence after
+///  the last used projectile is chosen.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;texture&quot;&gt;A reference to the sprite sheet texture&lt;/param&gt;   
+/// &lt;param name=&quot;x&quot;&gt;The x position of the projectile&lt;/param&gt;
+/// &lt;param name=&quot;x&quot;&gt;The y position of the projectile&lt;/param&gt;
+/// &lt;param name=&quot;rotation&quot;&gt;The rotation angle of the projectile in degrees&lt;/param&gt;
+void create(sf::Texture const &amp; texture, double x, double y, double rotation);
+</code></pre>
+
+    <p>The main task of the <code>update()</code> member function is to loop through every projectile in the array and invoke their <code>update()</code> function in turn:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Updates all projectiles in the pool.
+/// Sets an index to the next available projectile. Also sets a 
+///  status flag to indicate pool full (all projectiles in use).
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;dt&quot;&gt;The delta time&lt;/param&gt; 
+/// &lt;param name=&quot;rotation&quot;&gt;A reference to the container of wall sprites&lt;/param&gt;
+void update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
+</code></pre>
+
+    <p>
+        Finally, the <code>render()</code> member function draws all active projectiles. A projectile is considered active if it's speed value is set (i.e. to it's max.
+        possible speed).
+    </p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Draws all active projectiles.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;window&quot;&gt;The SFML render window&lt;/param&gt; 
+void render(sf::RenderWindow &amp; window);
+</code></pre>
+
+    <p>Note that in the implementation of the <code>render()</code> function, we have this line:</p>
+<pre><code>window.draw(m_projectiles.at(i).m_projectile);
+</code></pre>
+
+    <p>
+        <code>m_projectile</code> is a <code>sf::Sprite</code> which is a private property of the <code>Projectile</code> class. So how can this class access the private member variable
+        of class <code>Projectile</code>? In C++, we have a special mechanism to enable this behaviour by which one class can 'befriend' another. Which brings us
+        nicely to the Projectile class...
+    </p>
+    <p>At the beginning of the declaration for class <code>Projectile</code>, we have:</p>
+<pre><code>class Projectile
+{
+    // Allows the ProjectilePool direct access to the private members of Projectile.
+    // This is so the ProjectilePool can access the Projectile sprite representation so it
+    // can be rendered.
+    friend class ProjectilePool;
+</code></pre>
+
+    <p>
+        The declaration <code>friend class ProjectilePool</code> enables the <code>ProjectilePool</code> class access the private member variables of class <code>Projectile</code> without
+        the need to provide a getter method. This is considered acceptable practice because the <code>Projectile</code> objects are tightly coupled to the <code>ProjectilePool</code>
+        class.
+    </p>
+    <p>Let's start with a quick look at the private members of Projectile:</p>
+<pre><code>private:
+    bool Projectile::isOnScreen(sf::Vector2f position) const;
+
+    // Max. update speed 
+    static constexpr double s_MAX_SPEED { 1000.0 };
+
+    // Movement speed.
+    double m_speed { s_MAX_SPEED };
+
+    // A sprite for the projectile.
+    sf::Sprite m_projectile;
+
+    // The bounding rectangle for this projectile.
+    sf::IntRect m_projectileRect { 5, 178, 10, 6 }; 
+</code></pre>
+
+    <p>
+        <code>isOnScreen()</code> is a private helper method that returns true if this projectile is on screen.
+        <code>s_MAX_SPEED</code> is a constant value that we use to define the projectiles maximum speed.
+        The current movement speed of a projectile is stored in <code>m_speed</code>.
+        <code>m_projectile</code> is our sprite representation of a projectile, while m_projectileRect defines the bounding rectangle for the projectile - this information is taken from the sprite sheet.
+    </p>
+    <p>
+        In the public interface, we have an <code>init()</code> member function that takes the same arguments as <code>ProjectilePool::init()</code>. This is how we initialise a Projectile - remember we don't create them as they exist already in the pool.
+        The primary job of the <code>update()</code> member function is to calculate the next screen position for the projectile, and to perform collision checking between the projectile and walls:
+    </p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Calculates the new position of the projectile.
+/// If this projectile is currently in use (on screen, speed non-zero), it's next screen position
+///  is calculated along a vector that extends directly from the tip of the tank turret.
+/// If the newly calculated position is off-screen, then the projectile speed is reset to 0.
+/// Otherwise (projectile still on-screen), a collision check is performed between the projectile
+///  and every wall. If the projectile collides with a wall, it's speed is reset to 0.
+/// &lt;/summary&gt;
+/// &lt;param name=&quot;dt&quot;&gt;The delta time&lt;/param&gt;
+/// &lt;param name=&quot;wallSprites&quot;&gt;A reference to the container of wall sprites&lt;/param&gt;
+/// &lt;returns&gt;True if this projectile is currently not in use (i.e. speed is zero).&lt;/returns&gt;
+bool update(double dt, std::vector&lt;sf::Sprite&gt; &amp; wallSprites);
+</code></pre>
+
+    <p><strong>Exercise 1</strong>: Add the <code>ProjectilePool</code> as a data member of class <code>Tank</code> called <code>m_pool</code>. (Note: this is an example of composition - a Tank 'has a' projectile pool).</p>
+    <p><strong>Exercise 2</strong>: Add the following member function to class <code>Tank</code>:</p>
+    <p>Tank.h</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Generates a request to fire a projectile.
+/// A projectile will be fired from the tip of the turret only if time limit between shots
+///  has expired. Fire requests are not queued.
+/// &lt;/summary&gt;
+void requestFire();
+</code></pre>
+
+    <p>Tank.cpp</p>
 <pre><code>////////////////////////////////////////////////////////////
-sf::Vector2f Tank::getPosition() const
+void Tank::requestFire()
 {
-    return m_tankBase.getPosition();
-}
-</code></pre>
-
-<p>Next, we have defined some properties of the AI tank in the YAML file - look at the <code>ai_tank</code> section below:</p>
-<pre><code>background:
-   file: ./resources/images/Background.jpg # Sample comment
-tank:
-   position: {x: 800, y: 100}
-   max_projectiles: 10
-   reload_time: 1000  
-ai_tank:
-   position: {x: 400, y: 700}
-   max_projectiles: 10
-   reload_time: 1000 
-</code></pre>
-
-<p>What is of immediate interest is it's starting position in the world. In LevelLoader.h we need to modify the <code>LevelData</code> struct to add an instance of the AI tank data:</p>
-<pre><code>struct LevelData
-{
-   BackgroundData m_background;
-   TankData m_tank;
-   TankData m_aiTank; // ADD THIS
-   std::vector&lt;ObstacleData&gt; m_obstacles;
-};
-</code></pre>
-
-<p>Then in LevelLoader.cpp, we add a line to parse the AI tank data from the YAML file. </p>
-<pre><code>////////////////////////////////////////////////////////////
-void operator &gt;&gt; (const YAML::Node&amp; levelNode, LevelData&amp; level)
-{
-   levelNode[&quot;background&quot;] &gt;&gt; level.m_background;
-
-   levelNode[&quot;tank&quot;] &gt;&gt; level.m_tank;
-
-   levelNode[&quot;ai_tank&quot;] &gt;&gt; level.m_aiTank;  // ADD THIS
-</code></pre>
-
-<p>Next, we need to modify the Game class to add an instance of the TankAi class. In Game.h, add the following member variable:</p>
-<pre><code>// An instance representing the AI controlled tank.
-TankAi m_aiTank;
-</code></pre>
-
-<p>In Game.cpp, initialise <code>m_aiTank</code> in the Game constructor:</p>
-<pre><code>Game::Game()
-: m_window(sf::VideoMode(1440, 900, 32), &quot;SFML Playground&quot;, sf::Style::Default)
-, m_tank(m_texture, m_wallSprites)
-, m_aiTank(m_texture, m_wallSprites)    // ADD THIS
-</code></pre>
-
-<p>Notice how we pass the container of wall sprites to the AI tank. It requires this information in order to draw the collision circles around each obstacle as outlined in the article you have read. How are the collision circles drawn and stored? If you have a look at the TankAi::init() in TankAi.cpp:</p>
-<pre><code>void TankAi::init()
-{
-    ...
-    for (sf::Sprite const wallSprite : m_wallSprites)
-    {
-        sf::CircleShape circle(wallSprite.getTextureRect().width * 1.5f);
-        circle.setOrigin(circle.getRadius(), circle.getRadius());
-        circle.setPosition(wallSprite.getPosition());
-        m_obstacles.push_back(circle);
+    m_fireRequested = true;
+    if (m_shootTimer == s_TIME_BETWEEN_SHOTS)
+    {       
+        sf::Vector2f tipOfTurret(m_turret.getPosition().x + 2.0f, m_turret.getPosition().y);
+        tipOfTurret.x += std::cos(MathUtility::DEG_TO_RAD  * m_turret.getRotation()) * ((m_turret.getLocalBounds().top + m_turret.getLocalBounds().height) * 1.7f);
+        tipOfTurret.y += std::sin(MathUtility::DEG_TO_RAD  * m_turret.getRotation()) * ((m_turret.getLocalBounds().top + m_turret.getLocalBounds().height) * 1.7f);
+        m_pool.create(m_texture, tipOfTurret.x, tipOfTurret.y, m_turret.getRotation());
     }
 }
 </code></pre>
 
-<p>This function processes each wall sprite in the container <code>m_wallSprites</code>. For each wall, we create an <code>sf::CircleShape</code> whose radius is 1.5 times the width of the wall sprite. The circle is positioned over the wall and then added to a container called <code>m_obstacles</code>. Note that the circles are never drawn (you can draw them if you wish for debug purposes). </p>
-<p>Next, at the very end of the Game constructor body, you need to call <code>TankAi::init()</code>:</p>
-<pre><code>// Populate the obstacle list and set the AI tank position.
-m_aiTank.init(m_level.m_aiTank.m_position);
+    <p>This new member function will request a projectile from the pool and position it at the tip of the tank turret. </p>
+    <p>Add the constant <code>s_TIME_BETWEEN_SHOTS</code> to class Tank as follows:</p>
+<pre><code>// The delay time between shots in milliseconds.
+static int const s_TIME_BETWEEN_SHOTS { 800 };
 </code></pre>
 
-<p>Finally, add some code to update the AI tank (hint: <code>Game::update()</code>), and also render it (hint: <code>Game::render()</code>).</p>
-<p><strong>Exercise 1:</strong> Build and run the project - You should see an AI tank drawn in the bottom left corner, but it doesn't move yet.</p>
-<p><strong>Exercise 2:</strong> The actual AI steering code for the AI tank is defined in the TankAi class (TankAI.h/.cpp). Complete the implementation of the <code>TankAi::seek()</code> function by following the logic described from the article. Build and run the project when have completed this task. Using the debugger, can you explain why the AI tank follows the particular path you can observe? (Hint: have a look at what is going on inside <code>TankAI::collisionAvoidance()</code>)</p>
-<p><strong>Exercise 3:</strong> Again, using the article as a guide, complete the implementation of the <code>TankAi::findMostThreatening()</code> member function. Hint: note the <code>MathUtility</code> namespace provides <code>MathUtility::lineIntersectsCircle()</code> and <code>MathUtility::distance()</code> functions that will help you.</p>
-<p><strong>Exercise 4:</strong> For a slight variation on the steering behaviour, we can also calculate an acceleration using the mass of the AI Tank, so bigger things can be slow and have &quot;more inertia&quot;. In TankAI::update(), try adding the new lines below and observe the new steering behaviour:</p>
-<pre><code>    sf::Vector2f acceleration; // ADD THIS
-    switch (m_aiBehaviour)
-    {
-    case AiBehaviour::SEEK_PLAYER:
-        m_steering += thor::unitVector(vectorToPlayer);
-        m_steering += collisionAvoidance();
-        m_steering = MathUtility::truncate(m_steering, MAX_FORCE);
-        acceleration = m_steering / MASS;  // ADD THIS
-        // Comment the line below out:
-        // m_velocity = MathUtility::truncate(m_velocity + m_steering, MAX_SPEED);
-        // Add the new line below:
-        m_velocity = MathUtility::truncate(m_velocity + acceleration, MAX_SPEED);
+    <p>You will also need to add member variables <code>m_fireRequested</code> and <code>m_shootTimer</code>. Don't forget to initialise these variables to sensible values. Hint: <code>m_shootTimer</code> is intended as a countdown timer, so consider this when initialising its value.</p>
+    <p>Make sure the project builds ok before proceeding.</p>
+    <p><strong>Exercise 3</strong>: Add the following logic to class <code>Tank</code>. Pressing the space bar should cause the tank to fire a projectile. If fire is pressed, call the new <code>Tank::requestFire()</code> member function. Build and run project to test. A projectile should appear at the tip of tank turret. (Hint: if you see nothing, remember that projectiles need to be drawn).</p>
+    <p>Try rotating the turret and fire again. Does the projectile appear in the correct place?</p>
+    <p><strong>Exercise 4</strong>: Now add the following logic to <code>Tank::update()</code>. If a fire request has been generated, then decrement the shoot timer by the delta time (<code>dt</code>). If the shoot timer is 0 or less, reset it to the value <code>s_TIME_BETWEEN_SHOTS</code> and set the fire requested status to <code>false</code>. Build and run project to test. If the projectile is not moving, remember you need to call <code>ProjectilePool::update()</code> from <code>Tank::update()</code>.</p>
+    <p><strong>6.3 Implementing a spatial partition</strong></p>
+    <p>Note: this section is optional - only attempt it if you have previously implemented a pool for your projectiles.</p>
+    <p>
+        A spatial partition allows us to efficiently locate objects by storing them in a data structure organized by their positions.
+        In the case of the this project, we are checking each projectile against every obstacle (wall) that exists on the map.
+        A much more efficient way would be to query for obstacles at or near the location of the projectile only.
+        Imagine the game world divided up into 10x10 grid like this:
+    </p>
+    <p><img src="grid.jpg" /></p>
+    <p>
+        Cells are numbered in sequential order from 0 to 99 as shown. The cell dimensions in this image are 145 x 75 (the image is not to scale).<br />
+        We need to assign every single wall the id of the cell it occupies.
+        Consider the two circled walls in the bottom left of the picture. The first wall exists at world position 87, 539 – this is the top left corner of the sprite.
+        To work out which cell it occupies, we calculate:
+    </p>
+    <p>
+<pre><code>    
+// floor returns the nearest integer value which is less than or equal to the floating point argument
+floor( wallX / cell width ) + ( floor( wallY / cell height ) * number of columns )
+= floor( 87 / 145 ) + ( floor ( 539 / 75 ) * 10 )
+= floor(0.6) + ( floor (7.19) * 10 ) 
+= 0 + (7 * 10)
+= 70
+</p>
+</code></pre>
+<p>This tells us that the top left corner of this particular wall exists in cell 70. This calculation needs to be repeated for each of the remaining three corners of the sprite. </p>
+<p>Let's take the second (rightmost) wall inside the circled area and apply the same calculation with the top right corner point to illustrate. The top right corner is at 151, 545. </p>
+<p>
+<pre><code>      
+floor( wallX / cell width ) + ( floor( wallY / cell height ) * number of columns )
+= floor( 151 / 145 ) + ( floor ( 545 / 75 ) * 10 )
+= floor(1.04) + ( floor (7.27) * 10 ) 
+= 1 + (7 * 10)
+= 71</p>
+</code></pre>
+<p>This particular section of the wall exists in cell 71. </p>
+<p>A data structure is required to keep track of each cell id and what objects (walls) are associated with that cell id. In C++, we can use both a <code>std::map</code> and a <code>std::list</code> for this purpose.</p>
+<p>A <code>std::map</code> associates two pieces of information, much like a phone directory might associate a name with a telephone number. In our case, we want to associate the cell id (an integer) with a list
+of sprites. Here's a quick example of how a C++ map to manage this information might look like: </p>
+<pre><code>
+#include&lt;map&gt;
+#include&lt;list&gt;
+<p>// Create a mapping of integers to std::list, where each list entry will be a sf::Sprite
+std::map&lt;int, std::list&lt;sf::Sprite&gt;&gt; spatialMap; 
+// Calculate the cell id for a particular wall...
+// Insert a new entry
+spatialMap[cellId].push_back(wallSprite);</p>
 </code></pre>
 
-<p>You will need to add MASS as a constant with an initial value of 100.0f. Notice how the tank accelerates and steers very slowly causing the collision avoidance to fail. What happens if you reduce the MASS by a factor of 10, i.e. to 10.0f? Does this improve the steering behaviour?</p>
-<p><strong>Exercise 5:</strong> You will have noticed the tank movement is not smooth when steering around obstacles. For example, at at frame N, the ahead vector is inside the circle and the force is pushing it back.
-At N+1, it is outside the circle so it continues to move towards its target. At N+2, the ahead vector enters the circle again and the force pushes it back again, and this cycle repeats causing jitter.
-A possible solution (proposed by the original author of the tutorial) is <em>&quot;to test how close the ahead point is from the obstacle center, i.e. if the distance between ahead and the obstacle center is less than 
-the radius of the obstacle. You can then skip the calculation of any collision avoidance force if the ahead point is barely inside (or outside) the obstacle, i.e. distance to the obstacle center is greater than 0.95 * radius or less than 1.05 * radius. It's like a proximity dead zone with no collision avoidance.&quot;</em></p>
+<p>The expression <code>spatialMap[cellId]</code> will initally return an empty <code>std::list</code> for the given integer (cellId). The wall sprite for which we have calculated the cellId is then appended to the list.
+If we calculate the cellId for another wall and it happens to have the same cellId, then it will be appended to the list as a second item.
+Every wall in the level needs to be assigned a cell id, noting the same wall could exists in up to 4 different cells and therefore be assigned 4 cell ids.</p>
+<p>Now as your projectile is fired from the tank, you will need to calculate which cell id it is currently in. Then it is a case of simply looking up the map, and checking
+if there is a collision between your projectile and any of the wall sprites that have the same cell id. The process will look similar to this:</p>
+<p>
+<pre><code>    
+// projectileCellId is the current cell id of the projectile.
+std::list&lt;sf::Sprite&gt; &amp; walls = spatialMap[projectileCellId];
+// Loop through the list checking for a collision between the projectile and each wall
+for (sf::Sprite &amp; wallSprite : walls)
+{
+     // Check here for a collision between the projectile sprite and the wall sprite.
+}</p>
+</code></pre>
+<p>Note that as the projectile is moving (unlike the walls), you will need to recalculate its cell id every update. See if you can implement the above idea into your tank project.</p>
 
 </body>
 </html>
