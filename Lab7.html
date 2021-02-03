@@ -291,8 +291,8 @@ img {
 </style>
 </head>
 <body>
-    <h2>Lab 6: Projectiles</h2>
-    <p><strong>To be completed by:</strong> Week 16 (Fri 17/1)</p>
+    <h2>Lab 7: Projectiles (Object Pool Pattern)</h2>
+    <p><strong>To be completed by:</strong> Week 17 (Fri 12/2)</p>
     <p>Learning Outcomes:</p>
     <ul>
         <li>Explain the principles behind the object pool pattern.</li>
@@ -300,9 +300,9 @@ img {
         <li>Explain the role of a friend class in C++.</li>
     </ul>
     <hr />
-    <p>Continue with the sample Visual Studio solution 'SFML_Playground' from lab 5.</p>
-    <p>Note: If you have already implemented a projectile pool into your project, go straight to section 6.3 below.</p>
-    <p><strong>6.1 Implementing a projectile pool</strong></p>
+    <p>Continue with the sample Visual Studio solution 'SFML_Playground' from your previous lab.</p>
+    <p>Note: If you have already implemented a projectile pool into your project, go straight to section 7.3 below.</p>
+    <p><strong>7.1 Implementing a projectile pool</strong></p>
     <p>
         We are now going to implement projectile firing from our tank. We could simply generate projectiles on demand as the user presses fire. However, rather than
         allocating and destroying these objects on demand, we keep a set of initialised projectiles in a container (such as an array) ready to be used. A client
@@ -327,8 +327,8 @@ img {
         If a request comes in for another projectile, we must then re-use the projectile at index 0 which is currently on-screen. Note that the position of a projectile
         within the array does not tell us anything about how long it has been on-screen, i.e. if projectiles are used in sequence from index 0 to index 6, you cannot assume the 'oldest' projectile will always be at index 0. Projectiles are returned to the pool when they go off-screen or collide with an obstacles such as a wall or another tank.
     </p>
-    <p><strong>6.2 Implementing a projectile pool</strong></p>
-    <p>Download the necessary files for this lab from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCs3JAZsW_jah0Q80P">here</a>. Unzip the file and add the files <code>Projectile.h</code>, <code>ProjectilePool.h</code> and their respective .cpp files to your project. Let's consider class ProjectilePool first, let's consider it's private data members first:</p>
+    <p><strong>7.2 Implementing a projectile pool</strong></p>
+    <p>Download the necessary files for this lab from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/g/personal/palmerr_itcarlow_ie/Ep6F6_iHadlHmM2-CAf7M1ABZXQzxACVb-Jo_42D0ynbpg?e=xEK4lF">here</a>. Unzip the file and add the files <code>Projectile.h</code>, <code>ProjectilePool.h</code> and their respective .cpp files to your project. Let's consider class ProjectilePool first, let's consider it's private data members first:</p>
 <pre><code>private:
 static const int s_POOL_SIZE = 100;
 
@@ -494,8 +494,8 @@ static int const s_TIME_BETWEEN_SHOTS { 800 };
     <p><strong>Exercise 3</strong>: Add the following logic to class <code>Tank</code>. Pressing the space bar should cause the tank to fire a projectile. If fire is pressed, call the new <code>Tank::requestFire()</code> member function. Build and run project to test. A projectile should appear at the tip of tank turret. (Hint: if you see nothing, remember that projectiles need to be drawn).</p>
     <p>Try rotating the turret and fire again. Does the projectile appear in the correct place?</p>
     <p><strong>Exercise 4</strong>: Now add the following logic to <code>Tank::update()</code>. If a fire request has been generated, then decrement the shoot timer by the delta time (<code>dt</code>). If the shoot timer is 0 or less, reset it to the value <code>s_TIME_BETWEEN_SHOTS</code> and set the fire requested status to <code>false</code>. Build and run project to test. If the projectile is not moving, remember you need to call <code>ProjectilePool::update()</code> from <code>Tank::update()</code>.</p>
-    <p><strong>6.3 Implementing a spatial partition</strong></p>
-    <p>Note: this section is optional - only attempt it if you have previously implemented a pool for your projectiles.</p>
+    <p><strong>7.3 Implementing a spatial partition</strong></p>
+    <p<b>Note: this section is optional - only attempt it if you have previously implemented a pool for your projectiles.</b></p>
     <p>
         A spatial partition allows us to efficiently locate objects by storing them in a data structure organized by their positions.
         In the case of the this project, we are checking each projectile against every obstacle (wall) that exists on the map.
