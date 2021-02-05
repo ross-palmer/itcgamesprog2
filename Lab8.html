@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
 <title>Lab8</title>
@@ -467,13 +467,32 @@ we load the font before attempting to use it in the HUD class. Before the end of
 <li>If there is a collision, set the game state to GAME_LOSE</li>
 <li>Check the value of the current game state (use a switch statement for this)</li>
 <li>If GAME_RUNNING, update the player and AI tanks.</li>
-<li>Do nothing for GAME<em>WIN or GAME</em>LOSE for now.</li>
+<li>Do nothing for GAMEWIN or GAMELOSE for now.</li>
 </ul>
 <p>Build and run the project - you should see a HUD with the message GAME_RUNNING. When the AI tank collides with the player tank, 
 the HUD should update with the message &quot;You Lost&quot;.</p>
 <p><strong>Exercise 2</strong>: After the GAME_LOSE game state is detected, add a short delay so the game restarts automatically. Use the delta time
 value (<code>dt</code>) passed into <code>Game::update()</code> to keep track of the elapsed time.</p>
 <p><strong>Exercise 3</strong>: Add the appropriate logic for GAME_WIN, i.e. you will need to check if the player hits the AI tank with a projectile.
+Ideally, we would use a design pattern here called the <a href="https://gameprogrammingpatterns.com/observer.html">observer pattern</a>.
+This would allow us to model the player projectile as the "subject" and the ai tank as an "observer". When the projectile (subject) does something noteworthy,
+such as colliding with the ai tank (observer), it can notify the observer of this event. The observer response would be something like reduce it's
+health or armour value by a certain amount. Implementing this pattern for this basic requirement is probably overkill, so we will take an alternative
+approach.
+
+Game.h // std::function<void(int)> m_funcApplyDamage;
+Game.cpp 
+    using std::placeholders::_1;
+    m_funcApplyDamage = std::bind(&TankAi::applyDamage, m_aiTank, _1);
+Game.cpp
+    To Tank::update(), pass additional arguments:
+    m_funcApplyDamage, m_aiTank.getTankBase()
+
+Tank.h // add additional args to update() and propogate to ProjectilePool::update()
+ProjectilePool.h // add additional args to update and propogate to Projectile::update()
+Projectile.h  // add additional args to update()
+Projectile.cpp // check for collision between projectile and ai tank, then invoke callback function.
+
 There is a bit of work to complete this exercise, so I have given you some hints below - there are some pieces you have to work out.</p>
 <ol>
 <li>
