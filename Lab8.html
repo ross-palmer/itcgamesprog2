@@ -292,7 +292,7 @@ img {
 </head>
 <body>
 <h2>Lab 8: Game states</h2>
-<p><strong>To be completed by:</strong> Week 19 (Fri 26/2)</p>
+<p><strong>To be completed by:</strong> Week 20 (Fri 14/2)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Implement a simple HUD system.</li>
@@ -474,7 +474,95 @@ the HUD should update with the message &quot;You Lost&quot;.</p>
 <p><strong>Exercise 2</strong>: After the GAME_LOSE game state is detected, add a short delay so the game restarts automatically. Use the delta time
 value (<code>dt</code>) passed into <code>Game::update()</code> to keep track of the elapsed time.</p>
 <p><strong>Exercise 3</strong>: Add the appropriate logic for GAME_WIN, i.e. you will need to check if the player hits the AI tank with a projectile.
-<p>I will add some hints on this part shortly...</p>
+Ideally, we would use a design pattern here called the <a href="https://gameprogrammingpatterns.com/observer.html">observer pattern</a>.
+This would allow us to model the player projectile as the "subject" and the ai tank as an "observer". When the projectile (subject) does something noteworthy,
+such as colliding with the ai tank (observer), it can notify the observer of this event. The observer response would be something like reduce 
+health or armour value by a certain amount. Implementing the pattern for this basic requirement is a lengthy process, so we will take an alternative
+approach.
+</p>
+<ol>
+<li>
+<p>Write a member function called <code>applyDamage(int t_damageAmount)</code> for the AI tank, to be called when a collision is detected
+between the projectile and AI tank. The AI Tank might have a health property that decreases by <code>t_damageAmount</code> when it takes a hit.
+If the AI health reaches 0, then the game state can be changed to GAME_WIN (i.e. player wins).
+While we are in the TankAI class, add another member function: 
+<p>
+<code>sf::Sprite getTankBase();</code>
+</p>
+This function will return the sprite representing the tank base (not the turret). We will use this later on.
+</p>
+</li>
+<li>
+<p>We want to invoke <code>TankAI::applyDamage()</code> when the projectile collides with the sprite representing the AI Tank. The problem we have is
+that class Projectile has no dependencies on any other class (i.e. has no knowledge of class TankAI). We can use a mechanism in C++ to invoke
+<code>TankAI::applyDamage()</code> by using a special class that behaves like a pointer to a function. Consider the function we want to invoke will be
+defined like this:
+    <pre><code>
+        // In TankAI.h
+        void applyDamage(int t_damageAmount);
+    </code>
+    </pre>
+We therefore introduce a class called <code>std::function</code> to "point" to the target <code>TankAI::applyDamage()</code> member function. We can then call our
+target member function by using an instance of <code>std::function</code> inside the Projectile class. Start by declaring an instance of <code>std::function</code> inside Game.h:
+
+   <pre>
+   <code>
+   // In Game.h
+   std::function&lt;void(int)> m_funcApplyDamage;
+   </code> 
+   </pre>
+The arguments inside the angle brackets represent the return type of our target function (void) and the expected function argument (an int).
+</p>    
+</li>
+<li>
+    <p>
+        Next, Inside the constructor function of class Game, we need to "point" our instance of <code>std::function</code> at <code>TankAI::applyDamage()</code>
+        associated with our TankAI instance (<code>m_aiTank</code>). Add these lines to the end of the constructor function in class Game:
+        <pre><code>
+        // Point at TankAI::applyDamage()...this function expects 1 argument (damage amount), but that argument
+        //  will be supplied later when we call the function inside Projectile::udpate()
+        // So we use what is called a placeholder argument and this will be substituted later with the damage amount
+        using std::placeholders::_1;
+        // The parameters of bind are the function to be called, followed by the name of the target instance, 
+        //  followed by the placeholder argument.
+        m_funcApplyDamage = std::bind(&TankAi::applyDamage, m_aiTank, _1);        
+        </code></pre>
+    </p>
+</li>
+<li>
+    <p>
+        We now need to pass the instance <code>m_funcApplyDamage</code> (i.e. the instance of <code>std::function</code>) all the way down from class Game to class Projectile.
+        Game owns (has-a) Tank, Tank owns ProjectilePool and finally ProjectilePool owns Projectile. We also need to pass the sprite that represents the AI Tank,
+        because that is what class Projectile will use to determine if there is a collision between the projectile and tank.
+        We need to pass these two parameters all the way down through <code>Tank::update()</code>, then <code>
+        ProjectilePool::update()</code> and finally into <code>Projectile::update()</code>. Starting with Tank.h, locate the <code>update()</code> function and refactor it as follows:
+
+    <p>
+    <code>
+        void update(double dt, std::function&lt;void(int)> & t_funcApplyDamage, sf::Sprite t_tankBase);
+    </code>
+    </p>
+    Don't forget to change the function definition in Tank.cpp. Now open the definition of <code>Game::update()</code>, find the line where we update the player tank and
+    change it to:
+    <p>
+    <code>
+    m_tank.update(dt, m_funcApplyDamage, m_aiTank.getTankBase());
+    </code>
+    </p>
+</p>
+</li>
+<li>
+<p>
+These two additional arguments need to be propagated further into <code>ProjectilePool::update()</code> and finally into <code>Projectile::update()</code>. Make these changes.
+Finally, inside <code>Projectile::update()</code>, check for a collision between the projectile and the AI tank base. If a collision happens, we can now invoke our 
+target function in the AI Tank class as follows:
+<p><code>t_funcApplyDamage(1);</code></p>
+This means invoke <code>Tank::applyDamage()</code> passing the value 1 for the damage amount. All that is left to do now is check the AI tank health in <code>Game::update()</code> and if
+it has reached 0, then change the game state to GAME_OVER.
+</p>
+</li>
+</ol>
+
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
