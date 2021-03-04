@@ -1,349 +1,358 @@
-﻿<!DOCTYPE html>
+﻿
+<!DOCTYPE html>
 <html>
 <head>
-<title>Project2</title>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-/* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
-/* Author: Nicolas Hery - http://nicolashery.com */
-/* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
-/* Source: https://github.com/nicolahery/markdownpad-github */
+    <title>Project2</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style type="text/css">
+                /* GitHub stylesheet for MarkdownPad (http://markdownpad.com) */
+                /* Author: Nicolas Hery - http://nicolashery.com */
+                /* Version: b13fe65ca28d2e568c6ed5d7f06581183df8f2ff */
+                /* Source: https://github.com/nicolahery/markdownpad-github */
 
-/* RESET
-=============================================================================*/
+                /* RESET
+        =============================================================================*/
 
-html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
-  margin: 0;
-  padding: 0;
-  border: 0;
-}
+                html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+                    margin: 0;
+                    padding: 0;
+                    border: 0;
+                }
 
-/* BODY
-=============================================================================*/
+                /* BODY
+        =============================================================================*/
 
-body {
-  font-family: Helvetica, arial, freesans, clean, sans-serif;
-  font-size: 14px;
-  line-height: 1.6;
-  color: #333;
-  background-color: #fff;
-  padding: 20px;
-  max-width: 960px;
-  margin: 0 auto;
-}
+                body {
+                    font-family: Helvetica, arial, freesans, clean, sans-serif;
+                    font-size: 14px;
+                    line-height: 1.6;
+                    color: #333;
+                    background-color: #fff;
+                    padding: 20px;
+                    max-width: 960px;
+                    margin: 0 auto;
+                }
 
-body>*:first-child {
-  margin-top: 0 !important;
-}
+                    body > *:first-child {
+                        margin-top: 0 !important;
+                    }
 
-body>*:last-child {
-  margin-bottom: 0 !important;
-}
+                    body > *:last-child {
+                        margin-bottom: 0 !important;
+                    }
 
-/* BLOCKS
-=============================================================================*/
+                /* BLOCKS
+        =============================================================================*/
 
-p, blockquote, ul, ol, dl, table, pre {
-  margin: 15px 0;
-}
+                p, blockquote, ul, ol, dl, table, pre {
+                    margin: 15px 0;
+                }
 
-/* HEADERS
-=============================================================================*/
+                /* HEADERS
+        =============================================================================*/
 
-h1, h2, h3, h4, h5, h6 {
-  margin: 20px 0 10px;
-  padding: 0;
-  font-weight: bold;
-  -webkit-font-smoothing: antialiased;
-}
+                h1, h2, h3, h4, h5, h6 {
+                    margin: 20px 0 10px;
+                    padding: 0;
+                    font-weight: bold;
+                    -webkit-font-smoothing: antialiased;
+                }
 
-h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
-  font-size: inherit;
-}
+                    h1 tt, h1 code, h2 tt, h2 code, h3 tt, h3 code, h4 tt, h4 code, h5 tt, h5 code, h6 tt, h6 code {
+                        font-size: inherit;
+                    }
 
-h1 {
-  font-size: 28px;
-  color: #000;
-}
+                h1 {
+                    font-size: 28px;
+                    color: #000;
+                }
 
-h2 {
-  font-size: 24px;
-  border-bottom: 1px solid #ccc;
-  color: #000;
-}
+                h2 {
+                    font-size: 24px;
+                    border-bottom: 1px solid #ccc;
+                    color: #000;
+                }
 
-h3 {
-  font-size: 18px;
-}
+                h3 {
+                    font-size: 18px;
+                }
 
-h4 {
-  font-size: 16px;
-}
+                h4 {
+                    font-size: 16px;
+                }
 
-h5 {
-  font-size: 14px;
-}
+                h5 {
+                    font-size: 14px;
+                }
 
-h6 {
-  color: #777;
-  font-size: 14px;
-}
+                h6 {
+                    color: #777;
+                    font-size: 14px;
+                }
 
-body>h2:first-child, body>h1:first-child, body>h1:first-child+h2, body>h3:first-child, body>h4:first-child, body>h5:first-child, body>h6:first-child {
-  margin-top: 0;
-  padding-top: 0;
-}
+                body > h2:first-child, body > h1:first-child, body > h1:first-child + h2, body > h3:first-child, body > h4:first-child, body > h5:first-child, body > h6:first-child {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
 
-a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
-  margin-top: 0;
-  padding-top: 0;
-}
+                a:first-child h1, a:first-child h2, a:first-child h3, a:first-child h4, a:first-child h5, a:first-child h6 {
+                    margin-top: 0;
+                    padding-top: 0;
+                }
 
-h1+p, h2+p, h3+p, h4+p, h5+p, h6+p {
-  margin-top: 10px;
-}
+                h1 + p, h2 + p, h3 + p, h4 + p, h5 + p, h6 + p {
+                    margin-top: 10px;
+                }
 
-/* LINKS
-=============================================================================*/
+                /* LINKS
+        =============================================================================*/
 
-a {
-  color: #4183C4;
-  text-decoration: none;
-}
+                a {
+                    color: #4183C4;
+                    text-decoration: none;
+                }
 
-a:hover {
-  text-decoration: underline;
-}
+                    a:hover {
+                        text-decoration: underline;
+                    }
 
-/* LISTS
-=============================================================================*/
+                /* LISTS
+        =============================================================================*/
 
-ul, ol {
-  padding-left: 30px;
-}
+                ul, ol {
+                    padding-left: 30px;
+                }
 
-ul li > :first-child, 
-ol li > :first-child, 
-ul li ul:first-of-type, 
-ol li ol:first-of-type, 
-ul li ol:first-of-type, 
-ol li ul:first-of-type {
-  margin-top: 0px;
-}
+                    ul li > :first-child,
+                    ol li > :first-child,
+                    ul li ul:first-of-type,
+                    ol li ol:first-of-type,
+                    ul li ol:first-of-type,
+                    ol li ul:first-of-type {
+                        margin-top: 0px;
+                    }
 
-ul ul, ul ol, ol ol, ol ul {
-  margin-bottom: 0;
-}
+                    ul ul, ul ol, ol ol, ol ul {
+                        margin-bottom: 0;
+                    }
 
-dl {
-  padding: 0;
-}
+                dl {
+                    padding: 0;
+                }
 
-dl dt {
-  font-size: 14px;
-  font-weight: bold;
-  font-style: italic;
-  padding: 0;
-  margin: 15px 0 5px;
-}
+                    dl dt {
+                        font-size: 14px;
+                        font-weight: bold;
+                        font-style: italic;
+                        padding: 0;
+                        margin: 15px 0 5px;
+                    }
 
-dl dt:first-child {
-  padding: 0;
-}
+                        dl dt:first-child {
+                            padding: 0;
+                        }
 
-dl dt>:first-child {
-  margin-top: 0px;
-}
+                        dl dt > :first-child {
+                            margin-top: 0px;
+                        }
 
-dl dt>:last-child {
-  margin-bottom: 0px;
-}
+                        dl dt > :last-child {
+                            margin-bottom: 0px;
+                        }
 
-dl dd {
-  margin: 0 0 15px;
-  padding: 0 15px;
-}
+                    dl dd {
+                        margin: 0 0 15px;
+                        padding: 0 15px;
+                    }
 
-dl dd>:first-child {
-  margin-top: 0px;
-}
+                        dl dd > :first-child {
+                            margin-top: 0px;
+                        }
 
-dl dd>:last-child {
-  margin-bottom: 0px;
-}
+                        dl dd > :last-child {
+                            margin-bottom: 0px;
+                        }
 
-/* CODE
-=============================================================================*/
+                /* CODE
+        =============================================================================*/
 
-pre, code, tt {
-  font-size: 12px;
-  font-family: Consolas, "Liberation Mono", Courier, monospace;
-}
+                pre, code, tt {
+                    font-size: 12px;
+                    font-family: Consolas, "Liberation Mono", Courier, monospace;
+                }
 
-code, tt {
-  margin: 0 0px;
-  padding: 0px 0px;
-  white-space: nowrap;
-  border: 1px solid #eaeaea;
-  background-color: #f8f8f8;
-  border-radius: 3px;
-}
+                code, tt {
+                    margin: 0 0px;
+                    padding: 0px 0px;
+                    white-space: nowrap;
+                    border: 1px solid #eaeaea;
+                    background-color: #f8f8f8;
+                    border-radius: 3px;
+                }
 
-pre>code {
-  margin: 0;
-  padding: 0;
-  white-space: pre;
-  border: none;
-  background: transparent;
-}
+                pre > code {
+                    margin: 0;
+                    padding: 0;
+                    white-space: pre;
+                    border: none;
+                    background: transparent;
+                }
 
-pre {
-  background-color: #f8f8f8;
-  border: 1px solid #ccc;
-  font-size: 13px;
-  line-height: 19px;
-  overflow: auto;
-  padding: 6px 10px;
-  border-radius: 3px;
-}
+                pre {
+                    background-color: #f8f8f8;
+                    border: 1px solid #ccc;
+                    font-size: 13px;
+                    line-height: 19px;
+                    overflow: auto;
+                    padding: 6px 10px;
+                    border-radius: 3px;
+                }
 
-pre code, pre tt {
-  background-color: transparent;
-  border: none;
-}
+                    pre code, pre tt {
+                        background-color: transparent;
+                        border: none;
+                    }
 
-kbd {
-    -moz-border-bottom-colors: none;
-    -moz-border-left-colors: none;
-    -moz-border-right-colors: none;
-    -moz-border-top-colors: none;
-    background-color: #DDDDDD;
-    background-image: linear-gradient(#F1F1F1, #DDDDDD);
-    background-repeat: repeat-x;
-    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
-    border-image: none;
-    border-radius: 2px 2px 2px 2px;
-    border-style: solid;
-    border-width: 1px;
-    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
-    line-height: 10px;
-    padding: 1px 4px;
-}
+                kbd {
+                    -moz-border-bottom-colors: none;
+                    -moz-border-left-colors: none;
+                    -moz-border-right-colors: none;
+                    -moz-border-top-colors: none;
+                    background-color: #DDDDDD;
+                    background-image: linear-gradient(#F1F1F1, #DDDDDD);
+                    background-repeat: repeat-x;
+                    border-color: #DDDDDD #CCCCCC #CCCCCC #DDDDDD;
+                    border-image: none;
+                    border-radius: 2px 2px 2px 2px;
+                    border-style: solid;
+                    border-width: 1px;
+                    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+                    line-height: 10px;
+                    padding: 1px 4px;
+                }
 
-/* QUOTES
-=============================================================================*/
+                /* QUOTES
+        =============================================================================*/
 
-blockquote {
-  border-left: 4px solid #DDD;
-  padding: 0 15px;
-  color: #777;
-}
+                blockquote {
+                    border-left: 4px solid #DDD;
+                    padding: 0 15px;
+                    color: #777;
+                }
 
-blockquote>:first-child {
-  margin-top: 0px;
-}
+                    blockquote > :first-child {
+                        margin-top: 0px;
+                    }
 
-blockquote>:last-child {
-  margin-bottom: 0px;
-}
+                    blockquote > :last-child {
+                        margin-bottom: 0px;
+                    }
 
-/* HORIZONTAL RULES
-=============================================================================*/
+                /* HORIZONTAL RULES
+        =============================================================================*/
 
-hr {
-  clear: both;
-  margin: 15px 0;
-  height: 0px;
-  overflow: hidden;
-  border: none;
-  background: transparent;
-  border-bottom: 4px solid #ddd;
-  padding: 0;
-}
+                hr {
+                    clear: both;
+                    margin: 15px 0;
+                    height: 0px;
+                    overflow: hidden;
+                    border: none;
+                    background: transparent;
+                    border-bottom: 4px solid #ddd;
+                    padding: 0;
+                }
 
-/* TABLES
-=============================================================================*/
+                /* TABLES
+        =============================================================================*/
 
-table th {
-  font-weight: bold;
-}
+                table th {
+                    font-weight: bold;
+                }
 
-table th, table td {
-  border: 1px solid #ccc;
-  padding: 6px 13px;
-}
+                table th, table td {
+                    border: 1px solid #ccc;
+                    padding: 6px 13px;
+                }
 
-table tr {
-  border-top: 1px solid #ccc;
-  background-color: #fff;
-}
+                table tr {
+                    border-top: 1px solid #ccc;
+                    background-color: #fff;
+                }
 
-table tr:nth-child(2n) {
-  background-color: #f8f8f8;
-}
+                    table tr:nth-child(2n) {
+                        background-color: #f8f8f8;
+                    }
 
-/* IMAGES
-=============================================================================*/
+                /* IMAGES
+        =============================================================================*/
 
-img {
-  max-width: 100%
-}
-</style>
+                img {
+                    max-width: 100%
+                }
+    </style>
 </head>
 <body>
-<h2>Mini Project 2: Adding gameplay to the Tank demo [DRAFT]</h2>
-<p><strong>Instructions:</strong> </p>
-<ul>
-<li>Projects must be pushed to github by midnight Thursday 27th February. </li>
-<li>You will be required to demonstrate your project in the lab on Friday 28th.</li>
-<li>Plagiarism is a very serious offence and will be treated accordingly.</li>
-</ul>
-<p>Following on from the work you have completed in lab 8, extend the tank demo to add the following functionality described below. The gameplay involves the player traversing the map to collect 10 items (targets) while avoiding the AI. The player tank does not have any firing capability. The game ends when the player has collected all the items or has been destroyed by the AI. The AI tank will have unlimited projectiles, but there is an appropriate delay between shots (you decide). The projectile moves reasonably slowly so the player has a chance of avoiding them. However, the closer the AI tank is to the player, the less the chance the player has of manouvering out of the way. The player tank can move slightly faster than the AI tank. I suggest scaling down the sprite dimensions for the tanks as a simple way of enlarging the playing area.*</p>
-<ol>
-<li>
-<p>Add a basic state machine to the AI tank to enable other behaviours. Add an <code>AIState</code> enum to the <code>TankAI</code> class as follows:</p>
-<p><pre><code>enum class AIState
+    <h2>Mini Project 2: Implementing a vision cone</h2>
+    <p><strong>Instructions:</strong> </p>
+    <ul>
+        <li>Projects must be pushed to github by midnight Monday 22nd March. </li>
+        <li>You will be required to demonstrate your project to me in class the next day (Tuesday 23rd).</li>
+        <li>Plagiarism is a very serious offence and will be treated accordingly.</li>
+    </ul>
+    <p>
+        For this project, you will need to implement a vision cone for an AI entity that can move independently around a simple level. You may continue using the Tank project from lab 8 or you may start with another suitable SFML project of your choosing.
+
+        The gameplay involves the player trying collect an item from the opposite side of the map while avoiding the AI. The item needs to be brought to a drop-off point. The map has blockades which the AI and player have to navigate around. The player has a limited amount of fuel (if a vehicle) or stamina (if a person or some other life form). As the player moves, they deplete their fuel or stamina. The depletion rate is commensurate with movement speed. There is a small supply of fuel/food available as pickups to replenish fuel/stamina. The player has no way of damaging or destroying the AI. The game ends when the player has returned the item to the drop-off point or has been destroyed by the AI. The AI can only carry out ranged attacks (e.g. using projectiles), but has a limited firing rate. The projectile moves reasonably slowly so the player has a chance of avoiding them. However, the closer the AI is to the player, the less the chance the player has of avoiding projectiles. The player can move slightly faster than the AI. I suggest scaling down your sprite dimensions as a simple way of enlarging the playing area.
+    </p>
+    <ol>
+        <li>
+            <p>Add a basic state machine to the AI to enable other behaviours. Add an <code>AIState</code> enum to your AI class as follows:</p>
+            <p>
+                <pre><code>enum class AIState
 {
    PATROL_MAP,
    ATTACK_PLAYER
-};</pre></code></p>
-<p>These will represent the two states for the AI tank which will determine its behaviour. 	
-The AI tank has a vision cone which will enable it to see the player tank if it is 30 degrees left or right of its line-of-sight and within range of the cone. The AI will start in a tracking mode (PATROL_MAP) and will patrol random locations on the map looking for the player. In ATTACK_PLAYER mode, the vision cone has a long range but narrow field of view, and does a 360 degree sweep of the map. The vision cone is always drawn and visible to the player. <strong>[30]</strong></p>
-</li>
-<li>
-<p>Once the player tank is detected inside the cone, the AI switches modes to ATTACK_PLAYER and the following happens...</p>
-<p>2.1 The AI tank will proceed in the direction of the player and constantly measure the distance to that point, until it decides it is within a reasonable shooting range. The AI will no longer sweep the cone through 360 degrees, but will try to keep the player tank centered inside it.  <strong>[20]</strong></p>
-<p>2.2 If the player is approximately halfway inside the vision cone, the AI will adjust the cone,  reducing its radius by about one third, but increases its spread to -40 and +40 degrees. <strong>[10]</strong> (AI will continue attempts to keep player centered inside the vision cone)</p>
-<p>2.3 If the player moves outside the vision cone, the AI will revert to the behaviour described for PATROL_MAP mode (this includes re-adjusting the vision cone). <strong>[10]</strong></p>
-</li>
-<li>
-<p>Implement a simple damage model for the player. For example, hits from the AI may result in a random chance of any of the following handling characteristics being affected: turning radius made larger, reduction in top speed or reduced ability to slow down. The player tank will be destroyed if it takes enough hits. <strong>[15]</strong> </p>
-</li>
-<li>
-<p>Use a HUD to show any relevant information (e.g. current damage, number of items left to be collected...). Use icons where appropriate. <strong>[10]</strong></p>
-</li>
-<li>
-<p>Implement bounds checking on the map so neither tank can leave the playing area. <strong>[5]</strong></p>
-</li>
-<li>
-<p>Bonus: If you attempt this section, you can &quot;top up&quot; your project mark up to a maximum of 100. See if you can implement a system that blocks (any part) of the AI vision cone from seeing through obstacles (walls) <strong>[20]</strong></p>
-</li>
-</ol>
-<p>Each section will be marked accordingly:</p>
-<table>
-	<tr>
-        <td><b>0-1</b></td>
-        <td><b>Not done/nothing of value or significant problems</b></td>
-    </tr>
-    <tr>
-        <td><b>2-3</b></td>
-        <td><b>Partial implementation, something of merit, mostly uncommented</b></td>
-    </tr>
-    <tr>
-        <td><b>4-5</b></td>
-        <td><b>Working to specification, fully commented. May have minor problems</b></td>
-    </tr>
-</table>
+};</pre></code>
+            </p>
+            <p>
+                These will represent the two states for the AI which will determine its behaviour.
+                The AI has a vision cone which will enable it to see the player if it is 30 degrees left or right of its line-of-sight and within range of the cone. The AI will start in a tracking mode (PATROL_MAP) and will patrol random locations on the map looking for the player. In ATTACK_PLAYER mode, the vision cone has a longer range but narrower field of view, and does a 360 degree sweep of the map. The vision cone is always drawn and visible to the player. <strong>[30]</strong>
+            </p>
+        </li>
+        <li>
+            <p>Once the player is detected inside the cone, the AI switches modes to ATTACK_PLAYER and the following happens...</p>
+            <p>2.1 The AI will proceed in the direction of the player and constantly measure the distance to that point, until it decides it is within a reasonable shooting range. The AI will no longer sweep the cone through 360 degrees, but will try to keep the player  centered inside it.  <strong>[20]</strong></p>
+            <p>2.2 If the player is approximately halfway inside the vision cone, the AI will adjust the cone,  reducing its radius by about one third, but increase its spread to -40 and +40 degrees. <strong>[10]</strong> (note: AI will continue attempts to keep player centered inside the vision cone)</p>
+            <p>2.3 If the player moves outside the vision cone, the AI will revert to the behaviour described for PATROL_MAP mode (this includes re-adjusting the vision cone). <strong>[10]</strong></p>
+        </li>
+        <li>
+            <p>Implementation of fuel/stamina and pickups as described above. If the player is hit by projectiles, this will initiate a constant slow fuel leak or reduction in stamina (in addition to the normal consumption while moving). There is a single repair pack/medpack available on the map to reset any damage. The player will be destroyed if they run out of fuel/stamina. <strong>[15]</strong> </p>
+        </li>
+        <li>
+            <p>Use a HUD to show any relevant information (e.g. current fuel/stamina, current objective...). Use icons where appropriate. <strong>[10]</strong></p>
+        </li>
+        <li>
+            <p>Implement bounds checking on the map so the AI and player cannot leave the playing area. <strong>[5]</strong></p>
+        </li>
+        <li>
+            <p>Bonus: If you attempt this section, you can &quot;top up&quot; your project mark up to a maximum of 100. See if you can implement a system that prevents the AI vision cone from seeing through blockades (the cone does not have to be occluded by the obstacle, more so the player should not be spotted) <strong>[20]</strong></p>
+        </li>
+    </ol>
+    <p>Each section will be marked accordingly:</p>
+    <table>
+        <tr>
+            <td><b>0-1</b></td>
+            <td><b>Not done/nothing of value or significant problems</b></td>
+        </tr>
+        <tr>
+            <td><b>2-3</b></td>
+            <td><b>Partial implementation, something of merit, mostly uncommented</b></td>
+        </tr>
+        <tr>
+            <td><b>4-5</b></td>
+            <td><b>Working to specification, fully commented. May have minor problems</b></td>
+        </tr>
+    </table>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
