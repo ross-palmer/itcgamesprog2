@@ -292,29 +292,30 @@ img {
 </head>
 <body>
 <h2><strong>A quick guide to using Github for team projects</strong></h2>
-<p>In brief, Git is a source code management system, while Github is a cloud based hosting repository for Git projects. You are going to use Github to host your Joint project. </p>
+<p>In brief, Git is a distributed version control system, while Github is a cloud based hosting repository for Git projects. You are going to use Github to host your Joint project. </p>
 <p><strong>1. Creating a new repository</strong></p>
 <p>1.1 In Windows, make a new folder for your project on the desktop (e.g. <code>c:\users\ross\desktop\JointProject</code>).</p>
 <p>1.2 Open the command line tool <strong>Git Bash</strong> - this will enable you execute common git commands. </p>
 <p>1.3 Type the command <code>cd c:\users\ross\desktop\JointProject</code> and press return. This means change directory (<code>cd</code>) to your <code>JointProject</code> folder.</p>
 <p>1.4 <strong>For the team lead only</strong> - open this URL:</p>
-<p><a href="https://classroom.github.com/g/NLK4-Squ" title="https://classroom.github.com/g/NLK4-Squ">https://classroom.github.com/g/NLK4-Squ</a></p>
-<p>and await instructions from me on naming the repository.</p>
+<p><a href="https://classroom.github.com/g/N8mWwWpu" title="https://classroom.github.com/g/N8mWwWpu">https://classroom.github.com/g/N8mWwWpu</a></p>
+<p>Use the initials of each team member in naming the repository, e.g.</p>
+<p><b>jp21-RP-KP</b></p>
 <p><strong>2. Checking out a repository</strong></p>
 <p>2.1 Create a working copy of a local repository from a remote repository by running the command:</p>
-<pre><code>git clone https://github.com/ITCGamesProg2/jp20-TeamName.git
+<pre><code>git clone https://github.com/ITCGamesProg2/jp21-RepoName.git
 </code></pre>
 
-<p>2.2. You should now find a directory in your local file system with the same name as the above repository (e.g. <code>jp20-TeamName</code> in this case). Change into this directory using the <code>cd</code> command, e.g. <code>cd jp20-TeamName</code></p>
+<p>2.2. You should now find a directory in your local file system with the same name as the above repository (e.g. <code>jp21-RepoName</code> in this case). Change into this directory using the <code>cd</code> command, e.g. <code>cd jp21-RepoName</code></p>
 <p>2.3 Download my README.MD from <a href="https://1drv.ms/u/s!AoRoV1R6G7iCswmEzdeFGKuUAl7s">here</a>. Copy it into your local repository directory. MD stands for MarkDown, which is a simple markup language that can be easily converted to HTML. Open the file and fill in the project name and project description only - do not remove any of the # symbols as they represent headings.</p>
 <p>2.4 Add the readme to your remote repository with these commands:</p>
 <pre><code>git add README.MD
 git commit -m &quot;Added README file for project&quot;
-git push origin master
+git push origin main
 </code></pre>
 
 <p><strong>3. Creating a branch</strong></p>
-<p>You should always start by creating a new branch for the feature you are going to work on. This is particularly important for team projects. Branches are used to develop features that are isolated from each other. The master branch should always contain a clean working build of the entire project. Use other branches for development and merge them back to the master branch upon completion.</p>
+<p>You should always start by creating a new branch for the feature you are going to work on. This is particularly important for team projects. Branches are used to develop features that are isolated from each other. The main branch should always contain a clean working build of the entire project. Use other branches for development and merge them back to the main branch upon completion.</p>
 <p>3.1 To create a new branch in your local repository called <code>feature_x</code> and to switch to it use:</p>
 <p><code>git checkout -b feature_x</code></p>
 <p>Note the use of the <code>-b</code> switch here.</p>
@@ -326,27 +327,29 @@ git push origin master
 <p>'First commit'` is a commit string - this should generally summarise the changes you have made to the code base, so this will obviously change between commits.</p>
 <p>3.4 Push the branch to the corresponding branch on the remote repository:</p>
 <p><code>git push origin feature_x</code></p>
-<p>3.5 When you have finished the feature and are ready for a code review, you first need to sync your the master branch on your local repository with the master branch on the remote repository. This is because it may well be the case that remote master branch now has changes that your local version doesn't have. The steps are, (1) switch to your local master branch and (2) pull the latest version of the remote master branch in order to update your local copy.</p>
-<p><code>git checkout master</code></p>
-<p><code>git pull origin master</code></p>
+<p>3.5 When you have finished the feature and are ready for a code review, you first need to sync the main branch on your local repository with the main branch on the remote repository. This is because it may well be the case that remote main branch now has changes that your local version doesn't have. The steps are, (1) switch to your local main branch and (2) pull the latest version of the remote main branch in order to update your local copy.</p>
+<p><code>git checkout main</code></p>
+<p><code>git pull origin main</code></p>
 <p>3.6 Open a pull request to initiate your code review. See the example <a href="https://gist.github.com/vlandham/3b2b79c40bc7353ae95a">here</a></p>
-<p>3.7 When you have finished your code review (and made any final changes that as a result of the review), merge your new feature with the local master branch. Switch to the branch you wish to merge into (in this case master):</p>
-<p><code>git checkout master</code></p>
+<p> The recipient of the review (known as the assignee) must write a short report for the reviewer by annotating their code. The annotations guide the reviewer through the changes, showing (a) which files to look at first and (b) defending the reason and methods for each code modification or addition. These notes are not comments in the code, but rather comments given to other reviewers via the github pull request feature.
+</p>
+<p>3.7 When you have finished your code review (and made any final changes that as a result of the review), merge your new feature with the local main branch. Switch to the branch you wish to merge into (in this case main):</p>
+<p><code>git checkout main</code></p>
 <p><code>git merge feature_x</code></p>
 <p>3.8 Checking out another branch</p>
-<p>Say another team member has pushed a new feature to a new branch called feature_y on the remote repository. If you want to checkout this new branch to your local repository, first switch to the master branch:</p>
-<p><code>git checkout master</code></p>
+<p>Say another team member has pushed a new feature to a new branch called feature_y on the remote repository. If you want to checkout this new branch to your local repository, first switch to the main branch:</p>
+<p><code>git checkout main</code></p>
 <p>then pull the <code>feature_y</code> branch you are interested in:</p>
 <p><code>git pull origin feature_y</code></p>
 <p>Finally, you can checkout the new branch with:</p>
 <p><code>git checkout feature_y</code>	</p>
 <p>Note, that no <code>-b</code> switch is used here as we are not creating a new branch.</p>
-<p><strong>4. Merging your feature branch with the remote master</strong></p>
-<p>When you have finished working on your feature, you will need to merge your work with the master branch on the remote repository. </p>
+<p><strong>4. Merging your feature branch with the remote main</strong></p>
+<p>When you have finished working on your feature, you will need to merge your work with the main branch on the remote repository. </p>
 <p>In team projects, merge conflicts can easily happen. This means when two identical branches have changed the same part of the same file. For example, if two people changed the same lines in that same file, or if one person decided to delete it while the other person decided to modify it, Git simply cannot know what is correct. </p>
-<p>So, once your feature is finished and you are ready to merge your branch with the master branch. Perform steps 3.2 and 3.3 above (add/commit) then issue this command:</p>
-<p><code>git pull origin master --rebase</code></p>
-<p>The first part of this command means merge the remote master branch into the current branch. The <code>--rebase</code> means Git will rewind (undo) all of your local commits, pull down the remote commits then replay your local commits on top of the newly pulled remote commits. If any conflicts arise that git can’t handle you will be given the opportunity to manually merge the commits. Merge conflicts are highlighted by git like this:</p>
+<p>So, once your feature is finished and you are ready to merge your branch with the main branch. Perform steps 3.2 and 3.3 above (add/commit) then issue this command:</p>
+<p><code>git pull origin main --rebase</code></p>
+<p>The first part of this command means merge the remote main branch into the current branch. The <code>--rebase</code> means Git will rewind (undo) all of your local commits, pull down the remote commits then replay your local commits on top of the newly pulled remote commits. If any conflicts arise that git can’t handle you will be given the opportunity to manually merge the commits. Merge conflicts are highlighted by git like this:</p>
 <pre><code>&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD
 x++; // This line is present on the remote repository
 =======
@@ -363,13 +366,13 @@ y++; // This line is present on the local repository
 <p>then give the command:</p>
 <p><code>git rebase --continue</code> </p>
 <p>to carry on replaying your local commits, repeating the above steps to resolve all merge conflicts. When you are finished:</p>
-<p>Switch to master branch: <code>git checkout master</code> 
-Merge the feature branch with the master branch: <code>git merge feature-name</code>
-Push to the remote master branch: <code>git push origin master</code></p>
+<p>Switch to main branch: <code>git checkout main</code> 
+Merge the feature branch with the main branch: <code>git merge feature-name</code>
+Push to the remote main branch: <code>git push origin main</code></p>
 <p><strong>5. If it all goes wrong...</strong></p>
-<p>If you instead want to drop all your local changes and commits, fetch the latest history from the server and point your local master branch at it like this:</p>
+<p>If you instead want to drop all your local changes and commits, fetch the latest history from the server and point your local main branch at it like this:</p>
 <p><code>git fetch origin</code></p>
-<p><code>git reset --hard origin/master</code></p>
+<p><code>git reset --hard origin/main</code></p>
 <p><strong>6. Deleting files from the remote repository</strong></p>
 <p>If you want to delete files from the remote repository, delete them from your local repository first and then give these commands:</p>
 <p><code>git add -u</code></p>
