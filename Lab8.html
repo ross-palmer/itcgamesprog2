@@ -331,7 +331,7 @@ GameState m_gameState { GameState::GAME_RUNNING };
 bool collidesWithPlayer(Tank const &amp; playerTank) const;
 </code></pre>
 
-<p>And add the implementation below to Tank.cpp</p>
+<p>And add the implementation below to TankAI.cpp</p>
 <pre><code>bool TankAi::collidesWithPlayer(Tank const &amp; playerTank) const
 {
     // Checks if the AI tank has collided with the player tank.
@@ -523,9 +523,9 @@ The arguments inside the angle brackets represent the return type of our target 
         //  will be supplied later when we call the function inside Projectile::udpate()
         // So we use what is called a placeholder argument and this will be substituted later with the damage amount
         using std::placeholders::_1;
-        // The parameters of bind are the function to be called, followed by the name of the target instance, 
+        // The parameters of bind are the function to be called, followed by the address of the target instance, 
         //  followed by the placeholder argument.
-        m_funcApplyDamage = std::bind(&TankAi::applyDamage, m_aiTank, _1);        
+        m_funcApplyDamage = std::bind(&TankAi::applyDamage, &m_aiTank, _1);        
         </code></pre>
     </p>
 </li>

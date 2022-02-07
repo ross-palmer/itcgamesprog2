@@ -295,10 +295,10 @@
     <h2>Mini Project 2: Implementing a vision cone</h2>
     <p><strong>Instructions:</strong> </p>
     <ul>
-        <li>Projects must be pushed to github by 11pm Thursday 17th March. </li>
-        <li>You will be required to demonstrate your project to me in class the next day (Friday 18th).</li>
+        <li>Projects must be pushed to github by 11pm Wednesday 9th March. </li>
+        <li>You will be required to demonstrate your project to me in class the next day (Thursday 10th).</li>
         <li>Plagiarism is a very serious offence and will be treated accordingly.</li>
-        <li><a href="http://ross-palmer.github.io/itcgamesprog2/VisionConeHints.pdf">Vision Cone Hints</a></li>
+        <li><a href="https://instituteoftechnol663-my.sharepoint.com/:b:/r/personal/palmerr_itcarlow_ie/Documents/G2_Programming_Shared_21/SFML%20Lab%20Resources/Mini%20Project%202/Vision%20Cone%20Implementation.pdf?csf=1&web=1&e=Sb29SX">Vision Cone Hints</a></li>
     </ul>
     <p>
         For this project, you will need to implement a vision cone for an AI entity that can move independently around a simple level. You may continue using the Tank project from lab 8 or you may start with another suitable SFML project of your choosing.
@@ -312,19 +312,23 @@
                 <pre><code>enum class AIState
 {
    PATROL_MAP,
+   PLAYER_DETECTED,
    ATTACK_PLAYER
 };</pre></code>
             </p>
             <p>
-                These will represent the two states for the AI which will determine its behaviour.
-                The AI has a vision cone which will enable it to see the player if it is 30 degrees left or right of its line-of-sight and within range of the cone. The AI will start in a tracking mode (PATROL_MAP) and will patrol random locations on the map looking for the player. In ATTACK_PLAYER mode, the vision cone has a longer range but narrower field of view, and does a 360 degree sweep of the map. The vision cone is always drawn and visible to the player. <strong>[30]</strong>
+                These will represent the three states for the AI which will determine its behaviour.
+                The AI has a vision cone that operates in one of three different modes depending on what state it is in. In PATROL_MAP mode, the vision cone has a medium range and medium field of view (mode 1). For example, this might be 30 degrees left or right of its line-of-sight. The AI will start in a tracking mode (PATROL_MAP) and will patrol random locations on the map looking for the player. Should the player intersect the AI vision cone, the AI switches state to PLAYER_DETECTED.
+                In this mode, the vision cone has a longer range but narrower field of view, and does a 360 degree sweep of the map (mode 2). The vision cone is always drawn and visible to the player. The AI will proceed in the direction of the player and constantly measure the distance to that point, until it decides it is within a reasonable firing range.<strong>[30]</strong>
             </p>
         </li>
         <li>
-            <p>Once the player is detected inside the cone, the AI switches modes to ATTACK_PLAYER and the following happens...</p>
-            <p>2.1 The AI will proceed in the direction of the player and constantly measure the distance to that point, until it decides it is within a reasonable shooting range. The AI will no longer sweep the cone through 360 degrees, but will try to keep the player  centered inside it.  <strong>[20]</strong></p>
-            <p>2.2 If the player is approximately halfway inside the vision cone, the AI will adjust the cone,  reducing its radius by about one third, but increase its spread to -40 and +40 degrees. <strong>[10]</strong> (note: AI will continue attempts to keep player centered inside the vision cone)</p>
-            <p>2.3 If the player moves outside the vision cone, the AI will revert to the behaviour described for PATROL_MAP mode (this includes re-adjusting the vision cone). <strong>[10]</strong></p>
+            <p>When the player is within firing range, the AI switches modes to ATTACK_PLAYER and the following happens...</p>
+            <p>2.1 The AI will switch its vision cone to mode 3. In this mode, the vision cone has the smallest range but widest field of view. The AI will try to keep the player centered inside it.  <strong>[20]</strong></p>
+            <p>2.2 If the player moves outside the vision cone, the AI will revert to the behaviour described for PATROL_MAP mode (this includes re-adjusting the vision cone). <strong>[10]</strong></p>
+        </li>
+        <li>
+            <p>The vision cone should always be drawn as a solid filled shape that correlates exactly to its field of view and range.<strong>[10]</strong></p> 
         </li>
         <li>
             <p>Implementation of fuel/stamina and pickups as described above. If the player is hit by projectiles, this will initiate a constant slow fuel leak or reduction in stamina (in addition to the normal consumption while moving). There is a single repair pack/medpack available on the map to reset any damage. The player will be destroyed if they run out of fuel/stamina. <strong>[15]</strong> </p>
