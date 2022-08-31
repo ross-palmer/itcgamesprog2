@@ -293,7 +293,7 @@ img {
 </head>
 <body>
 <h2>Lab 1: SFML Basic Concepts</h2>
-<p><strong>To be completed by:</strong> Week 3 (Mon 4/10)</p>
+<p><strong>To be completed by:</strong> Week 3 (Fri 30/9)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Distinguish between the SFML game loop and event loop.</li>
@@ -326,42 +326,48 @@ We will start by looking at the sample Visual Studio solution 'SFML Playground'.
 <p><strong>1.1 The SFML game loop</strong></p>
 <p>Let's start inside the constructor function of class Game (game.cpp).</p>
 <p>The first thing we do is create the SFML render window - the arguments include the screen resolution, colour depth (32 bits per pixel) and the window title:</p>
-<pre><code>Game::Game()
-: m_window(sf::VideoMode(1440, 900, 32), &quot;SFML Playground&quot;, sf::Style::Default)
+<pre><code>
+    Game::Game()
+    : m_window(ScreenSize::s_width, ScreenSize::s_height, 32), &quot;SFML Playground&quot;, sf::Style::Default)
 </code></pre>
 
-<p>Next, the <code>Game::run()</code> method encapsulates our game loop, where our <code>update()</code> functionality runs at a different FPS than the <code>render()</code> functionality. Essentially, this is to prioritise <code>update()</code> operations over <code>render()</code> operations on a slow computer. This is explained below:</p>
-<pre><code>void Game::run()
+<p>Next, the <code>Game::run()</code> method encapsulates our game loop, where our <code>update()</code> functionality runs at a different FPS than the <code>render()</code> functionality. The goal is to perform at least one update and one render operation in our target time (1/60 == 60 fps). This is explained below:</p>
+<pre><code>
+void Game::run()
 {
+    <b>// For brevity, the conditional TEST_FPS code you see in your version is omitted from this function.</b>
     sf::Clock clock;
-    sf::Int32 lag = 0;
+    sf::Time timeSinceLastUpdate = sf::Time::Zero;
 
+    sf::Time timePerFrame = sf::seconds(1.0f / FPS); // 60 fps
     while (m_window.isOpen())
     {
-        sf::Time dt = clock.restart();
-
-        lag += dt.asMilliseconds();
-
-        processEvents();
-
-        while (lag &gt; MS_PER_UPDATE)
+        processEvents(); // as many as possible
+        timeSinceLastUpdate += clock.restart();
+        while (timeSinceLastUpdate > timePerFrame)
         {
-            update(lag);
-            lag -= MS_PER_UPDATE;
-        }
-        update(lag);
-
-        render();
+            timeSinceLastUpdate -= timePerFrame;
+            processEvents(); // at least 60 fps
+            update(timePerFrame.asMilliseconds()); //60 fps
+        }    
+    }
+    render(); // as many as possible
     }
 }
 </code></pre>
 
-<p>The above loop will continue while the game window has not been closed. Inside the loop,
-we call <code>clock.restart()</code> which does two things - it resets the clock and returns the delta time (<code>dt</code>), which tells us how much time has passed since the last frame.
-The delta time is accumulated into a variable called <code>lag</code>. 
-We then process any key or mouse events by calling <code>processEvents()</code>.
-The inner while loop references a constant called <code>MS_PER_UPDATE</code> - this is defined as 10ms and represents a notional amount of time we set aside for one update cycle. On a fast computer, this inner loop may not execute for a particular frame, because one update cycle is done in less than 10ms. In this scenario, we get exactly one update and one render (eventually lag will be &gt; <code>MS_PER_UPDATE</code> as it accumulates the delta time).
-On a slow computer, <code>lag</code> may well be &gt; <code>MS_PER_UPDATE</code> most frames. In this scenario, we get multiple updates for each render operation.</p>
+<p>
+    The above loop will continue while the game window has not been closed. Inside the loop,
+    we set a counter <code>timeSinceLastUpdate()</code> to zero, this represents the amount of elapsed time since the last
+    update. The target frame time is set as 1 / 60.
+    We then process any key or mouse events by calling <code>processEvents()</code>.
+    The <code>timeSinceLastUpdate()</code> counter is updated by calling <code>clock.restart()</code>. This call resets
+    the SFML clock and returns the elapsed time (since the clock was last reset). This elapsed time represents the time
+    taken for the previous iteration of our game loop and it gets added to <code>timeSinceLastUpdate()</code>.    
+    The inner while loop will execute once the <code>timeSinceLastUpdate()</code> exceeds the target frame time.
+    This causes an <code>update()</code> operation to be performed. In a lightweight SFML project like this, it is very likely that
+    your computer will execute more calls to <code>render()</code> than <code>update()</code>.
+</p>
 <p><strong>1.2 The SFML event loop</strong></p>
 <p>The next member function is <code>Game::processEvents()</code></p>
 <pre><code>void Game::processEvents()
@@ -379,7 +385,7 @@ On a slow computer, <code>lag</code> may well be &gt; <code>MS_PER_UPDATE</code>
 </code></pre>
 
 <p>Note that SFML stores events internally in a queue structure. The method:</p>
-<pre><code>app.pollEvent(event)
+<pre><code>m_window.pollEvent(event)
 </code></pre>
 
 <p>pops (removes) the next event from the queue and stores it in the <code>event</code> variable. This method will return <code>false</code> when there are no more events available in the queue, thus causing the loop to exit. Events are identified by the <code>sf::Event::EventType</code> enum (enumeration). So, for example, <code>sf::Event::Closed</code> signifies a window closed event. Likewise, <code>sf::Event::KeyPressed</code> signifies a key pressed event. 
@@ -421,9 +427,9 @@ void Game::render()
 {
     m_window.clear(sf::Color(0, 0, 0, 0));
 
-    // Draw sprites etc. here using m_window.draw()...
+    <b>// Draw sprites etc. here using m_window.draw()...</b>
 
-    // Now display on-screen everthing that has been rendered to the SFML window.
+    <b>// Now display on-screen everthing that has been rendered to the SFML window.</b>
 
     m_window.display();
 }
@@ -431,29 +437,30 @@ void Game::render()
 
 <p>Build the application. Because we have made a Debug build, a  Debug folder is  created inside your Project folder (you get a Release folder created for Release builds, but more on that later). Inside Debug, you will find your SFML executable. When you run this program, it will hook into the SFML DLLs that are in <code>C:\SFML-2.5.1\bin</code> because we add this directory to the PATH. If you ever want to distribute your SFML application (so it runs on another PC), you will need to copy the required DLLs from <code>C:\SFML-2.5.1\bin</code> to your Debug or Release folder as appropriate. </p>
 
-Note our render function clears the screen to black and displays the contents of whatever <code>draw()</code> calls we have made to the SFML window on-screen. We haven't drawn anything yet so the screen will stay black.</p>
+Note our render function clears the screen to black and displays the contents of whatever <code>draw()</code> calls we have made to the SFML window on-screen. 
+    Because we have made a debug build, you should see the FPS counters showing updates per second (UPS) and draws per second (DPS), the rest of the screen will stay black.</p>
 <p><strong>Exercise 1 - Drawing a sprite.</strong></p>
 <p>Open Game.h and add a member variable of type Sprite:</p>
-<pre><code>sf::Sprite m_sprite;
+<pre><code>sf::Sprite m_tankSprite;
 </code></pre>
 
 <p>In Game.cpp, inside the constructor function, add the following code:</p>
-<pre><code>    sf::Texture myTexture;
-    if (!myTexture.loadFromFile(&quot;E-100.png&quot;))
+<pre><code>    sf::Texture m_tankTexture;
+    if (!m_tankTexture.loadFromFile(&quot;E-100.png&quot;))
     {
         std::string s(&quot;Error loading texture&quot;);
         throw std::exception(s.c_str());
     }
 
-    m_sprite.setTexture(myTexture);
+    m_tankSprite.setTexture(m_tankTexture);
 </code></pre>
 
 <p>Finally, don't forget to draw the sprite inside the <code>render()</code> function. 
-What happens? Can you explain the result? Fix the problem before continuing to exercise 2.</p>
+<b>Add a comment after this block of code that describes what happens and why you think it has happened</b>. Fix the problem before continuing to exercise 2.</p>
 <p><strong>Exercise 2 - Setting the sprite origin.</strong></p>
-<p>By default the origin of the sprite is set to the top left corner. Set the origin of the sprite to it's centre point. Where is the sprite now drawn? Can you explain why part of the sprite is missing?</p>
+<p>By default the origin of the sprite is set to the top left corner. Set the origin of the sprite to it's centre point. Add a comment after your code to explain where the sprite is now drawn. Also explain why part of the sprite is missing.</p>
 <p><strong>Exercise 3 - Rotating a sprite.</strong></p>
-<p>Draw the sprite anywhere so it is fully visible (i.e. translate the sprite somewhere). Rotate the sprite by 90 degrees. Which direction has the tank rotated (clockwise or anti-clockwise)?
+<p>Draw the sprite anywhere so it is fully visible (i.e. translate the sprite somewhere). Rotate the sprite by 90 degrees. Add a comment to say which direction has the tank rotated (clockwise or anti-clockwise) and why you think it is oriented this way.
 By default, in SFML, 0° corresponds to &quot;right&quot;, i.e. along the positive x-axis. This means our tank sprite should face straight down the positive y-axis when rotated 90°. How can this be fixed?</p>
 
 <p>Finally, be sure to read the SFML tutorial on Sprites <a href="https://www.sfml-dev.org/tutorials/2.5/graphics-sprite.php">here</a> </p>
