@@ -293,7 +293,7 @@
 </head>
 <body>
     <h2>Lab 2: Level Loading: using YAML to represent game data</h2>
-    <p><strong>To be completed by:</strong> Week 6 (Mon 25/10)</p>
+    <p><strong>To be completed by:</strong> Week 6 (Fri 21/10)</p>
     <p>Learning Outcomes:</p>
     <ul>
         <li>Explain what YAML is and how it can be used to represent game data.</li>
@@ -607,30 +607,48 @@ for (unsigned i = 0; i &lt; obstaclesNode.size(); ++i)
 sf::Texture m_spriteSheetTexture;
 </code></pre>
 
-    <p>In <code>Game.cpp</code>, add the following code to the end of your Game constructor function:</p>
-<pre><code>if (!m_spriteSheetTexture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
-{
-    std::string errorMsg(&quot;Error loading texture&quot;);
-    throw std::exception(errorMsg.c_str());
-}
+    <p>In <code>Game.cpp</code>, add the following code to the end of <code>Game::init()</code></p>
+<pre><code>
+    if (!m_spriteSheetTexture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
+    {
+       std::string errorMsg(&quot;Error loading texture&quot;);
+       throw std::exception(errorMsg.c_str());
+    }
+</pre></code>
 
-// Extract the wall image from the spritesheet.
-sf::Sprite sprite;
-sf::IntRect wallRect(2, 129, 33, 23);
-sprite.setTexture(m_spriteSheetTexture);
-sprite.setTextureRect(wallRect);
-// Loop through each Obstacle instance - recall that Obstacles are structs
-for (auto &amp;obstacle : m_level.m_obstacles)
-{
-    // Position the wall sprite using the obstacle data
-    sprite.setPosition(obstacle.m_position);
-    sprite.rotate(obstacle.m_rotation);
-    m_wallSprites.push_back(sprite);
-}
+    <p>Add a new private member function to Game.h as follows:</p>
+<pre><code>/// &lt;summary&gt;
+/// @brief Creates the wall sprites and loads them into a vector.
+/// Note that sf::Sprite is considered a light weight class, so 
+///  storing copies (instead of pointers to sf::Sprite) in std::vector is acceptable.
+/// &lt;/summary&gt;
+void generateWalls();
 </code></pre>
 
+    <p>We will need to create a <code>sf::Sprite</code> for each wall, and because there are multiple walls, we need to store the sprites in a container.</p>
+    <p>
+        We need to write a function <code>generateWalls()</code> next to fill this vector.
+        In Game.cpp, define the new member function:
+    </p>
+<pre><code>////////////////////////////////////////////////////////////
+void Game::generateWalls()
+{
+    sf::IntRect wallRect(2, 129, 33, 23);
+    // Create the Walls 
+    for (auto const &obstacle : m_level.m_obstacles)
+    {
+        sf::Sprite sprite;
+        sprite.setTexture(m_texture);
+        sprite.setTextureRect(wallRect);
+        sprite.setOrigin(wallRect.width / 2.0, wallRect.height / 2.0);
+        sprite.setPosition(obstacle.m_position);
+        sprite.setRotation(obstacle.m_rotation);
+        m_wallSprites.push_back(sprite);
+    }
+}
+</code></pre>
     <p>This creates a temporary sprite variable and we use a range based loop to process each item in the vector. Note the for loop, i.e.</p>
-<pre><code>for (auto &amp;obstacle : m_level.m_obstacles)
+<pre><code>for (auto const &obstacle : m_level.m_obstacles)
 </code></pre>
 
     <p>the keyword <code>auto</code> means the compiler will deduce the correct type for the variable <code>obstacle</code>, which in this case is type <code>ObstacleData</code>. It does this by looking at the type of the vector that we are looping through, in this case the vector <code>m_obstacles</code>. The use of the <code>&amp;</code> means that we only store a reference to each item in the vector. If we wrote the loop this way:</p>
@@ -638,9 +656,11 @@ for (auto &amp;obstacle : m_level.m_obstacles)
 </code></pre>
 
     <p>
-        it would mean that each item in the vector is <em>copied</em> into the variable obstacle on each pass of the loop, which is an unnecessary copy operation in this case.
+        it would mean that each item in the vector is <em>copied</em> into the variable <code>obstacle</code> on each pass of the loop, which is an unnecessary copy operation in this case.
         Inside the loop, we position the temporary sprite and apply the correct rotation by using the data from the obstacle object. Finally, we copy the temporary sprite into the vector <code>m_wallSprites</code>. We need to do this as you will need to draw the sprites inside our <code>render()</code> method. (The obstacles use our tank image, but in our demo which we will build later, they will be walls).
     </p>
+    <p>Finally, at the end of the <code>Game::init()</code> function, add a line to call the new member function:</p>
+    <p><code>generateWalls();</code></p>
     <hr />
     <p><strong>Side note:</strong> Sometimes there are reasons why is not a good idea to store containers of instances, particularly if those objects are not lightweight. Firstly, all STL containers copy in and copy out. This means any object you wish to store in a container will be copied into that container, and any object you retrieve from the container will be copied out. Worse still, <code>std::vector</code> will copy all of it's elements to a new location in memory if it runs out of capacity. If you delete an element from a vector, any proceeding elements are copied down one place. For these reasons, it is often preferable to store pointers (or preferably smart pointers) to objects in containers like this:</p>
 <pre><code>std::vector&lt;sf::Sprite *&gt; myVector;

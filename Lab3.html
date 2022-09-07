@@ -291,56 +291,60 @@ img {
 </style>
 </head>
 <body>
-<h2>Lab 3: Moving and rotating a tracked vehicle</h2>
-<p><strong>To be completed by:</strong> Week 7 (Mon 1/11)</p>
-<p>Learning Outcomes:</p>
-<ul>
-<li>Reorganise a project's directory structure to separate source and header files and update the relevant compiler settings. </li>
-<li>Learn how to enable C++17 language features in Visual Studio.</li>
-<li>Explain the role of a filter in Visual Studio.</li>
-<li>Explain what a texture rectangle is used for in SFML.</li>
-<li>Add an external library (<code>thor</code>) to an SFML project.</li>
-<li>Implement movement and rotation for a tracked vehicle.</li>
-</ul>
-<hr />
-<p>Contine with the sample Visual Studio solution 'SFML Playground' from lab 2.</p>
-<p><strong>3.1 Reorganising the project structure.</strong></p>
-<p>We are going to reorganise our project structure to make it more orderly. </p>
-<p>1) Open the project in Visual Studio and remove all the header and source files (right click on each, then Remove but <strong>don't</strong> delete). Starting inside your project folder, make an <code>include</code> folder and a <code>src</code> folder.</p>
-<p>2) Download the additional files for this lab from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/r/personal/palmerr_itcarlow_ie/Documents/G2_Programming_Shared_21/SFML%20Lab%20Resources/SFML%20Lab%20Exercise%203%20(Source%20files%20and%20libraries)?csf=1&web=1&e=DEKzbm">here</a>. Copy the files Tank.h and Tank.cpp from this download into your project folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
-<p>3) Make another folder called <code>resources</code> if you don't already have one. Inside resources create two further folders called <code>levels</code> and <code>images</code>. Move your image files (.png, .jpg) into the images folder and move the .yaml level file into the levels folder. Now that we have moved our image file (the background) to a new folder, we need to update the relevant entry in the YAML file:</p>
+    <h2>Lab 3: Moving and rotating a tracked vehicle</h2>
+    <p><strong>To be completed by:</strong> Week 7 (Fri 28/10)</p>
+    <p>Learning Outcomes:</p>
+    <ul>
+        <li>Reorganise a project's directory structure to separate source and header files and update the relevant compiler settings. </li>
+        <li>Learn how to enable C++17 language features in Visual Studio.</li>
+        <li>Explain the role of a filter in Visual Studio.</li>
+        <li>Explain what a texture rectangle is used for in SFML.</li>
+        <li>Add an external library (<code>thor</code>) to an SFML project.</li>
+        <li>Implement movement and rotation for a tracked vehicle.</li>
+    </ul>
+    <hr />
+    <p>Contine with the sample Visual Studio solution 'SFML Playground' from lab 2.</p>
+    <p><strong>3.1 Reorganising the project structure.</strong></p>
+    <p>We are going to reorganise our project structure to make it more orderly. </p>
+    <p>1) Open the project in Visual Studio and remove all the header and source files (right click on each, then Remove but <strong>don't</strong> delete). Starting inside your project folder, make an <code>include</code> folder and a <code>src</code> folder.</p>
+    <p>2) Download the additional files for this lab from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/g/personal/palmerr_itcarlow_ie/EmsufM0cFmdKuVdJpgw5T-YBBU9pn4JjzAsggHFRr5VcKg?e=RToRCv">here</a>. Copy the files Tank.h and Tank.cpp from this download into your project folder. In Windows explorer, move <strong>all</strong> the header files to the <code>include</code> folder and <strong>all</strong> the source (.cpp) files to the <code>src</code> folder.</p>
+    <p>3) Make another folder called <code>resources</code> if you don't already have one. Inside resources create two further folders called <code>levels</code> and <code>images</code>. Move your image files (.png, .jpg) into the images folder and move the .yaml level file into the levels folder. Now that we have moved our image file (the background) to a new folder, we need to update the relevant entry in the YAML file:</p>
 <pre><code>background:
    file: ./resources/images/Background.jpg # Sample comment
 </code></pre>
 
-<p>4) Returning to Visual Studio, note that VS provides filters that allow us manage all the
-source files in our project. By default, VS provides filters called <code>Header files</code> and <code>Source files</code>. Here's an example of the <code>Header files</code> filter:</p>
-<p><img src="vs_filters.jpg" /></p>
-<p>Right click on the <code>Header files</code> filter and choose 'Add-&gt;Existing Item'. Browse to your <code>include</code>folder and add all the header files.</p>
-<p>Right click on the <code>Source files</code> filter and choose 'Add-&gt;Existing Item'. Browse to your <code>src</code>folder and add all the source files.</p>
-<p>For large projects, it is useful to create your own custom filters. For example, inside the <code>Header files</code> filter you could create further filters for different aspects of your project, e.g. Sound, AI, Physics etc as appropriate. This structure would again be mirrored inside the <code>Source files</code> filter.</p>
-<p>5) Now we need to tell the compiler where to locate our header files (remember, we have moved them in the file system into a folder called <code>Include</code>). Right click on your project name, then 
-choose:</p>
-<p>C/C++-&gt;General-&gt;Additional Include Directories</p>
-<p>Add the entry <code>;.\include\;.</code> as indicated below under <code>Additional Include Directories</code></p>
-<p><img src="vs_include.jpg" /></p>
-<p>The semi-colon (;) is used to separate directory paths. The <code>.\include</code> means search under your project folder for a directory called <code>include</code>, while a <code>.</code> on it's own, means search the current (project) folder. Why do we need to tell the compiler to search the project folder? It is because we placed the yaml header files there and the source file that uses it (<code>LevelLoader.h</code>) has been moved from the project folder into our <code>include</code> folder.</p>
-<p><strong>3.2 Building the reorganised project</strong></p>
-<p>The additional files for this project are Tank.h and Tank.cpp. We have created a Tank class to manage the creation of the Tank sprite (see member function <code>Tank::initSprites()</code>) and rendering of that sprite (see <code>Tank::render()</code>). There is also a new member function called <code>Tank::update()</code> to handle all updates for our Tank object, such as movement.</p>
-<p><strong>Exercise 1:</strong> In Game.h, declare the Tank object:</p>
+    <p>
+        4) Returning to Visual Studio, note that VS provides filters that allow us manage all the
+        source files in our project. By default, VS provides filters called <code>Header files</code> and <code>Source files</code>. Here's an example of the <code>Header files</code> filter:
+    </p>
+    <p><img src="vs_filters.jpg" /></p>
+    <p>Right click on the <code>Header files</code> filter and choose 'Add-&gt;Existing Item'. Browse to your <code>include</code>folder and add all the header files.</p>
+    <p>Right click on the <code>Source files</code> filter and choose 'Add-&gt;Existing Item'. Browse to your <code>src</code>folder and add all the source files.</p>
+    <p>For large projects, it is useful to create your own custom filters. For example, inside the <code>Header files</code> filter you could create further filters for different aspects of your project, e.g. Sound, AI, Physics etc as appropriate. This structure would again be mirrored inside the <code>Source files</code> filter.</p>
+    <p>
+        5) Now we need to tell the compiler where to locate our header files (remember, we have moved them in the file system into a folder called <code>Include</code>). Right click on your project name, then
+        choose:
+    </p>
+    <p>C/C++-&gt;General-&gt;Additional Include Directories</p>
+    <p>Add the entry <code>;.\include\;.</code> as indicated below under <code>Additional Include Directories</code></p>
+    <p><img src="vs_include.jpg" /></p>
+    <p>The semi-colon (;) is used to separate directory paths. The <code>.\include</code> means search under your project folder for a directory called <code>include</code>, while a <code>.</code> on it's own, means search the current (project) folder. Why do we need to tell the compiler to search the project folder? It is because we placed the yaml header files there and the source file that uses it (<code>LevelLoader.h</code>) has been moved from the project folder into our <code>include</code> folder.</p>
+    <p><strong>3.2 Building the reorganised project</strong></p>
+    <p>The additional files for this project are Tank.h and Tank.cpp. We have created a Tank class to manage the creation of the Tank sprite (see member function <code>Tank::initSprites()</code>) and rendering of that sprite (see <code>Tank::render()</code>). There is also a new member function called <code>Tank::update()</code> to handle all updates for our Tank object, such as movement.</p>
+    <p><strong>Exercise 1:</strong> In Game.h, declare the Tank object:</p>
 <pre><code>// An instance representing the player controlled tank.
 Tank m_tank;
 </code></pre>
 
-<p>Don't forget to <code>#include &quot;Tank.h&quot;</code> at the top of Game.h.</p>
-<p>In the Game constructor function in Game.cpp, initialise the tank object in the member initialiser list like this:</p>
+    <p>Don't forget to <code>#include &quot;Tank.h&quot;</code> at the top of Game.h.</p>
+    <p>In the Game constructor function in Game.cpp, initialise the tank object in the member initialiser list like this:</p>
 <pre><code>////////////////////////////////////////////////////////////
 Game::Game()
     : m_window(sf::VideoMode(ScreenSize::width(), ScreenSize::height(), 32), &quot;SFML Playground&quot;, sf::Style::Default)
     , m_tank(m_texture, sf::Vector2f(0,0))
 </code></pre>
 
-<p>Note how we pass m_texture by reference to the Tank constructor (the second argument is a default position which we will change later). In fact, the tank texture is not yet loaded, but we will do this shortly. <B>Next, remove any code that creates a Tank sprite from your previous lab - don't forget to remove any unused <code>sf::Sprite</code> or <code>sf::Texture</code> member variables from class <code>Game</code></B>. Load the sprite sheet you copied earlier as follows:</p>
+    <p>Note how we pass m_texture by reference to the Tank constructor (the second argument is a default position which we will change later). In fact, the tank texture is not yet loaded, but we will do this shortly. <B>Next, remove any code that creates a Tank sprite from your previous lab - don't forget to remove any unused <code>sf::Sprite</code> or <code>sf::Texture</code> member variables from class <code>Game</code></B>. Load the sprite sheet you copied earlier as follows:</p>
 <pre><code>if (!m_texture.loadFromFile(&quot;./resources/images/SpriteSheet.png&quot;))
 {
     std::string s(&quot;Error loading texture&quot;);
@@ -348,16 +352,16 @@ Game::Game()
 }   
 </code></pre>
 
-<p>Note how this initialises <code>m_texture</code> (which is being used by our tank object). Now position the tank:</p>
+    <p>Note how this initialises <code>m_texture</code> (which is being used by our tank object). Now position the tank:</p>
 <pre><code>// Now the level data is loaded, set the tank position
 m_tank.setPosition(m_level.m_tank.m_position);  
 </code></pre>
-<p>You will need to write a <code>setPosition()</code> function for the Tank class.</p>
-<p>Don't forget to open the yaml file and change the path to the background sprite.</p>
-<p>Finally, draw (render) the tank. Where should this be done in Game.cpp?</p>
-<p>Build and execute the project - you should see the tank and turret rendered. Notice how the rest of the sprite sheet is not drawn. We will see how this works in the next section.</p>
-<p><strong>3.3 The Tank class</strong></p>
-<p>Let's first consider how the tank base is drawn:</p>
+    <p>You will need to write a <code>setPosition()</code> function for the Tank class.</p>
+    <p>Don't forget to open the yaml file and change the path to the background sprite.</p>
+    <p>Finally, draw (render) the tank. Where should this be done in Game.cpp?</p>
+    <p>Build and execute the project - you should see the tank and turret rendered. Notice how the rest of the sprite sheet is not drawn. We will see how this works in the next section.</p>
+    <p><strong>3.3 The Tank class</strong></p>
+    <p>Let's first consider how the tank base is drawn:</p>
 <pre><code>// Initialise the tank base
 m_tankBase.setTexture(m_texture);
 sf::IntRect baseRect(2, 43, 79, 43);
@@ -366,22 +370,26 @@ m_tankBase.setOrigin(baseRect.width / 2.0, baseRect.height / 2.0);
 m_tankBase.setPosition(pos);
 </code></pre>
 
-<p>The tank base texture is set from the sprite sheet we loaded earlier. The line:</p>
+    <p>The tank base texture is set from the sprite sheet we loaded earlier. The line:</p>
 <pre><code>sf::IntRect baseRect(2, 43, 79, 43);
 </code></pre>
 
-<p>creates an SFML rectangle from x,y point 2,43 with a width of 79 and a height of 43 pixels.
-This is then used to specify a rectangular region on the texture (sprite sheet) that designates the area where the tank base appears. We then set the origin and position of the sprite as usual.</p>
-<p>Next, the turret is drawn using the same technique. Notice that the turret origin is not set according to the centre of the turret sprite:</p>
+    <p>
+        creates an SFML rectangle from x,y point 2,43 with a width of 79 and a height of 43 pixels.
+        This is then used to specify a rectangular region on the texture (sprite sheet) that designates the area where the tank base appears. We then set the origin and position of the sprite as usual.
+    </p>
+    <p>Next, the turret is drawn using the same technique. Notice that the turret origin is not set according to the centre of the turret sprite:</p>
 <pre><code>m_turret.setOrigin(turretRect.width / 3.0, turretRect.height / 2.0);
 </code></pre>
 
-<p>The origin of the turret is towards the left hand side as opposed to the exact centre of the sprite - this means when we draw it at the same position as the tank base, it will be offset to the left hand side and look correct.</p>
-<p><strong>Tank Movement</strong></p>
-<p>Now we consider how to move the tank that roughly approximates the movement of a tracked vehicle. We will need to do some simple mathematical operations and we will use a special library for SFML called Thor (see <a href="http://www.bromeon.ch/libraries/thor/">here</a>).
-The required source and library files are inside the zip file you downloaded earlier. Move the <code>Thor</code> and <code>Aurora</code> folders to your include folder, and put the thor library files <code>thor.lib</code>, <code>thor-d.lib</code> into your <code>lib</code> folder.
-Copy the Thor runtime library file <code>thor-d.dll</code> into your <code>Debug</code> folder.</p>
-<p>Open main.cpp and add the following lines to tell the linker to use the thor library files.</p>
+    <p>The origin of the turret is towards the left hand side as opposed to the exact centre of the sprite - this means when we draw it at the same position as the tank base, it will be offset to the left hand side and look correct.</p>
+    <p><strong>Tank Movement</strong></p>
+    <p>
+        Now we consider how to move the tank that roughly approximates the movement of a tracked vehicle. We will need to do some simple mathematical operations and we will use a special library for SFML called Thor (see <a href="http://www.bromeon.ch/libraries/thor/">here</a>).
+        The required source and library files are inside the zip file you downloaded earlier. Move the <code>Thor</code> and <code>Aurora</code> folders to your include folder, and put the thor library files <code>thor.lib</code>, <code>thor-d.lib</code> into your <code>lib</code> folder.
+        Copy the Thor runtime library file <code>thor-d.dll</code> into your <code>Debug</code> folder.
+    </p>
+    <p>Open main.cpp and add the following lines to tell the linker to use the thor library files.</p>
 <pre><code>// Add this line under the #ifdef _DEBUG directive (for Debug builds)
 #pragma comment(lib,&quot;thor-d.lib&quot;) 
 
@@ -389,15 +397,15 @@ Copy the Thor runtime library file <code>thor-d.dll</code> into your <code>Debug
 #pragma comment(lib,&quot;thor.lib&quot;) 
 </code></pre>
 
-<p>Now we have Thor setup, add the following public member functions to Tank.h</p>
+    <p>Now we have Thor setup, add the following public member functions to Tank.h</p>
 <pre><code>/// &lt;summary&gt;
-/// @brief Increases the speed by 1, max speed is capped at 100.
+/// @brief Increases the speed by 1.
 /// 
 /// &lt;/summary&gt;
 void increaseSpeed();
 
 /// &lt;summary&gt;
-/// @brief Decreases the speed by 1, min speed is capped at -100.
+/// @brief Decreases the speed by 1.
 /// 
 /// &lt;/summary&gt;
 void decreaseSpeed();
@@ -415,7 +423,7 @@ void increaseRotation();
 void decreaseRotation();
 </code></pre>
 
-<p>Add the following member variables for control of the speed and rotation of the tank:</p>
+    <p>Add the following member variables for control of the speed and rotation of the tank:</p>
 <pre><code>// The tank speed.
 double m_speed{ 0.0 };
 
@@ -423,31 +431,25 @@ double m_speed{ 0.0 };
 double m_rotation{ 0.0 };
 </code></pre>
 
-<p>Notice that in our MathUtility header file, we have declared a namespace called MathUtility. Inside this namespace, there are some useful maths functions we will use later in this project. For now, we are just using a constant that is useful when converting from degrees to radians:</p>
+    <p>Notice that in our MathUtility header file, we have declared a namespace called MathUtility. Inside this namespace, there are some useful maths functions we will use later in this project. For now, we are just using a constant that is useful when converting from degrees to radians:</p>
 <pre><code>double const DEG_TO_RAD = thor::Pi / 180.0f;
 </code></pre>
 
-<p>Note the use of the <code>thor::Pi</code> constant. Because this constant is in the <code>thor</code> namespace, we need to add the following line to the top of MathUtility.h:</p>
+    <p>Note the use of the <code>thor::Pi</code> constant. Because this constant is in the <code>thor</code> namespace, we need to add the following line to the top of MathUtility.h:</p>
 <pre><code>#include &lt;Thor/Vectors.hpp&gt;
 </code></pre>
 
-<p>Next, add the implementation of the above new Tank member functions as follows:</p>
+    <p>Next, add the implementation of the above new Tank member functions as follows:</p>
 <pre><code>////////////////////////////////////////////////////////////
 void Tank::increaseSpeed()
 {
-    if (m_speed &lt; 100.0)
-    {
-        m_speed += 1;
-    }
+   m_speed += 1;
 }
 
 ////////////////////////////////////////////////////////////
 void Tank::decreaseSpeed()
 {
-    if (m_speed &gt; -100.0)
-    {
-        m_speed -= 1;
-    }
+   m_speed -= 1;
 }
 
 ////////////////////////////////////////////////////////////
@@ -471,45 +473,50 @@ void Tank::decreaseRotation()
 }
 </code></pre>
 
-<p>You may need to tweak the increment/decrement amounts later.</p>
-<p><strong>Exercise 2:</strong> In Game.cpp, add the following logic to function <code>Game::processGameEvents()</code></p>
-<ul>
-<li>
-<p>if the right arrow key is pressed, increase the rotation angle of the tank.</p>
-</li>
-<li>
-<p>if the left arrow key is pressed, decrease the rotation angle of the tank.</p>
-</li>
-<li>
-<p>if the up arrow key is pressed, increase the tank speed.</p>
-</li>
-<li>
-<p>if the down arrow key is pressed, decrease the tank speed.</p>
-</li>
-</ul>
-<p><strong>Exercise 3:</strong> In <code>Tank::update()</code>, we want to calculate the new position and rotation of the tank in response to keyboard input. The formula for an approximated tracked vehicle movement can be expressed as follows:</p>
-<ul>
-<li>
-<p>new x position = current x position + cos(rotation) * speed * (delta time / 1000)</p>
-</li>
-<li>
-<p>new y position = current y position + sin(rotation) * speed * (delta time / 1000)</p>
-</li>
-<li>
-<p>move tank base to this new position</p>
-</li>
-</ul>
-<p>Do remember that <code>std::sin</code> and <code>std::cos</code> expect a value in radians, not degrees. There is a constant defined in class <code>MathUtility</code> to help you convert from degrees to radians. Additionally, you will need to update the rotation angle of the tank base to the value of the member variable holding the rotation value.</p>
-<p>Build and execute the project. </p>
-<p><strong>Problem 1:</strong> Does the tank move in response to keyboard input? If not, see if you can fix the problem.</p>
-<p><strong>Problem 2:</strong> Assuming the tank base moves ok, what happens to the turret? See if you can coordinate the movement of the turret and the tank base.</p>
-<p><strong>Problem 3:</strong> What happens to the turret when the tank base rotates? See if you can fix this problem.</p>
-<p>The final issue we have is we cannot rotate and accelerate/decelerate at the same time, in other words our current approach does not allow for processing multiple key presses. We will fix this in the next lab.</p>
-<p><strong>Exercise 4:</strong> At the end of <code>Tank::update()</code>, apply a small frictional force to the tank so its speed will slowly decrease. For example, if the tank is currently moving, it should gradually come to a rest with no further player input. Use the <code>std::clamp</code> algorithm to ensure the speed is kept within a sensible min and max (hint: you might want to define a constant in Tank.h for the maximum allowable speed). You can find examples on usage of <code>std::clamp</code> <a href="https://www.geeksforgeeks.org/stdclamp-in-cpp-17/" title="here">here</a>. Note: because <code>std::clamp</code> is a language feature introduced in C++17, you need to enable C++17 language features in Visual Studio. To do this, right click your project name, then choose Properties -&gt; C/C++ -&gt; Language. On the right hand side of the property pages for Language, there is an entry <strong>C++ Language Standard</strong>. Change this to <strong>ISO C++ 17 Standard (/std:c++17)</strong></p>
-<p>You may find this step generates build errors from the yaml library. To suppress these, open your project properties and then go to:</p>
-<p><code>C++->Preprocessor->Preprocessor Definitions</code> and add an entry as follows:</p>
-<p><code><b>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS</b></code></p>
+    <p>You may need to tweak the increment/decrement amounts later.</p>
+    <p>At the end of <code>Tank::update()</code>, add the following line: </p>
+    <p><code>m_speed = std::clamp(m_speed, MAX_REVERSE_SPEED, MAX_FORWARD_SPEED);</code></p>
+    <p>What does std::clamp do? Have a look <a href="https://www.geeksforgeeks.org/stdclamp-in-cpp-17/">here</a></p>
+    <p>Add both numeric constants <code>MAX_REVERSE_SPEED</code> and <code>MAX_FORWARD_SPEED</code> to Tank.h, I suggest -100 and 100 as their respective values </p>
+    <p>Note: because <code>std::clamp</code> is a language feature introduced in C++17, you *may* need to enable C++17 language features in Visual Studio. To do this, right click your project name, then choose Properties -&gt; C/C++ -&gt; Language. On the right hand side of the property pages for Language, there is an entry <strong>C++ Language Standard</strong>. Change this to <strong>ISO C++ 17 Standard (/std:c++17)</strong></p>
+    <p>You may find this step generates build errors from the yaml library. To suppress these, open your project properties and then go to:</p>
+    <p><code>C++->Preprocessor->Preprocessor Definitions</code> and add an entry as follows:</p>
+    <p><code><b>_SILENCE_ALL_CXX17_DEPRECATION_WARNINGS</b></code></p>
 
+    <p><strong>Exercise 2:</strong> In Game.cpp, add the following logic to function <code>Game::processGameEvents()</code></p>
+    <ul>
+        <li>
+            <p>if the right arrow key is pressed, increase the rotation angle of the tank.</p>
+        </li>
+        <li>
+            <p>if the left arrow key is pressed, decrease the rotation angle of the tank.</p>
+        </li>
+        <li>
+            <p>if the up arrow key is pressed, increase the tank speed.</p>
+        </li>
+        <li>
+            <p>if the down arrow key is pressed, decrease the tank speed.</p>
+        </li>
+    </ul>
+    <p><strong>Exercise 3:</strong> In <code>Tank::update()</code>, we want to calculate the new position and rotation of the tank in response to keyboard input. The formula for an approximated tracked vehicle movement can be expressed as follows:</p>
+    <ul>
+        <li>
+            <p>new x position = current x position + cos(rotation) * speed * (delta time / 1000)</p>
+        </li>
+        <li>
+            <p>new y position = current y position + sin(rotation) * speed * (delta time / 1000)</p>
+        </li>
+        <li>
+            <p>move tank base to this new position</p>
+        </li>
+    </ul>
+    <p>Do remember that <code>std::sin</code> and <code>std::cos</code> expect a value in radians, not degrees. There is a constant defined in class <code>MathUtility</code> to help you convert from degrees to radians. Additionally, you will need to update the rotation angle of the tank base to the value of the member variable holding the rotation value.</p>
+    <p>Build and execute the project. </p>
+    <p><strong>Problem 1:</strong> Does the tank move in response to keyboard input? If not, see if you can fix the problem.</p>
+    <p><strong>Problem 2:</strong> Assuming the tank base moves ok, what happens to the turret? See if you can coordinate the movement of the turret and the tank base.</p>
+    <p><strong>Problem 3:</strong> What happens to the turret when the tank base rotates? See if you can fix this problem.</p>
+    <p>The final issue we have is we cannot rotate and accelerate/decelerate at the same time, in other words our current approach does not allow for processing multiple key presses. We will fix this in the next lab.</p>
+    <p><strong>Exercise 4:</strong> At the end of <code>Tank::update()</code>, apply a small frictional force to the tank so its speed will slowly decay. For example, if the tank is currently moving, it should gradually come to a rest with no further player input. Hint: Given any number x, what is the result if you multiply x by 0.99? </p>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->

@@ -292,12 +292,11 @@ img {
 </head>
 <body>
 <h2>Lab 4: Handling Simultaneous Key Input</h2>
-<p><strong>To be completed by:</strong> Week 8 (Mon 8/11)</p>
+<p><strong>To be completed by:</strong> Week 9 (Fri 11/11)</p>
 <p>Learning Outcomes:</p>
 <ul>
 <li>Implement a solution to handle simultaneous key input in SFML.</li>
 <li>Distinguish between polling for key events and handling real-time key input.</li>
-<li>Explain the purpose of enabling vertical sync on the SFML window</li>
 </ul>
 <hr />
 <p>Continue with the sample Visual Studio solution 'SFML Playground' from lab 3.</p>
@@ -371,12 +370,9 @@ void handleKeyInput();
 
 <p>This function should use the <code>sf::Keyboard</code> class to check which of the four control keys have been pressed and move/rotate the tank accordingly. </p>
 <p><strong>Exercise 3:</strong> Call the new function from the start of <code>Tank::update()</code>. What happens? </p>
-<p><strong>Exercise 4:</strong> Comment out the line at the beginning of the Game constructor function:</p>
-<pre><code>m_window.setVerticalSyncEnabled(true); // Comment out this line
-</code></pre>
 
 <p>Build and run the project. Can you explain the difference in behaviour now? Uncomment the line again.</p>
-<p><strong>Exercise 5:</strong> The turret should be able to rotate independently by moving the Z and X keys. Add this functionality to the project with two new member functions:</p>
+<p><strong>Exercise 4:</strong> The turret should be able to rotate independently by moving the Z and X keys. Add this functionality to the project with two new member functions:</p>
 <pre><code>void increaseTurretRotation();
 
 void decreaseTurretRotation();
@@ -384,7 +380,7 @@ void decreaseTurretRotation();
 
 <p>Hint: Add a new member variable to Tank.h called <code>m_turretRotation</code> to keep track of the current turret rotation. </p>
 <p>Note: Although the turret can now rotate independently, if the tank base rotates, the turret should rotate by the same amount as the base.</p>
-<p><strong>Exercise 6:</strong> It should be possible to re-centre the turret by pressing the 'C' key. Add this functionality to the project with another member function:</p>
+<p><strong>Exercise 5:</strong> It should be possible to re-centre the turret by pressing the 'C' key. Add this functionality to the project with another member function:</p>
 <pre><code>void centreTurret();
 </code></pre>
 
