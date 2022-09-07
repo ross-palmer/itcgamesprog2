@@ -301,7 +301,7 @@
         <li>Load a font and show text in SFML.</li>
     </ul>
     <hr />
-    <p>By now you should have completed the <a href="https://instituteoftechnol663-my.sharepoint.com/:b:/r/personal/palmerr_itcarlow_ie/Documents/G2_Programming_Shared_21/SFML%20Lab%20Resources/YAML%20Exercise/YAML_Exercise.pdf?csf=1&web=1&e=tCRXkE">YAML exercise</a> which is a prerequisite for this lab exercise.  Open  your Visual Studio solution 'SFML Playground' from Q2 of this exercise. If you don't need a recap on the YAML format, skip to section<b> 2.2 Project setup</b>.</p>
+    <p>By now you should have completed the <a href="https://instituteoftechnol663-my.sharepoint.com/:b:/g/personal/palmerr_itcarlow_ie/ERM89RG3Z-dFpb_edwLKttIBzKZzBq2G6eFL_O3ic7s-Ww?e=OcV52k">YAML exercise</a> which is a prerequisite for this lab exercise.  Open  your Visual Studio solution 'SFML Playground' from Q2 of this exercise. If you don't need a recap on the YAML format, skip to section<b> 2.2 Project setup</b>.</p>
     <p><strong>2.1 The YAML format</strong></p>
     <p>YAML is a recursive acronomyn that is expanded as:</p>
     <blockquote>
@@ -413,12 +413,12 @@ tank:
     <p><strong>2.2 Project setup</strong></p>
     <p>We need a way of decoding or parsing the YAML information and loading it into a C++ class. We are going to use a C++ YAML parser called <a href="https://github.com/jbeder/yaml-cpp">yaml-cpp</a>. </p>
     <p>
-        1) To begin, download the source files and images from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/r/personal/palmerr_itcarlow_ie/Documents/G2_Programming_Shared_21/SFML%20Lab%20Resources/SFML%20Lab%20Exercise%202%20(Source%20files%20and%20assets)?csf=1&web=1&e=ozfgtF">here</a>.
+        1) To begin, download the source files and images from <a href="https://instituteoftechnol663-my.sharepoint.com/:f:/g/personal/palmerr_itcarlow_ie/Erm5_cP2trhLpPLUSOFxdXwBfnGbiWvYgIv5dg5N7cAVlg?e=2mk90F">here</a>.
         Copy the source files (.h and .cpp) to your SFML Playground project, make sure to overwrite your existing source files, i.e. replace your main.cpp, Game.h, Game.cpp, LevelLoader.h, LevelLoader.cpp files with the ones I have provided here. This will simplify the project setup.
     </p>
-    <p>2) Replace your existing yaml file <code>level1.yaml</code> with the one provided. Copy <code>Background.jpg</code> and <code>SpriteSheet.png</code> into your project folder. (We will create a proper folder structure in the next lab).</p>
+    <p>2) Replace your existing yaml file <code>level1.yaml</code> with the one provided. <b>Make sure it is located in the levelData folder, there must be no .yaml file anywhere else in your project. </b>. Copy <code>Background.jpg</code> and <code>SpriteSheet.png</code> into your project folder. (We will create a proper folder structure in the next lab).</p>
 
-    <p>3) Ensure the linker is configured to locate both your SFML lib files and the YAML lib file. If you are not sure how to do this, see the instructions and screenshots provided in the <a href="https://instituteoftechnol663-my.sharepoint.com/:b:/r/personal/palmerr_itcarlow_ie/Documents/G2_Programming_Shared_21/SFML%20Lab%20Resources/YAML%20Exercise/YAML_Exercise.pdf?csf=1&web=1&e=tCRXkE">YAML exercise</a> .</p>
+    <p>3) Ensure the linker is configured to locate both your SFML lib files and the YAML lib file. If you are not sure how to do this, see the instructions and screenshots provided in the <a href="https://instituteoftechnol663-my.sharepoint.com/:b:/g/personal/palmerr_itcarlow_ie/ERM89RG3Z-dFpb_edwLKttIBzKZzBq2G6eFL_O3ic7s-Ww?e=OcV52k">YAML exercise</a> .</p>
 
     <p><strong>2.3 Introducing <code>std::vector</code></strong></p>
     <p>Our <code>LevelLoader</code> class uses a C++ data structure called <code>vector</code>, so we introduce it first here. The C++ <code>std::vector</code> class is a type of container from the Standard Template Library (STL). It should not be confused with a mathematical vector. For now, simply think of a C++ vector as an array that can grow and shrink at runtime. This special attribute means we do not have to declare the size of the vector up front (as we do with arrays). To use it in our program, we must </p>
@@ -473,7 +473,7 @@ public:
 LevelData m_level;
 </code></pre>
 
-    <p>In Game.cpp, at the start of the constructor function add the following:</p>
+    <p>In Game.cpp, at the start of the init() function add the following:</p>
 <pre><code>int currentLevel = 1;
 
 // Will generate an exception if level loading fails.
@@ -595,14 +595,14 @@ for (unsigned i = 0; i &lt; obstaclesNode.size(); ++i)
 </code></pre>
 
     <p>and we add the obstacle to the rear of the vector <code>level.m_obstacles</code> using the method <code>push_back()</code>.</p>
-    <p><strong>Exercise 3:</strong> In the Game.cpp constructor function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100. </p>
+    <p><strong>Exercise 3:</strong> In the Game::init() function, set the position of your tank sprite by using the data loaded into the level object member variable (<code>m_level</code>). Hint: The tank position from the yaml file is 850,100. </p>
     <p><strong>Exercise 4:</strong>  In Game.h, add two member variables <code>m_bgTexture</code> and <code>m_bgSprite</code> for the background texture and sprite respectively. In the Game.cpp constructor function, load the background as a sprite using the supplied filename.  In <code>Game::render()</code>, draw the background sprite first.</p>
     <p><strong>Displaying the obstacle data</strong></p>
     <p>
         The final thing to do is process our obstacle data and learn the basic usage of <code>std::vector</code>.
         Open <code>Game.h</code> and add the following member variables:
     </p>
-<pre><code>std::vector&lt;sf::Sprite&gt;  m_sprites;
+<pre><code>std::vector&lt;sf::Sprite&gt;  m_wallSprites;
 // A texture for the sprite sheet
 sf::Texture m_spriteSheetTexture;
 </code></pre>
@@ -625,11 +625,11 @@ for (auto &amp;obstacle : m_level.m_obstacles)
     // Position the wall sprite using the obstacle data
     sprite.setPosition(obstacle.m_position);
     sprite.rotate(obstacle.m_rotation);
-    m_sprites.push_back(sprite);
+    m_wallSprites.push_back(sprite);
 }
 </code></pre>
 
-    <p>This creates a temporary sprite variable and we use a C++ 11 range based loop to process each item in the vector. Note the for loop, i.e.</p>
+    <p>This creates a temporary sprite variable and we use a range based loop to process each item in the vector. Note the for loop, i.e.</p>
 <pre><code>for (auto &amp;obstacle : m_level.m_obstacles)
 </code></pre>
 
@@ -639,7 +639,7 @@ for (auto &amp;obstacle : m_level.m_obstacles)
 
     <p>
         it would mean that each item in the vector is <em>copied</em> into the variable obstacle on each pass of the loop, which is an unnecessary copy operation in this case.
-        Inside the loop, we position the temporary sprite and apply the correct rotation by using the data from the obstacle object. Finally, we copy the temporary sprite into the vector <code>m_sprites</code>. We need to do this as you will need to draw the sprites inside our <code>render()</code> method. (The obstacles use our tank image, but in our demo which we will build later, they will be walls).
+        Inside the loop, we position the temporary sprite and apply the correct rotation by using the data from the obstacle object. Finally, we copy the temporary sprite into the vector <code>m_wallSprites</code>. We need to do this as you will need to draw the sprites inside our <code>render()</code> method. (The obstacles use our tank image, but in our demo which we will build later, they will be walls).
     </p>
     <hr />
     <p><strong>Side note:</strong> Sometimes there are reasons why is not a good idea to store containers of instances, particularly if those objects are not lightweight. Firstly, all STL containers copy in and copy out. This means any object you wish to store in a container will be copied into that container, and any object you retrieve from the container will be copied out. Worse still, <code>std::vector</code> will copy all of it's elements to a new location in memory if it runs out of capacity. If you delete an element from a vector, any proceeding elements are copied down one place. For these reasons, it is often preferable to store pointers (or preferably smart pointers) to objects in containers like this:</p>
