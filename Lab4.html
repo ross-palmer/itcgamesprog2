@@ -383,8 +383,22 @@ void decreaseTurretRotation();
 <p><strong>Exercise 5:</strong> It should be possible to re-centre the turret by pressing the 'C' key. Add this functionality to the project with another member function:</p>
 <pre><code>void centreTurret();
 </code></pre>
-
-
+<p>Ideally, the turret will rotate slowly back to centre and instead of instantly snapping back</p>
+<p>We also want the turret to rotate the shortest way possible around the circle, a simple algorithm for this might look like:</p>
+<pre><code>
+    if startAngle < destAngle  <b>// initially, try destAngle as 0 degrees </b>
+       direction = -1
+    else
+       direction = 1
+    end if
+    if abs(startAngle - destAngle) > 180
+       direction = -direction
+    end if
+    rotate turret sprite by direction <b>// rotates by 1 degree (clockwise or counterclockwise) each update</b>
+</code>
+</pre>
+<p>Note: When 'C' is pressed, you will need to set a flag (a bool) to true indicating the turret should be rotated</p>
+<p>Inside <code>Game::update()</code>, if this flag is true, you will then call <code>centreTurret()</code>. You will need to think about where this flag should be set to false again</p>
 </body>
 </html>
 <!-- This document was created with MarkdownPad, the Markdown editor for Windows (http://markdownpad.com) -->
