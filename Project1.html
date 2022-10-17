@@ -294,7 +294,7 @@ img {
 <h2>Mini Project 1: Adding gameplay to the Tank demo</h2>
 <p><strong>Instructions:</strong> </p>
 <ul>
-<li><b>Final commits to be made by 11pm Thursday 16th December.</b></li>
+<li><b>Final commits to be made by 11pm Thursday 15th December.</b></li>
 <li>The project must be demonstrated to me in our lab class the following day.</li>
 <li>Projects that are committed beyond the deadline will not be graded.</li>
 <li>You will need to spend some time working on the project outside of the scheduled lab hours.</li>
@@ -304,7 +304,7 @@ img {
 (marks for each section is shown inside square brackets).</p>
 <ol>
 <li>
-<p>Implement projectile firing. It should be possible to fire a projectile at a rate of 1 per second. The projectile should not pass through a wall. A speed value of about 1000 works well, don't forget to use the delta time (<code>dt</code>) when translating the projectile (hint: see how we use delta time for moving the Tank in <code>Tank::update()</code>). The artwork for a shell is available in the sprite sheet. <strong>[15]</strong></p>
+    <p>Implement projectile firing. It should be possible to fire a projectile at a rate of 1 per second. The projectile should not pass through a wall. A speed value of about 1000 works well, don't forget to use the delta time (<code>dt</code>) when translating the projectile (hint: see how we use delta time for moving the Tank in <code>Tank::update()</code>). Tip: For the firing rate, use a clock timer. If you use a simple counter, the timing will be machine speed dependent (not accurate). <strong>[15]</strong></p>
 </li>
 <li>
 <p>Add a countdown timer of 60 seconds after which the game should stop. Show the value of the timer on a HUD (if using a floating point variable, don't show decimal places on the HUD). <strong>[10]</strong></p>
@@ -313,7 +313,11 @@ img {
 <p>Draw the player's tank in one corner of the screen, where the corner is picked randomly. Add pop-up targets - you decide on the duration they stay on screen. The target properties should be defined in the yaml file i.e. duration, position, rotation etc. The targets should not always appear in the same position and should not appear overlapping a wall. For example, in the yaml file you could define a targets position as:</p>
 <p><code>position: {x: 50, y: 300, randomOffset: 20}</code></p>
 <p>where a maximum random offset of up to +20 or -20 is applied to it's x and y position. Targets should appear in sequence (one by one) and not all together. 
-<strong>[20]</strong></p>
+<strong>[15]</strong></p>
+</li>
+<li>
+<p>The turret is broken, it drifts (rotates) slightly whenever the tank is moving. The idea is to make it more challenging to line up a shot. <strong>[5]</strong>
+</p>
 </li>
 <li>
 <p>A warning should be given to the player to indicate a target is about to disappear. For example, the target may flash on and off. <strong>[10]</strong></p>
@@ -322,12 +326,13 @@ img {
 <p>Targets should disappear when hit by a projectile from the tank and the player's score should be updated on the HUD. If the player strikes a target, the next target should appear immediately and the previous target's remaining time should be added to the new target as a reward. It should be possible (but challenging) to clear all targets in a game. <strong>[15]</strong></p>
 </li>
 <li>
-<p>At game over, report the player's score (number of targets hit) and accuracy. For example, if 20 shots were fired, but only 10 targets hit, the accuracy is 50%. The game should also keep track of the player's best peformances, i.e.  show the player their previous best score/accuracy and current score/accuracy  at game over. <strong>[10]</strong></p>
+    <p>At game over, report the player's score (number of targets hit) and accuracy. For example, if 20 shots were fired, but only 10 targets hit, the accuracy is 50%. Tip: Check your accuracy reporting is correct (count your shots fired and registered hits). The game should also keep track of the player's best peformances, i.e. the current best score/accuracy should be saved in the YAML file. Show the current score/accuracy and previous best score/accuracy at game over. <strong>[10]</strong></p>
 </li>
 <li>
 <p>Extras: <strong>[20]</strong></p>
 <p>Add something interesting to the project such as <strong>one</strong> item from the list below. Note, if you have time to spare, consider doing more than one, as this should be one of your portfolio pieces from second year.</p>
 <ul>
+<li>Add mouse support for controlling the tank. Right click will move the tank to the indicated location. Left click will fire. Pressing the mouse wheel causes the turret to track the movement of the mouse pointer.</li>
 <li>Add particle effects for firing, target hit. <a href="http://www.bromeon.ch/libraries/thor/tutorials/v2.0/particles.html">Reource Link</a>.</li>
 <li>Use the Thor library to add animations to the project. <a href="http://www.bromeon.ch/libraries/thor/tutorials/v2.0/animations.html">Resource Link</a>.</li>
 <li>Add a larger map that scrolls as the player tank moves around. If a target appears off-screen, draw an arrow on the HUD to show the direction the player should move. <a href="https://github.com/SFML/SFML/wiki/Tutorial:-Using-View">Resource link for sf::View</a>. <a href="http://www.bromeon.ch/libraries/thor/documentation/v2.0/classthor_1_1_arrow.html">Resource link for drawing arrows</a></li>
